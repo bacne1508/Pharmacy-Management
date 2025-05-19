@@ -68,16 +68,17 @@ ul {
     导航相关
  */
 .main-container {
-    display: flex;
-    height: 100%;
+  display: flex;
+  height: 100vh; /* Chiều cao toàn màn hình */
+  overflow: hidden; /* Tránh tràn toàn bố cục */
 }
 /* --- Content Container (Khu vực chính, dưới Header, bên phải Sidebar) --- */
 .content-container {
-    flex: 1;
-    height: 100%;
-    background: #e4e7ea;
-    padding: 20px;
-    overflow-y: scroll;
+  flex: 1;
+  background: #ecf0f1;
+  overflow-y: auto; /* Scroll riêng */
+  height: 100vh;    /* Cần set để scroll hoạt động */
+  padding: 20px;
 }
 .content-item {
     margin-bottom: 30px;
@@ -88,10 +89,11 @@ ul {
 }
 /* --- Sidebar Dọc (Panel Dọc) --- */
 .nav-left-container {
-    width: 300px;
-    height: 100%;
-    background: #1d2939;
-    padding: 65px 1px;
+  width: 250px;
+  background: #2c3e50;
+  color: white;
+  overflow-y: auto; /* Scroll riêng */
+  height: 100vh;    /* Cần set để scroll hoạt động */
 }
 .nav-top-container {
     width: 100%;
@@ -466,8 +468,6 @@ ul {
 html, body {
   height: 100%;
   margin: 0;
-  padding: 0;
-  overflow: hidden;
 }
 
 /* src/main/resources/static/css/dashboard.css */
