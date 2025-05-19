@@ -1,0 +1,563 @@
+* {
+    padding: 0;
+    margin: 0;
+    font-size: 14px;
+}
+html {
+    height: 100%;
+}
+input {
+    width: 250px;
+    height: 25px;
+    border: 0;
+}
+ul {
+    list-style: none;
+}
+.card {
+    background: #fff;
+    border-radius: 2px;
+    box-shadow: #ccc 1px 0 0 0;
+}
+.title {
+    font-size: 24px;
+}
+.avatar-lg {
+    width: 55px;
+    height:55px;
+    border-radius: 50%;
+}
+.avatar-sm {
+    width: 40px;
+    height:40px;
+    border-radius: 50%;
+}
+.label {
+    padding: 5px;
+    color: #fff;
+    border-radius: 10px!important;
+    margin: 0 20px;
+}
+/**
+    颜色相关
+ */
+.gray-text {
+    color: #777;
+}
+.dark-text {
+    color: #666;
+}
+.error-text {
+    color: #ed5565;
+}
+.primary-text {
+    color: #1caf9a;
+}
+.primary-bg {
+    background: #1caf9a;
+}
+.error-bg {
+    background: #ed5565;
+}
+/**
+    form相关
+ */
+
+
+/**
+    导航相关
+ */
+.main-container {
+    display: flex;
+    height: 100%;
+}
+/* --- Content Container (Khu vực chính, dưới Header, bên phải Sidebar) --- */
+.content-container {
+    flex: 1;
+    height: 100%;
+    background: #e4e7ea;
+    padding: 20px;
+    overflow-y: scroll;
+}
+.content-item {
+    margin-bottom: 30px;
+}
+.content-card {
+    padding: 20px;
+    margin: 10px;
+}
+/* --- Sidebar Dọc (Panel Dọc) --- */
+.nav-left-container {
+    width: 300px;
+    height: 100%;
+    background: #1d2939;
+    padding: 65px 1px;
+}
+.nav-top-container {
+    width: 100%;
+    background: #fff;
+    padding: 5px 20px;
+    display: flex;
+    justify-content: space-around;
+    border-bottom: 1px solid #ccc;
+    border-top: 1px solid #ccc;
+}
+.nav-user-container {
+    padding: 0px 5px 0px 5px;
+    text-align: center;
+    color: #fff;
+}
+.nav-container .title {
+    color: #fff;
+}
+.nav-logo {
+    color: #1caf9a;
+    font: 700 30px "Comic Sans MS";
+    text-shadow: 0 0 20px #1caf9a,
+    10px -10px 30px #1caf9a,
+    20px -20px 40px #1caf96,
+    -20px -60px 50px #1cafa1,
+    0px -80px 60px #4caf9a,
+    10px -40px 50px #1caf9a;
+}
+
+.notice {
+    visibility: hidden;
+    margin-left: 40px;
+    color: rgba(255, 4, 84, 0.82);
+    font-size: 12px;
+}
+#adminMenu { /* ID của ul menu chính */
+    /* Không cần set background ở đây nữa nếu đã set cho .nav-left-container */
+}
+
+/* --- Style cho các mục menu cha (li > a) --- */
+#adminMenu > li > a { /* Target các mục menu cha trực tiếp */
+    color: #1caf9a; /* << MÀU CHỮ KHI KHÔNG ACTIVE (ví dụ: trắng ngà) */
+    padding: 12px 20px; /* Điều chỉnh padding */
+    border-left: 3px solid transparent; /* Border trái để tạo hiệu ứng active */
+    transition: background-color 0.2s ease, border-left-color 0.2s ease;
+    font-weight: bold;
+    display: block; /* Hoặc inline-block, nhưng block thường dễ kiểm soát width hơn */
+    white-space: nowrap; /* Ngăn text xuống dòng */
+    overflow: hidden; /* Ẩn phần text vượt quá chiều rộng */
+    text-overflow: ellipsis; /* Hiển thị dấu "..." */
+}
+
+#adminMenu > li > a:hover {
+    background-color: #34495e; /* << MÀU NỀN KHI HOVER MỤC CHA (tối hơn một chút) */
+    color: #ffffff;
+    text-decoration: none;
+}
+
+#adminMenu > li.active > a {
+    background-color: #4a6fa5; /* << MÀU NỀN KHI MỤC CHA ACTIVE (sáng hơn hoặc màu khác) */
+    color: #ffffff; /* << MÀU CHỮ KHI MỤC CHA ACTIVE */
+    border-left-color: #3498db; /* << MÀU BORDER TRÁI KHI ACTIVE */
+    font-weight: 500; /* Làm chữ đậm hơn khi active (tùy chọn) */
+}
+
+/* Icon mũi tên */
+#adminMenu .has-submenu .submenu-arrow {
+    color: #bdc3c7; /* Màu cho mũi tên */
+}
+#adminMenu > li.active > a .submenu-arrow {
+    color: #ffffff; /* Màu mũi tên khi mục cha active */
+}
+
+
+/* --- Style cho menu con (ul.submenu) --- */
+#adminMenu .has-submenu .submenu {
+    list-style: none;
+    padding-left: 25px; /* Thụt lề cho menu con, có thể tăng lên */
+    margin: 0;
+    background-color: transparent; /* << BỎ MÀU NỀN RIÊNG CỦA SUBMENU (hoặc set cùng màu với cha) */
+    /* Nếu muốn có sự khác biệt nhẹ: */
+    /* background-color: rgba(0, 0, 0, 0.1); */ /* Nền tối hơn một chút cho submenu */
+    border-left: none; /* Bỏ border-left của submenu nếu có */
+}
+
+/* --- Style cho các mục menu con (li > a trong submenu) --- */
+#adminMenu .has-submenu .submenu li a {
+    color: #1caf9a; /* << MÀU CHỮ CHO MỤC CON KHI KHÔNG ACTIVE (sáng hơn màu nền một chút) */
+    padding: 10px 15px 10px 20px; /* Điều chỉnh padding */
+    font-size: 0.9em;
+    border-left: 3px solid transparent; /* Để đồng bộ hiệu ứng active */
+    /* --- Ngăn xuống dòng và hiển thị dấu ba chấm --- */
+    display: block; /* Hoặc inline-block, nhưng block thường dễ kiểm soát width hơn */
+    white-space: nowrap; /* Ngăn text xuống dòng */
+    overflow: hidden; /* Ẩn phần text vượt quá chiều rộng */
+    text-overflow: ellipsis; /* Hiển thị dấu "..." */
+    /* width: 100%; */ /* Đảm bảo thẻ <a> chiếm hết chiều rộng của <li> cha,
+                       /* nhưng cẩn thận vì padding của <li> cũng ảnh hưởng */
+                       /* Bạn có thể cần đặt width cụ thể hoặc max-width nếu muốn */
+}
+
+#adminMenu .has-submenu .submenu li a:hover {
+    background-color: #34495e; /* << MÀU NỀN KHI HOVER MỤC CON */
+    color: #ffffff;
+    text-decoration: none;
+}
+
+#adminMenu .has-submenu .submenu li.active a {
+    background-color: #4a6fa5; /* << MÀU NỀN KHI MỤC CON ACTIVE (giống mục cha active) */
+    color: #ffffff; /* << MÀU CHỮ KHI MỤC CON ACTIVE */
+    border-left-color: #3498db; /* << MÀU BORDER TRÁI KHI ACTIVE */
+    font-weight: 500;
+}
+
+/* Icon trong menu (cả cha và con) */
+#adminMenu a i,
+#adminMenu .has-submenu .submenu li .sub-icon {
+    margin-right: 10px;
+    width: 1.25em; /* Đảm bảo icon thẳng hàng */
+    text-align: center;
+    /* color: inherit; /* Kế thừa màu từ thẻ a cha */
+}
+
+/* Nếu muốn icon của mục active có màu khác */
+#adminMenu > li.active > a > i,
+#adminMenu .has-submenu .submenu li.active a .sub-icon {
+    /* color: #3498db; */ /* Ví dụ, làm nổi bật icon */
+}
+
+.admin-panel-container {
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+  width: 260px;
+  background-color: #1c2b36;
+  color: white;
+}
+
+.admin-panel-main-content {
+  flex: 1;
+  overflow-y: auto;
+  padding: 10px;
+}
+
+.admin-panel-logout {
+  padding: 20px;
+  border-top: 1px solid #ccc;
+  background-color: #1c2b36;
+}
+
+/* --- CSS cho Submenu --- */
+.has-submenu > a {
+    display: flex; /* Để căn chỉnh icon mũi tên */
+    justify-content: space-between; /* Đẩy mũi tên sang phải */
+    align-items: center;
+}
+
+.submenu-arrow {
+    margin-left: auto; /* Đẩy mũi tên sang phải (cách khác) */
+    padding-left: 10px; /* Khoảng cách cho mũi tên */
+    transition: transform 0.3s ease; /* Hiệu ứng xoay mũi tên */
+}
+
+/* Kiểu cho submenu */
+.submenu {
+    padding-left: 20px; /* Thụt lề cho các mục con */
+    /* background-color: #3a424a; */ /* Màu nền khác cho submenu (tùy chọn) */
+    border-left: 2px solid #555e68; /* Đường kẻ bên trái cho submenu (tùy chọn) */
+    margin-left: 10px; /* Khoảng cách thụt lề chung */
+    margin-top: 5px;
+    margin-bottom: 5px;
+}
+
+.submenu li a {
+    padding: 8px 15px; /* Padding nhỏ hơn cho mục con */
+    font-size: 0.9em;  /* Font nhỏ hơn (tùy chọn) */
+}
+
+.submenu li a .sub-icon {
+    margin-right: 8px;
+    width: 16px; /* Đảm bảo icon thẳng hàng */
+    text-align: center;
+}
+
+/* Style cho mục cha khi active hoặc submenu mở (tùy chọn) */
+.has-submenu.active-parent > a,
+.has-submenu > a:hover { /* Thêm hover cho cả mục cha */
+    background-color: #454d55; /* Màu nền khác khi active hoặc hover */
+}
+
+/* --- Các style khác bạn có thể cần --- */
+.nav-left-container .nav-pills > li > a {
+    border-radius: 0; /* Bỏ bo góc mặc định nếu bạn muốn menu phẳng hơn */
+    color: #adb5bd; /* Màu chữ cho menu (ví dụ) */
+    padding: 12px 15px;
+}
+
+.nav-left-container .nav-pills > li.active > a,
+.nav-left-container .nav-pills > li.active > a:hover,
+.nav-left-container .nav-pills > li.active > a:focus {
+    background-color: #007bff; /* Màu nền khi active (ví dụ) */
+    color: white;
+}
+
+.nav-left-container .nav-pills > li > a:hover {
+    background-color: #495057; /* Màu nền khi hover (ví dụ) */
+    color: white;
+}
+
+.nav-left-container .nav-user-container .avatar-lg {
+    width: 100px; /* Điều chỉnh kích thước avatar */
+    height: 100px;
+    border-radius: 50%;
+    margin-bottom: 5px;
+    cursor: default; /* Bỏ cursor pointer nếu không phải là nút logout nữa */
+}
+
+.nav-left-container .nav-user-container .title {
+    color: #f8f9fa; /* Màu chữ cho tên user */
+    font-weight: 500;
+}
+
+/* Icon styles */
+.nav-left-container .nav i.fa {
+    margin-right: 10px; /* Khoảng cách giữa icon và text */
+    width: 20px; /* Đảm bảo các icon thẳng hàng */
+    text-align: center;
+}
+
+/* --- Nội dung menu chính (có thể cuộn) --- */
+.admin-panel-main-content {
+    flex-grow: 1; /* Quan trọng: Cho phép phần này mở rộng và đẩy logout xuống */
+    overflow-y: auto; /* Cho phép cuộn nếu menu dài */
+    /* CSS cho thanh cuộn đẹp hơn (tùy chọn, cross-browser) */
+    scrollbar-width: thin;
+    scrollbar-color: #ccc #f0f0f0;
+}
+.admin-panel-main-content::-webkit-scrollbar {
+    width: 6px;
+}
+.admin-panel-main-content::-webkit-scrollbar-track {
+    background: #f0f0f0;
+}
+.admin-panel-main-content::-webkit-scrollbar-thumb {
+    background-color: #ccc;
+    border-radius: 3px;
+}
+
+
+
+
+.app-header {
+    background-color: #1d2939;
+    border-bottom: 1px solid #e0e0e0;
+    padding: 0 25px; /* Điều chỉnh padding ngang, padding dọc sẽ được kiểm soát bởi chiều cao */
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    z-index: 1030;
+    height: 65px; /* Đặt chiều cao cố định cho header */
+    box-sizing: border-box;
+}
+
+.header-left,
+.header-right {
+    display: flex;
+    align-items: center; /* Căn các item con theo chiều dọc */
+    height: 100%; /* Để các item con có thể căn giữa theo chiều cao của header */
+}
+
+/* --- Phần bên trái của Header --- */
+.header-left .sidebar-toggle-btn { /* Nút toggle cho sidebar (nếu bạn có) */
+    font-size: 1.4em; /* Kích thước icon */
+    background: none;
+    border: none;
+    color: #555;
+    cursor: pointer;
+    margin-right: 15px; /* Khoảng cách với logo */
+    padding: 0; /* Bỏ padding mặc định của button */
+}
+
+.header-left .header-logo img {
+    height: 35px; /* Điều chỉnh kích thước logo */
+    max-height: 100%; /* Đảm bảo logo không vượt quá chiều cao header */
+    margin-right: 15px;
+    display: block; /* Để loại bỏ khoảng trắng thừa bên dưới img */
+}
+
+.header-left .header-title {
+    font-size: 1.2em; /* Cỡ chữ cho tiêu đề hệ thống */
+    font-weight: 500;
+    color: #007bff; /* Màu chữ ví dụ */
+    white-space: nowrap; /* Ngăn không cho xuống dòng */
+}
+
+/* --- Phần bên phải của Header --- */
+.header-right > div { /* Áp dụng cho các div con trực tiếp của header-right */
+    margin-left: 20px; /* Khoảng cách giữa các mục date, user, language */
+    display: flex;
+    align-items: center;
+}
+
+.header-right .header-date {
+    font-size: 0.9em;
+    color: #555;
+}
+.header-right .header-date span {
+    color: #0056b3; /* Màu cho ngày tháng */
+    font-weight: 500;
+    margin-left: 5px;
+}
+
+.header-right .header-user-info img.avatar {
+    width: 30px; /* Kích thước avatar */
+    height: 30px;
+    border-radius: 50%;
+    margin-right: 10px;
+}
+.header-right .header-user-info .user-text-details {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start; /* Căn chữ Welcome và Username sang trái */
+    line-height: 1.3;
+}
+.header-right .header-user-info .welcome-text {
+    font-size: 0.75em;
+    color: #6c757d; /* Màu xám nhạt */
+}
+.header-right .header-user-info .username {
+    font-weight: 500;
+    font-size: 0.85em;
+    color: #343a40; /* Màu đậm hơn cho username */
+}
+
+.header-right .header-language-switcher .dropdown-toggle {
+    background-color: #c49a47; /* Màu vàng đậm giống trong hình */
+    color: white;
+    border: none;
+    padding: 6px 12px;
+    font-weight: bold;
+    font-size: 0.9em;
+    border-radius: 4px;
+}
+.header-right .header-language-switcher .dropdown-toggle:hover,
+.header-right .header-language-switcher .dropdown-toggle:focus {
+    background-color: #b38b3f; /* Đậm hơn khi hover */
+    color: white;
+}
+.header-right .header-language-switcher .dropdown-menu {
+    min-width: auto; /* Để dropdown không quá rộng */
+}
+.header-right .header-language-switcher .lang-flag {
+    width: 20px; /* Kích thước cờ */
+    height: auto;
+    margin-left: 8px;
+}
+
+/* --- Điều chỉnh cho sidebar và content khi header fixed --- */
+.nav-left-container.fixed-sidebar { /* Thêm class này vào sidebar nếu nó cũng fixed */
+    top: 65px; /* Bằng chiều cao của header */
+    height: calc(100vh - 65px); /* Chiều cao còn lại */
+}
+.nav-left-container.collapsed { /* Class khi sidebar thu gọn */
+    width: 70px; /* Chiều rộng khi thu gọn (điều chỉnh nếu cần) */
+    /* Các style khác để ẩn text, chỉ hiện icon khi thu gọn */
+}
+
+html, body {
+  height: 100%;
+  margin: 0;
+  padding: 0;
+  overflow: hidden;
+}
+
+/* src/main/resources/static/css/dashboard.css */
+
+/* --- Content Chính của Trang --- */
+.page-content {
+    flex-grow: 1;
+    padding: 65px 10px 5px 10px; /* top right bottom left */
+    overflow-y: auto;
+    background-color: #ecf0f1;
+    justify-content: space-between;
+    display: flex;
+    align-items: center;
+    margin-bottom: 20px;
+    border-bottom: 1px solid #dee2e6;
+    box-sizing: border-box;
+}
+
+.dashboard-full-image-container {
+    position: relative; /* Cho phép định vị các phần tử con tuyệt đối bên trong nó */
+    width: 100%;        /* Chiếm toàn bộ chiều rộng của .page-content */
+    height: 100%;       /* Chiếm toàn bộ chiều cao của .page-content */
+    display: flex;      /* Để căn chỉnh các overlay (nếu có) */
+    flex-direction: column;
+    align-items: center;
+    justify-content: center; /* Căn giữa nội dung overlay (nếu có) */
+    overflow: hidden; /* Ẩn phần ảnh thừa nếu ảnh không vừa tỷ lệ */
+}
+
+img.dashboard-main-image { /* Thẻ img chứa ảnh dashboard */
+    position: absolute; /* Đặt ảnh làm nền tuyệt đối cho container */
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover; /* Để ảnh lấp đầy container mà không bị méo, phần thừa bị cắt */
+    z-index: 1; /* Nằm dưới các text overlay */
+}
+
+/* --- Định vị cho phần Ngày Giờ --- */
+.dashboard-datetime-overlay {
+    position: absolute; /* Đặt chồng lên ảnh */
+    top: 65px;          /* Khoảng cách từ mép trên */
+    left: 80%;          /* Đặt ở giữa theo chiều ngang */
+    transform: translateX(-50%); /* Căn giữa chính xác theo chiều ngang */
+    z-index: 10;        /* Đảm bảo nằm trên ảnh */
+    text-align: center;
+    padding: 10px 20px;
+    /* background-color: rgba(0, 0, 0, 0.3); */ /* Nền mờ (tùy chọn) */
+    /* border-radius: 8px; */ /* Bo góc (tùy chọn) */
+    color: #003366; /* Màu chữ đậm cho ngày giờ, tương phản với nền sáng của ảnh */
+}
+
+.dashboard-datetime-overlay .dashboard-time {
+    font-size: 2.8em; /* Điều chỉnh kích thước font */
+    font-weight: bold;
+    line-height: 1.1;
+    margin-bottom: 2px;
+    /* text-shadow: 1px 1px 2px rgba(0,0,0,0.5); */ /* Đổ bóng cho dễ đọc (tùy chọn) */
+}
+
+.dashboard-datetime-overlay .dashboard-date {
+    font-size: 1.1em; /* Điều chỉnh kích thước font */
+    line-height: 1.2;
+    /* text-shadow: 1px 1px 2px rgba(0,0,0,0.5); */ /* Đổ bóng cho dễ đọc (tùy chọn) */
+}
+
+/* --- (Tùy chọn) Định vị cho Slogan hoặc Text khác --- */
+.dashboard-overlay-text {
+    position: absolute;
+    /* Ví dụ: đặt ở giữa ảnh, phía trên ngày giờ một chút */
+    top: calc(50% - 80px); /* Điều chỉnh vị trí dọc */
+    left: 50%;
+    transform: translate(-50%, -50%);
+    z-index: 10;
+    text-align: center;
+    width: 80%; /* Giới hạn chiều rộng của slogan */
+}
+
+.dashboard-overlay-text .slogan {
+    font-size: 2.5em; /* Cỡ chữ slogan */
+    font-weight: bold;
+    color: #004080; /* Màu chữ slogan (điều chỉnh cho phù hợp với ảnh nền) */
+    text-shadow: 2px 2px 4px rgba(0,0,0,0.3); /* Đổ bóng cho nổi bật */
+    line-height: 1.3;
+}
+/* Thêm style cho chữ "Pharmacity" trong slogan nếu bạn muốn nó có màu khác */
+.dashboard-overlay-text .slogan .highlight {
+    color: #007bff; /* Hoặc màu xanh lá cây như trong ảnh */
+    background-color: white;
+    padding: 0 10px;
+    border-radius: 20px; /* Bo tròn */
+}

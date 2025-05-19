@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<html>
+	
+<head>
+	<title>Welcome</title>
+	
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">	
+	<link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
+	<link rel="stylesheet" type="text/css" th:href="@{/css/index.css}" />
+	<link rel="stylesheet" type="text/css" th:href="@{/css/common.css}" />
+	<link rel="stylesheet" type="text/css" th:href="@{/css/bootstrap.css}" />	
+	<link rel="stylesheet" type="text/css" th:href="@{/roboto-font/roboto.css}" />
+
+	<script th:src="@{/js/jquery.js}"></script>
+	<script th:src="@{/js/bootstrap.js}"></script>
+	<script th:src="@{/js/request.js}"></script>
+	<script th:src="@{/js/index.js}"></script>
+</head>
+
+<body>
+	<div id="main-container">
+		<div class="login-form-container"> <!-- Container chung cho form -->
+			<form id="login-form" th:action="@{/api/auth/login}" method="post">
+				<h3 class="title">Pharmacity Management System</h3>
+
+				<div class="input-field-group">
+					<i class="fa fa-user input-icon"></i> <!-- Icon người dùng (Font Awesome 5+) -->
+					<input id="index-name"  type="text" name="username" placeholder="Username" required autocomplete="username">
+				</div>
+
+				<div class="input-field-group">
+					<i class="fa fa-lock input-icon"></i> <!-- Icon ổ khóa -->
+					<input id="index-password" type="password" name="password" placeholder="Password" required autocomplete="current-password">
+					<i class="fa fa-eye toggle-password" id="togglePasswordIcon"></i>
+				</div>
+
+				<div class="form-options"> <!-- Các tùy chọn như "Forgot password?" hoặc link đăng ký -->
+					<p>Not registered yet? <a th:href="@{/signUp}">Register Now</a></p>
+				</div>
+
+				<button id="login-btn" type="submit" class="btn-submit">Log In</button>
+			</form>
+		</div>
+	</div>
+</body>
+
+</html>

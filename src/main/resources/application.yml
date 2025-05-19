@@ -1,0 +1,35 @@
+spring:
+  profiles:
+     active: dev
+  main:
+     allow-circular-references: true
+     allow-bean-definition-overriding: true
+  datasource:
+     url: jdbc:sqlserver://localhost:1433;databaseName=PHARMACY_SYSTEM;encrypt=false;;sendStringParametersAsUnicode=true
+     username: sa
+     password: 123456
+     driver-class-name: com.microsoft.sqlserver.jdbc.SQLServerDriver
+     max-active: 200
+     max-idle: 20
+     min-idle: 10
+  hikari:
+      poolName: Hikari
+      auto-commit: true
+      register-mbeans: true
+      idle-timeout: 10000
+      minimum-idle: 10
+      maximum-pool-size: 500
+      connection-timeout: 20000
+      max-lifetime: 10000
+  thymeleaf:
+     cache: false
+  jackson:
+    time-zone: GMT+8
+logging:
+  level:
+    jp.sf.amateras.mirage: DEBUG
+    org.springframework.security: DEBUG
+  
+#mybatis:
+#  mapper-locations: classpath:dataImpl/*/*Mapper.xml
+

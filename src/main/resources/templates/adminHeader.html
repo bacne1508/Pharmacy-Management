@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
+
+<head>
+	<!-- Các thẻ meta và link CSS chung có thể không cần ở đây nếu trang chính đã có -->	
+	<!--<link rel="stylesheet" type="text/css" href="/css/common.css"/>
+	<link rel="stylesheet" type="text/css" th:href="@{/css/bootstrap.css}" />	
+	<link rel="stylesheet" type="text/css" th:href="@{/css/adminHeader.css}" />
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+	
+	<script 	th:src="@{/js/adminHeader.js}"></script>-->
+	
+</head>
+
+<body>
+	<header class="app-header" th:fragment="mainHeader">
+		<div class="header-left">
+			<div class="header-logo">
+				<a th:href="@{/admin/dashboard}"> <!-- Link về trang chủ -->
+					<img th:src="@{/images/logo.jpg}" alt="pharmacity Logo" />
+				</a>
+			</div>
+			<span class="header-title">Pharmacity Management System</span>
+		</div>
+
+		<div class="header-right">
+			<div class="header-date">
+				Data date: <span id="currentDataDate">15/05/2024</span> <!-- Sẽ được cập nhật bằng JS -->
+			</div>
+			<div class="header-user-info">
+				<img th:src="@{/images/defaultAvatar.jpg}" alt="User Avatar" class="avatar" />
+				<div>
+					<span class="welcome-text">Welcome</span><br />
+					<span class="username" id="headerUsernameDisplay">Guest</span>
+				</div>
+			</div>
+			<!--<div class="header-language-switcher dropdown">
+				<button class="btn btn-sm dropdown-toggle" type="button" id="languageDropdown" data-toggle="dropdown"
+					aria-haspopup="true" aria-expanded="false"> IT  Hoặc ngôn ngữ hiện tại 
+				</button>
+				<div class="dropdown-menu dropdown-menu-right" aria-labelledby="languageDropdown">
+                <a class="dropdown-item" href="#">IT <img th:src="@{/images/flag-it.png}" alt="Italian Flag" class="lang-flag pull-right"/></a>
+                <a class="dropdown-item" href="#">VN <img th:src="@{/images/flag-vn.png}" alt="Vietnamese Flag" class="lang-flag pull-right"/></a>
+                <a class="dropdown-item" href="#">EN <img th:src="@{/images/flag-en.png}" alt="English Flag" class="lang-flag pull-right"/></a>
+            </div>
+			</div>-->
+		</div>
+	</header>
+
+</body>
+
+</html>

@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<fontFamilies>
+
+   <fontFamily name="Arial">
+        <normal><![CDATA[fonts/arial.ttf]]></normal>
+        <bold><![CDATA[fonts/arialbd.ttf]]></bold>
+        <italic><![CDATA[fonts/ariali.ttf]]></italic>
+        <boldItalic><![CDATA[fonts/arialbi.ttf]]></boldItalic>
+        <pdfEncoding><![CDATA[Identity-H]]></pdfEncoding>
+        <pdfEmbedded><![CDATA[true]]></pdfEmbedded>
+   </fontFamily>
+   
+   <fontFamily name="Times New Roman">
+        <normal><![CDATA[fonts/TIMES.TTF]]></normal>
+        <bold><![CDATA[fonts/TIMESBD.TTF]]></bold>
+        <italic><![CDATA[fonts/TIMESI.TTF]]></italic>
+        <boldItalic><![CDATA[fonts/TIMESBI.TTF]]></boldItalic>
+        <pdfEncoding><![CDATA[Identity-H]]></pdfEncoding>
+        <pdfEmbedded><![CDATA[true]]></pdfEmbedded>
+   </fontFamily>
+   
+   <fontFamily name="Segoe UI">
+        <normal><![CDATA[fonts/SEGOEUI.TTF]]></normal>
+        <bold><![CDATA[fonts/SEGOEUIB.TTF]]></bold>
+        <italic><![CDATA[fonts/SEGOEUII.TTF]]></italic>
+        <boldItalic><![CDATA[fonts/SEGOEUIZ.TTF]]></boldItalic>
+        <pdfEncoding><![CDATA[Identity-H]]></pdfEncoding>
+        <pdfEmbedded><![CDATA[true]]></pdfEmbedded>
+   </fontFamily>
+   
+   <fontFamily name="Segoe UI Black">
+        <normal><![CDATA[fonts/SEGOEUI.TTF]]></normal>
+        <bold><![CDATA[fonts/SEGOEUIB.TTF]]></bold>
+        <italic><![CDATA[fonts/SEGOEUII.TTF]]></italic>
+        <boldItalic><![CDATA[fonts/SEGOEUIZ.TTF]]></boldItalic>
+        <pdfEncoding><![CDATA[Identity-H]]></pdfEncoding>
+        <pdfEmbedded><![CDATA[true]]></pdfEmbedded>
+   </fontFamily>
+   
+   <fontFamily name="VNI-Bodon-Poster">
+        <normal><![CDATA[fonts/VNI.TTF]]></normal>
+        <bold><![CDATA[fonts/VNI.TTF]]></bold>
+        <italic><![CDATA[fonts/VNI.TTF]]></italic>
+        <boldItalic><![CDATA[fonts/VNI.TTF]]></boldItalic>
+        <pdfEncoding><![CDATA[Identity-H]]></pdfEncoding>
+        <pdfEmbedded><![CDATA[true]]></pdfEmbedded>
+	    <exportFonts>
+	     <export key="net.sf.jasperreports.html">'VNI-Bodon-Poster', Arial, Helvetica, sans-serif</export>
+	    </exportFonts>
+   </fontFamily>
+</fontFamilies>

@@ -1,0 +1,1 @@
+update users set  password=/*userForm.password*/  where username=/*userForm.username*/;

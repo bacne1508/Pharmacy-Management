@@ -1,0 +1,133 @@
+body {
+    background: linear-gradient(to bottom right, #1caf9a, #1caaaa);
+}
+
+#main-container {
+    background: url("https://data-service.pharmacity.io/pmc-upload-media/production/pmc-ecm-asm/posts/nha-thuoc-blog.webp");
+	height: 100%;
+	display: flex;
+	justify-content: flex-end; /* ĐẨY FORM SANG PHẢI */
+    padding-right: 10%;
+	align-items: center;
+}
+
+.login-form-container {
+    background-color: #fff;
+    padding: 30px 40px;
+    border-radius: 8px;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+    width: 380px;
+    max-width: 90%; /* Đảm bảo form không quá rộng trên màn hình nhỏ */
+    /* margin: 50px auto; Bỏ 'auto' cho lề ngang vì flexbox đang kiểm soát */
+    margin-top: 0; /* Hoặc giá trị margin-top/bottom cụ thể nếu muốn */
+    margin-bottom: 0;
+    /* font-family đã được đặt trên body */
+}
+
+.login-form-container .title {
+    text-align: center;
+    font-size: 24px;
+    color: rgb(0, 128, 255);
+    font-weight: bold;
+    margin-bottom: 30px;
+}
+
+.input-field-group {
+    position: relative; /* Cần thiết để định vị icon bên trong */
+    margin-bottom: 25px;
+    border-bottom: 1px solid #ddd;
+    transition: border-color 0.3s ease;
+}
+
+.input-field-group:focus-within {
+    border-bottom-color: #1caf9a;
+}
+
+.input-field-group .input-icon { /* fa-user, fa-lock */
+    position: absolute;
+    left: 0;
+    top: 50%;
+    transform: translateY(-50%);
+    color: #aaa;
+    font-size: 16px;
+    transition: color 0.3s ease;
+    padding: 0 5px;
+}
+
+.input-field-group:focus-within .input-icon {
+    color: #1caf9a;
+}
+
+.input-field-group input[type="text"],
+.input-field-group input[type="password"] {
+    width: 100%;
+    padding: 10px 35px 10px 30px; /* Tăng padding-right để có không gian cho icon mắt */
+    border: none;
+    outline: none;
+    background-color: transparent;
+    font-size: 16px;
+    color: #333;
+    box-sizing: border-box; /* Quan trọng để padding không làm tăng kích thước tổng thể */
+}
+
+/* --- Toggle Password Icon --- */
+.toggle-password { /* Áp dụng cho icon mắt */
+    position: absolute;
+    right: 5px; /* Điều chỉnh khoảng cách từ mép phải */
+    top: 50%;
+    transform: translateY(-50%);
+    color: #aaa;
+    cursor: pointer;
+    font-size: 16px; /* Hoặc kích thước bạn muốn */
+    transition: color 0.3s ease;
+    /* Không cần display: block hay float ở đây */
+}
+
+.toggle-password:hover {
+    color: #1caf9a;
+}
+
+/* --- Form Options (Forgot password, Register link) --- */
+.form-options {
+    display: flex;
+    justify-content: space-between; /* Hoặc chỉ một link thì căn phải */
+    align-items: center;
+    margin-bottom: 25px;
+    font-size: 14px;
+}
+
+.form-options a {
+    color: #1caf9a;
+    text-decoration: none;
+}
+
+.form-options a:hover {
+    text-decoration: underline;
+}
+
+.form-options p {
+    margin: 0;
+    color: #555;
+}
+.form-options p a {
+    font-weight: bold;
+}
+
+
+/* --- Submit Button Styling --- */
+.btn-submit {
+    width: 100%;
+    padding: 12px;
+    background-color: #1caf9a; /* Màu Pharmacity */
+    border: none;
+    border-radius: 5px;
+    color: white;
+    font-size: 16px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.btn-submit:hover {
+    background-color: #17a086; /* Màu đậm hơn khi hover */
+}

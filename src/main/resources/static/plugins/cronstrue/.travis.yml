@@ -1,0 +1,27 @@
+language: node_js
+node_js:
+- node
+before_deploy:
+    - git checkout master
+    - npm run prerelease
+    - npm version minor --force -m "Build %s [skip ci]"
+deploy:
+  provider: npm
+  email: brady.holt@gmail.com
+  api_key:
+    secure: "u0uH+vog8NOcYkVj5yRl0zzCbRUkiD2UZ1Ta3i9w2BlVaeiOzuIi5BQZqCvD1ahSQ1OJ99GDpaq01OQwahso2+wLT9Jx2WzOY+hSQSquNToXeBObG0meyPMNinLPJ8cW/vaqoXw0Jdmp/AzIhw12XQ91PwBoGu0hRXywLyMqHT6A3k0+iYh8Xd5iCJTu9iwE0EAfPGQLfHPcQyu+O+jcDDcN/H+ZjvqtlyCYevg6ddBH9gWKeeiXKBDMFGqH1yh7bjwUR71R+pQItTv6IM9y58YTGWz8AzUxrsgb01mvclTRhEuk3wr3Smds8Qk7jmAGboGhKKIwe4pPaEmGKpD3o26evazNxmZczjvrjFS/Wq7izyw24Ad4TpZtry7emSWITNK280TbDteQE96VqkLtmjrb4oUc0Sy4J6joBPavbxtxD7PIa2mowfqNGuCVGb4SzREzrM16NxvV82j3FPRmksdnKSq184GgGOQRD57a7l6xMLwwWYKaG88oX7ki6icSFwEWN0BQ+B8sQM0y4wDkrnz/4qXwyfCeVwjV62jfMfmlpj4JvN7b46U8ne72pncWum8uucP2MlXK457gbUJTKFwhlQSjMyngwCHoK5YnTRuq/1g76CKaRqoNu2CQXDCEdm64QBcmc++IxF1JfbkVCLvrtlzhEagsM6TIy63YJNg="
+  on:
+    repo: bradymholt/cRonstrue
+  skip_cleanup: true
+after_deploy:
+    - git config --global user.email "travis@travis-ci.org"
+    - git config --global user.name "Travis CI"
+    - git remote add gh-origin https://${GH_TOKEN}@github.com/${GH_REPO}.git
+    - git push gh-origin master --tags
+    - VERSION=$(node -p "require('./package.json').version")
+    - |
+      curl -H "Authorization: token ${GH_TOKEN}" -d '{"tag_name":"v'$VERSION'"}' https://api.github.com/repos/${GH_REPO}/releases
+env:
+  global:
+    - GH_REPO=bradymholt/cRonstrue
+    - secure: "cUIOZwXZZgaAL9JjzwI3JcRiAx1qql1B5AQjiNoCuNhnznvvNFdxycOuS9BOutLj7ykZ2GS6NdCrrKmZQWRv7Z81X39uzEcmXSfOG/JMJNkF08Mrs7WFt0S64VmYFOTDe9cfST+nSbydLo/q/qvEak2h64HDtfIsT5GNTFy6Qh3jv/qKT50kn7xWxhVA+0NiZ2w8T4JftLNhq5iBL1EYO+ld8bUApC8fNkhXV9ycpW68gHIKjAjpaMGcdrufID7MJt8nrxOw5Qabte69ScxJ+LzubculdeQ55W039tVHh1299sBCNb20+rmJxEnuGFFMLDDKj2wVGyqYmnIoDODtLEADCFBa0t5JzA/OY21aOcUOp5X3ump48nyl1ePEUpVti8WTmGwMtfR67AoBx84gyHix82GR1iKyj6F6aMtpJ2i9at2QdRjscYf8wMPzdwuHZFOF6FC1QZQ3sS9zi57vf0tBS0cUCpb2KsexwNpWi5ItPE8l/9FkplD0Wj4FOugE+OXbqGVjoBgzqXpZ/gNRosNMuPoX1m4xowq4+S7/nPggj4LhP75GtYPme2Qr3s2L9IowDbqjRde6ulkyvfP+tL6fn82hLQc77HvzAl9OV/M4G7P3DvDr6Lo+w3QhNaSBh7KT9OWaH/UiQh5iIyT0JScvQnDj50I282dh5hHbWaU="

@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html layout:decorate="~{layouts/layout}" xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org"
+	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" lang="en">
+
+<head>
+	<meta charset="UTF-8">
+	<title>Account Management</title>
+	<!-- Introduce the CSS style file -->
+	<script th:src="@{/js/components/PharmacityItem/PharmacityItem.js}"></script>
+	<script th:src="@{/js/adminPharmacityManage/adminAccountManage.js}"></script>
+
+</head>
+
+<body>
+	<div layout:fragment="body">
+		<div th:replace="~{adminHeader :: mainHeader}"></div>
+		<div class="main-container">
+			<div class="nav-left-container"></div>
+			<div class="content-container">
+				<div class="page-content">
+					<span class="title gray-text">Account Management</span>
+					<button type="button" class="btn btn-primary" data-backdrop="static" data-toggle="modal"
+						data-target="#movieModal"><i class="icon-plus-sign"></i> Add new account</button>
+				</div>
+				<div class="bg-content clearfix">
+					<div data-toggle="collapse" data-target="#search-box" class="header-box">
+						<h2 class="title-box">Search area</h2>
+						<i class="fa fa-minus pull-right" aria-hidden="true"></i>
+					</div>
+					<div class="collapse show" id="search-box">
+						<div class="content-box">
+							<div class="account-search-list"></div>
+						</div>
+						<!-- button footer -->
+						<div class="col-12 center">
+							<div class="box-btn-footer">
+								<a class="u-btn-grey u-btn-effect" id="btnClear"> <i class="fa fa-eraser"
+										aria-hidden="true"></i>
+									<span> Cancel</span>
+								</a> <a class="u-btn-common u-btn-effect" id="btnSearch"> <i class="fa fa-search"
+										aria-hidden="true"></i> <span>Search</span>
+								</a>
+							</div>
+						</div>
+					</div>
+				</div>				
+				<div class="bg-content clearfix" id="role-card">
+					<div class="table-wrapper">
+						<table class="table table-bordered table-striped">
+							<thead>
+								<tr>
+									<th>User Name</th>
+									<th>Password</th>
+									<th>Role</th>
+									<th>Edit</th>
+									<th>Delete</th>
+								</tr>
+							</thead>
+							<tbody id="role-table"></tbody>
+						</table>
+					</div>
+				</div>
+				<div id="userTableContainer"></div>
+				<ul id="pagination" class="pagination"></ul>
+			</div>
+		</div>
+	</div>
+</body>
+
+</html>

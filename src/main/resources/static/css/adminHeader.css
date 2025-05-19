@@ -1,0 +1,91 @@
+/* --- Sidebar Dọc (Panel Dọc) --- */
+.vertical-sidebar {
+    width: 260px; /* Chiều rộng sidebar khi mở */
+    background-color: #1d2939; /* Màu nền tối cho sidebar */
+    color: #c8c8c8;
+    height: 100vh;
+    flex-shrink: 0; /* Ngăn sidebar bị co lại */
+    transition: width 0.3s ease;
+    display: flex;
+    flex-direction: column;
+    z-index: 1000;
+    /* overflow-y: auto; */ /* Cho phép AdminPanel tự cuộn nếu cần */
+}
+
+.vertical-sidebar.collapsed {
+    width: 70px; /* Chiều rộng khi thu gọn */
+}
+/* ... (các style khác cho .vertical-sidebar.collapsed) ... */
+/* ... (CSS cho AdminPanel bên trong .vertical-sidebar) ... */
+
+
+/* --- Wrapper cho Header Ngang và Content Container --- */
+.main-content-wrapper {
+    flex-grow: 1; /* Chiếm hết không gian chiều rộng còn lại */
+    height: 100vh; /* Chiếm toàn bộ chiều cao màn hình */
+    display: flex;
+    flex-direction: column;
+    overflow: hidden; /* Ngăn cuộn ở wrapper, để page-content tự cuộn */
+}
+
+
+.app-horizontal-header { /* Class của header được include */
+    height: 60px; /* Chiều cao CỐ ĐỊNH của header */
+    flex-shrink: 0; /* Ngăn header bị co lại */
+    /* ... các style khác của header (background, padding, display:flex, ...) ... */
+    background-color: #fff; /* Ví dụ */
+    border-bottom: 1px solid #e0e0e0;
+    padding: 0 20px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    box-sizing: border-box;
+}
+
+.app-horizontal-header .header-left-content {
+    display: flex;
+    align-items: center;
+    /* Không cần flex-grow: 1 ở đây nếu bạn muốn phần right căn phải */
+}
+
+.app-horizontal-header .sidebar-toggle-btn-horizontal {
+    font-size: 1.3em;
+    background: none;
+    border: none;
+    color: #fff; /* Màu cho nút toggle */
+    cursor: pointer;
+    margin-right: 15px; /* Khoảng cách giữa nút toggle và logo/title */
+    padding:0;
+}
+
+.app-horizontal-header .header-logo-in-header img { /* Logo trong header ngang */
+    height: 30px; /* Điều chỉnh kích thước logo trong header */
+    margin-right: 10px;
+}
+
+.app-horizontal-header .page-title-in-header {
+    font-size: 1.1em;
+    font-weight: 500;
+    color: #e0e0e0; /* Hoặc #fff */
+    white-space: nowrap;
+}
+
+.app-horizontal-header .header-right-content {
+    display: flex;
+    align-items: center;
+    margin-left: auto; /* QUAN TRỌNG: Đẩy cụm này sang phảiสุด */
+}
+
+.app-horizontal-header .header-right-content > div {
+    margin-left: 20px; /* Khoảng cách giữa các mục trong .header-right-content */
+    display: flex;
+    align-items: center;
+    font-size: 0.9em;
+    color: #bdc3c7; /* Màu chữ cho thông tin user, ngày giờ */
+}
+/* ... (các style khác cho .header-user-info, .header-date, .header-language-switcher) ... */
+.app-horizontal-header .header-user-info .username {
+    color: #ecf0f1;
+}
+
+/* ... (CSS cho .content-header-page như trước) ... */

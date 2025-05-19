@@ -1,0 +1,93 @@
+
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org" xmlns:tiles="http://www.thymeleaf.org"
+ xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" lang="en">
+
+<head>
+ <meta charset="utf-8" />
+ <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+ <meta name="viewport" content="width=device-width, initial-scale=1" />
+ <title>Pharmacity Administration</title> 
+ <link rel="stylesheet" type="text/css" href="/css/common.css" />
+ <link rel="stylesheet" type="text/css" href="/js/components/PharmacityItem/PharmacityItem.css" />
+ <link rel="stylesheet" type="text/css" href="/css/pharmacityList.css" />
+ <link rel="stylesheet" type="text/css" href="/css/adminHeader.css" />
+ <link rel="stylesheet" type="text/css" href="/css/adminAccountManage.css" />
+ <!-- CS CSS fileBootstrap CS CSS file -->
+ <link rel="stylesheet" type="text/css" th:href="@{/roboto-font/roboto.css}" />
+ <link rel="stylesheet" type="text/css" th:href="@{/css/index.css}" />
+ <link rel="stylesheet" type="text/css" th:href="@{/css/AdminLTE.min.css}" />
+ <link rel="stylesheet" type="text/css" th:href="@{/bootstrap/css/bootstrap-select.min.css}" />
+ <link rel="stylesheet" type="text/css" th:href="@{/plugins/datatables/dataTables.bootstrap4.min.css}" />
+ <link rel="stylesheet" type="text/css" th:href="@{/plugins/custom-scrollbar/css/custom-scrollbar.min.css}" />
+ <link rel="stylesheet" type="text/css" th:href="@{/css/jquery-ui.css}" />
+ <link rel="stylesheet" type="text/css" th:href="@{/css/content-wrapper.css}" />
+ <link rel="stylesheet" type="text/css" th:href="@{/css/style-component.css}" />
+ <link rel="stylesheet" type="text/css" th:href="@{/plugins/jquery-file-upload/css/jquery.fileupload-ui.css}" />
+ <link rel="stylesheet" type="text/css" th:href="@{/plugins/jquery-file-upload/css/jquery.fileupload.css}" />
+ <script type="text/javascript" th:src="@{/js/jquery-3.2.1.min.js}" defer></script>
+ <script type="text/javascript" th:src="@{/js/jquery-ui.min.js}" defer></script>
+ <script type="text/javascript" th:src="@{/js/jquery.cookie.js}" defer></script>
+ <script type="text/javascript" th:src="@{/bootstrap/js/popper.min.js}" defer></script>
+ <script type="text/javascript" th:src="@{/bootstrap/js/bootstrap.min.js}" defer></script>
+ <script type="text/javascript" th:src="@{/bootstrap/js/bootstrap-select.min.js}" defer></script>
+ <script type="text/javascript" th:src="@{/js/adminlte.min.js}" defer></script>
+ <script type="text/javascript" th:src="@{/plugins/custom-scrollbar/js/custom-scrollbar.min.js}" defer></script>
+ <link rel="stylesheet" type="text/css" th:href="@{/bootstrap/css/bootstrap-datepicker.min.css}" />
+ <script type="text/javascript" th:src="@{/bootstrap/js/bootstrap-datepicker.min.js}" defer></script>
+ <script type="text/javascript" th:src="@{/jquery/jshashtable-3.0.js}" defer></script>
+ <script type="text/javascript" th:src="@{/jquery/jquery.numberformatter.js}" defer></script>
+ <script type="text/javascript" th:src="@{/jquery/jquery.number.min.js}" defer></script>
+ <link rel="stylesheet" type="text/css" th:href="@{/js/js-tree/themes/default/style.min.css}" />
+ <script type="text/javascript" th:src="@{/js/js-tree/jstree.js}" defer></script>
+ <script type="text/javascript" th:src="@{/jquery/validation-1.16.0/dist/jquery.validate.min.js}" defer></script>
+ <script type="text/javascript" th:src="@{/js/j-validate.js}" defer></script>
+ <script type="text/javascript" th:src="@{/datatables/datatables.js}" defer></script>
+ <script type="text/javascript" th:src="@{/plugins/datatables/jquery.dataTables.min.js}" defer></script>
+ <script type="text/javascript" th:src="@{/plugins/datatables/dataTables.bootstrap4.min.js}" defer></script>
+ <script type="text/javascript" th:src="@{/jquery/jquery.autocomplete.js}" defer></script>
+ <link rel="stylesheet" type="text/css" th:href="@{/plugins/isloading/jquery.isloading.css}" />
+ <script type="text/javascript" th:src="@{/plugins/isloading/jquery.isloading.js}" defer></script>
+ <script type="text/javascript" th:src="@{/js/stomp.min.js}" defer></script>
+ <script type="text/javascript" th:src="@{/jquery/jQuery-File-Upload-9.22.0/js/vendor/jquery.ui.widget.js}"
+ 	defer></script>
+ <script type="text/javascript" th:src="@{/jquery/jQuery-File-Upload-9.22.0/js/jquery.iframe-transport.js}"
+ 	defer></script>
+ <script type="text/javascript" th:src="@{/jquery/jQuery-File-Upload-9.22.0/js/jquery.fileupload.js}" defer></script>
+ <script type="text/javascript" th:src="@{/jquery/jQuery-File-Upload-9.22.0/js/jquery.fileupload-process.js}"
+ 	defer></script>
+ <script type="text/javascript" th:src="@{/jquery/jQuery-File-Upload-9.22.0/js/jquery.fileupload-image.js}"
+ 	defer></script>
+ <script type="text/javascript" th:src="@{/jquery/jQuery-File-Upload-9.22.0/js/jquery.fileupload-video.js}"
+ 	defer></script>
+ <script type="text/javascript" th:src="@{/jquery/jQuery-File-Upload-9.22.0/js/jquery.fileupload-audio.js}"
+ 	defer></script>
+ <script type="text/javascript" th:src="@{/jquery/jQuery-File-Upload-9.22.0/js/jquery.fileupload-validate.js}"
+ 	defer></script>
+ <script type="text/javascript" th:src="@{/jquery/jquery.knob.js}" defer></script>
+ <script type="text/javascript" th:src="@{/summernote/dist/summernote.js}" defer></script>
+ <link rel="stylesheet" type="text/css" th:href="@{/summernote/dist/summernote.css}" />
+ <link rel="stylesheet" type="text/css" href="/css/bootstrap.css" />
+ <!-- FONT-AWESOME icon library -->
+ <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+ <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
+ 
+ 
+ <!-- Introduce JS script file -->
+ <!-- jquery -->
+ <script th:src="@{/js/jquery.js}"></script>
+ <!-- Bootstrap Core JavaScript file -->
+ <script th:src="@{/js/bootstrap.js}"></script>
+ <script th:src="@{/js/request.js}"></script>
+ <script th:src="@{/js/Component.js}"></script>
+ <script th:src="@{/js/adminHeader.js}"></script>
+ <script th:src="@{/js/components/AdminPanel.js}"></script>
+</head>
+
+<body>
+	<div layout:fragment="body">
+		<!-- Nội dung trang con sẽ được nhúng ở đây -->
+	</div>
+</body>
+
+</html>

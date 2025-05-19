@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Pharmacity Management</title>
+    <!-- Introduce the CSS style file -->
+    <link rel="stylesheet" type="text/css" href="/css/common.css"/>
+    <link rel="stylesheet" type="text/css" href="/js/components/PharmacityItem/PharmacityItem.css"/>
+    <link rel="stylesheet" type="text/css" href="/css/pharmacityList.css"/>	
+	<link rel="stylesheet" type="text/css" href="/css/adminHeader.css"/>
+    <!-- CS CSS fileBootstrap CS CSS file -->
+    <link rel="stylesheet" type="text/css" href="/css/bootstrap.css"/>
+    <!-- FONT-AWESOME icon library -->	
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">	
+	<link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
+
+
+    <!-- Introduce JS script file -->
+    <!-- jquery -->
+    <script 	th:src="@{/js/jquery.js}"></script>
+    <!-- Bootstrap Core JavaScript file -->
+    <script 	th:src="@{/js/bootstrap.js}"></script>
+    <script 	th:src="@{/js/request.js}"></script>
+    <script 	th:src="@{/js/Component.js}"></script>	
+	<script 	th:src="@{/js/adminHeader.js}"></script>
+    <script 	th:src="@{/js/components/AdminPanel.js}"></script>
+    <script 	th:src="@{/js/components/PharmacityItem/PharmacityItem.js}"></script>
+    <script 	th:src="@{/js/adminPharmacityManage/adminPharmacityManage.js}"></script>
+
+</head>
+<body>
+	<!-- Sidebar Dọc (Panel Dọc) - Include AdminPanel Component -->
+	   <!-- <div class="nav-left-container" th:id="leftSidebar">
+	         AdminPanel sẽ được render vào đây bằng JavaScript 
+	    </div>-->
+<div th:replace="~{adminHeader :: mainHeader}"></div>
+<div class="main-container">
+	<!--<div th:replace="~{adminHeader :: mainHeader}"></div>-->
+	<div class="nav-left-container" ></div>
+    <div class="page-content">
+		<!-- === DASHBOARD CONTENT START === -->
+		<div class="dashboard-full-image-container">
+		    <div class="dashboard-datetime-overlay">
+		         <div class="dashboard-time" id="dashboardCurrentTime">18:59:33</div>
+		         <div class="dashboard-date" id="dashboardCurrentDate">Thứ Hai, 01 Tháng Mười Một, 2021</div>
+		    </div>
+		
+		    <img th:src="@{/images/dashboard-full.png}" alt="Pharmacity Dashboard Banner" class="dashboard-main-image"/>
+			<div class="dashboard-overlay">
+				<div class="dashboard-overlay-text">
+			</div>
+		</div>
+    </div>
+</div>
+</body>
+</html>

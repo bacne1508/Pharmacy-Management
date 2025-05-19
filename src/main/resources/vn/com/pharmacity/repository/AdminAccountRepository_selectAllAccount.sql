@@ -1,0 +1,1 @@
+SELECT * FROM users WHERE Is_Active = 1
