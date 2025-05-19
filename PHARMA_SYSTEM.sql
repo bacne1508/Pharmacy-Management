@@ -18,7 +18,7 @@ CREATE TABLE Users (
                  --, 5-PHARMACY (Cấp phát thuốc, quản lý kho thuốc, xem đơn thuốc)
     Role VARCHAR(20),
     Is_Active BIT DEFAULT 1,
-    CREATED_DATE datetime2 NOT NULL,
+    CREATED_DATE datetime2 NULL,
     UPDATED_DATE datetime2 NULL,
     DELETED_DATE datetime2 NULL,
     CREATED_BY varchar(255) COLLATE SQL_Latin1_General_CP1_CI_AS NULL,
@@ -50,7 +50,7 @@ CREATE TABLE Patients (
     Phone NVARCHAR(20),
     Email NVARCHAR(100),
     Address NVARCHAR(255),
-    CREATED_DATE datetime2 NOT NULL,
+    CREATED_DATE datetime2 NULL,
     UPDATED_DATE datetime2 NULL,
     DELETED_DATE datetime2 NULL,
     CREATED_BY varchar(255) COLLATE SQL_Latin1_General_CP1_CI_AS NULL,
@@ -65,7 +65,7 @@ CREATE TABLE MedicalRecords (
     ID decimal(20,0) DEFAULT NEXT VALUE FOR [SEQ_MedicalRecords] NOT NULL, --bảng thông tin y tế
     Patients_Id INT,
     Notes NVARCHAR(MAX),
-    CREATED_DATE datetime2 NOT NULL,
+    CREATED_DATE datetime2 NULL,
     UPDATED_DATE datetime2 NULL,
     DELETED_DATE datetime2 NULL,
     CREATED_BY varchar(255) COLLATE SQL_Latin1_General_CP1_CI_AS NULL,
@@ -84,7 +84,7 @@ CREATE TABLE Appointments (
     Scheduled_Date DATETIME,
     Status_code INT,
     Status_Name NVARCHAR(50), -- Scheduled, Cancelled, Completed
-    CREATED_DATE datetime2 NOT NULL,
+    CREATED_DATE datetime2 NULL,
     UPDATED_DATE datetime2 NULL,
     DELETED_DATE datetime2 NULL,
     CREATED_BY varchar(255) COLLATE SQL_Latin1_General_CP1_CI_AS NULL,
@@ -116,7 +116,7 @@ CREATE TABLE Prescriptions (
     Patients_Id INT,
     Doctor_Id INT , --ID DOCTOR
     Notes NVARCHAR(MAX),
-    CREATED_DATE datetime2 NOT NULL,
+    CREATED_DATE datetime2 NULL,
     UPDATED_DATE datetime2 NULL,
     DELETED_DATE datetime2 NULL,
     CREATED_BY varchar(255) COLLATE SQL_Latin1_General_CP1_CI_AS NULL,
@@ -158,7 +158,7 @@ CREATE TABLE Bills (
     Paid_Amount DECIMAL(18, 2),
     Status_code INT,
     Status_Name NVARCHAR(50), -- Paid, Pending, Refunded
-    CREATED_DATE datetime2 NOT NULL,
+    CREATED_DATE datetime2 NULL,
     UPDATED_DATE datetime2 NULL,
     DELETED_DATE datetime2 NULL,
     CREATED_BY varchar(255) COLLATE SQL_Latin1_General_CP1_CI_AS NULL,
