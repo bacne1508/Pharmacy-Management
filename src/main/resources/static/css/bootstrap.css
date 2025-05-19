@@ -4715,11 +4715,13 @@ fieldset[disabled] .navbar-inverse .btn-link:focus {
   color: #777777;
 }
 .pagination {
-  display: inline-block;
+  display: flex;
+  justify-content: flex-end;
   padding-left: 0;
   margin: 20px 0;
   border-radius: 4px;
 }
+
 .pagination > li {
   display: inline;
 }

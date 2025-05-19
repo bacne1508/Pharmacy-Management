@@ -26,35 +26,67 @@ $(document).ready(function() {
 			}
 		);
 	}*/
-	
+
 	// Initial load
 	fetchUsers(currentPage);
-	
-	function fetchUsers(page) {
-    	fetch(`/api/auth/admin/account/all?page=${page}&size=${size}`)
-        .then(res => res.json())
-        .then(data => {
-            if (data.success) {
-				renderRole(data.content.users);
-                renderPagination(data.content.totalPages, data.content.currentPage);
-            } else {
-                alert("Error: " + data.message);
-            }
-        });
-	}
 });
+
+function fetchUsers(page) {
+	fetch(`/api/auth/admin/account/all?page=${page}&size=${size}`)
+		.then(res => res.json())
+		.then(data => {
+			if (data.success) {
+				renderRole(data.content.users);
+				renderPagination(data.content.totalPages, data.content.currentPage);
+			} else {
+				alert("Error: " + data.message);
+			}
+		});
+}
 
 function renderPagination(totalPages, current) {
     const pagination = document.getElementById("pagination");
     pagination.innerHTML = "";
-    for (let i = 0; i < totalPages; i++) {
+
+    const maxVisiblePages = 5;
+    let start = Math.max(current - Math.floor(maxVisiblePages / 2), 0);
+    let end = start + maxVisiblePages;
+
+    if (end > totalPages) {
+        end = totalPages;
+        start = Math.max(end - maxVisiblePages, 0);
+    }
+
+    // First page
+    if (start > 0) {
+        pagination.innerHTML += `
+            <li class="page-item">
+                <a class="page-link" href="#" onclick="fetchUsers(0)">First</a>
+            </li>
+        `;
+        pagination.innerHTML += `<li class="page-item disabled"><span class="page-link">...</span></li>`;
+    }
+
+    // Page numbers
+    for (let i = start; i < end; i++) {
         pagination.innerHTML += `
             <li class="page-item ${i === current ? 'active' : ''}">
                 <a class="page-link" href="#" onclick="fetchUsers(${i})">${i + 1}</a>
             </li>
         `;
     }
+
+    // Last page
+    if (end < totalPages) {
+        pagination.innerHTML += `<li class="page-item disabled"><span class="page-link">...</span></li>`;
+        pagination.innerHTML += `
+            <li class="page-item">
+                <a class="page-link" href="#" onclick="fetchUsers(${totalPages - 1})">Last</a>
+            </li>
+        `;
+    }
 }
+
 
 
 /**
@@ -71,8 +103,8 @@ function renderRole(roles) {
 			'<td>' + roleAcc.username + '</td>' +
 			'<td>' + roleAcc.password + '</td>' +
 			'<td>' + roleAcc.role + '</td>' +
-			'<td>' + getEditBtn(roleAcc.password, roleAcc.id, roleAcc.username, roleAcc.auth) + '</td>' +
-			'<td>' + getDelBtn(roleAcc.password, roleAcc.id, roleAcc.auth) + '</td>' +
+			'<td class="text-center min-wd-100">' + getEditBtn(roleAcc.password, roleAcc.id, roleAcc.username, roleAcc.auth) + '</td>' +
+			'<td class="text-center min-wd-100">' + getDelBtn(roleAcc.password, roleAcc.id, roleAcc.auth) + '</td>' +
 			'</tr>';
 	}
 	$('#role-table').html(roleTableContent);
