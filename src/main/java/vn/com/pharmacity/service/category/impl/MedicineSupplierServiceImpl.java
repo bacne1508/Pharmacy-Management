@@ -1,26 +1,23 @@
 package vn.com.pharmacity.service.category.impl;
 
-import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
-import java.util.Optional;
+import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageImpl;
-import org.springframework.data.domain.Pageable;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
+import org.springframework.util.MultiValueMap;
 
 import lombok.RequiredArgsConstructor;
 import vn.com.pharmacity.annotation.CoreReadOnlyTx;
 import vn.com.pharmacity.authentication.UserProfileUtils;
 import vn.com.pharmacity.dto.SupplierDto;
 import vn.com.pharmacity.entity.Supplier;
-import vn.com.pharmacity.entity.User;
 import vn.com.pharmacity.repository.SupplierRepository;
+import vn.com.pharmacity.response.ObjectDataRes;
 import vn.com.pharmacity.service.category.MedicineSupplierService;
-import vn.com.pharmacity.webapp.ResponseVO;
+import vn.com.pharmacity.service.impl.BaseRestServiceImpl;
 
 /**
  * Define user identity as a constant
@@ -31,86 +28,72 @@ import vn.com.pharmacity.webapp.ResponseVO;
 @CoreReadOnlyTx
 @Service
 @RequiredArgsConstructor
-public class MedicineSupplierServiceImpl implements MedicineSupplierService {
+public class MedicineSupplierServiceImpl
+extends BaseRestServiceImpl<ObjectDataRes<SupplierDto>, SupplierDto, Long>
+implements MedicineSupplierService {
 
     @Autowired
     private SupplierRepository supplierRepository;
     
     private static final String SUPPLIER_EXIST = "Supplier already exists!";
-
-    private List<SupplierDto> movieList2MovieVOList(List<Supplier> movieList) {
-        List<SupplierDto> userList = new ArrayList<>();
-        for (Supplier user : movieList) {
-            userList.add(new SupplierDto(user));
-        }
-        return userList;
-    }
+    private static final String SUPPLIER_GROUP_CREATE_ERROR = "Supplier unit create error!";
     
     @Override
-    public Page<SupplierDto> searchAllSupplier(String fullName, String email, String phone, Pageable pageable) {
-        try {
-            List<Supplier> userList = supplierRepository.searchAllSupplier(fullName, email, phone);
-            List<SupplierDto> userDtoList = movieList2MovieVOList(userList);
+    protected List<SupplierDto> findAllByCondition(MultiValueMap<String, String> params) {
+        String fullName = params.getFirst("fullName");
+        String email = params.getFirst("email");
+        String phone = params.getFirst("phone");
 
-            int start = (int) pageable.getOffset();
-            int end = Math.min(start + pageable.getPageSize(), userDtoList.size());
-            List<SupplierDto> pagedList = userDtoList.subList(start, end);
+        List<Supplier> entities = supplierRepository.searchAllByCondition(fullName, email, phone);
+        return entities.stream().map(SupplierDto::new).collect(Collectors.toList());
+    }
 
-            return new PageImpl<>(pagedList, pageable, userDtoList.size());
-        } catch (Exception e) {
-            e.printStackTrace();
-            return Page.empty(); // Return an empty page in case of an error
+    @Override
+    protected SupplierDto findById(Long id) {
+        Supplier entity = supplierRepository.findOne(id);
+        return entity != null ? new SupplierDto(entity) : null;
+    }
+
+    @Override
+    protected SupplierDto saveEntity(SupplierDto dto) {
+        List<Supplier> existing = supplierRepository.getDataByCondition(dto.getEmail());
+
+        if (dto.getId() == 0) {
+            // Create
+            if (!existing.isEmpty()) {
+                throw new RuntimeException(SUPPLIER_GROUP_CREATE_ERROR);
+            }
+            supplierRepository.saveData(dto);
+        } else {
+            // Update
+            if (existing == null || existing.isEmpty()) {
+                throw new RuntimeException(SUPPLIER_EXIST);
+            }
+            if (existing.size() > 1) {
+                throw new RuntimeException(SUPPLIER_EXIST);
+            }
+            supplierRepository.updateData(dto);
+        }
+
+        return dto;
+    }
+
+    @Override
+    protected void deleteEntity(Long id) {
+        Supplier entity = supplierRepository.findOne(id);
+        if (entity != null) {
+            entity.setDeletedBy(UserProfileUtils.getUserNameLogin());
+            entity.setDeletedDate(new Date());
+            supplierRepository.updateDate(entity);
         }
     }
 
     @Override
-    public ResponseVO saveSupplier(SupplierDto form) {
-        try {
-            if (!supplierRepository.getDataByCondition(form.getEmail()).isEmpty()) {
-                return ResponseVO.buildFailure(SUPPLIER_EXIST);
-            }
-            form.setCreatedBy(SecurityContextHolder.getContext().getAuthentication().getName());
-            form.setCreatedDate(new Date());
-            supplierRepository.saveSupplier(form);
-      } catch (Exception e) {
-          return ResponseVO.buildFailure(e.getMessage());
-        }
-        return ResponseVO.buildSuccess();
-    }
-
-    @Override
-    public ResponseVO updateSupplier(SupplierDto form) {
-        try {
-            Optional<Supplier> user = supplierRepository.getDataByCondition(form.getEmail());
-            if (!user.isPresent()) {
-                return ResponseVO.buildFailure("Supplier does not exist!");
-            }
-         
-            String currentUsername = SecurityContextHolder.getContext().getAuthentication().getName();
-            form.setUpdatedBy(currentUsername); 
-            form.setUpdatedDate(new Date());
-            
-            supplierRepository.updateSupplier(form);
-            return ResponseVO.buildSuccess();
-        } catch (Exception e) {
-            return ResponseVO.buildFailure("Failed to modify information!");
-        }
-    }
-
-    @Override
-    public boolean deleteSupplier(Integer id) {
-        boolean isDeleted = true;
-        try {
-            SupplierDto en = supplierRepository.findOne(Long.valueOf(id));
-            if (en != null) {
-                en.setDeletedBy(UserProfileUtils.getUserNameLogin());
-                en.setDeletedDate(new Date());
-                supplierRepository.deleteSupplier(en);
-            }
-        } catch (Exception e) {
-            isDeleted = false;
-        }
-        return isDeleted;
+    protected ObjectDataRes<SupplierDto> createDataRes(Page<SupplierDto> page) {
+        ObjectDataRes<SupplierDto> response = new ObjectDataRes<>();
+        response.setTotalData((int) page.getTotalElements());
+        response.setDatas(page.getContent());
+        return response;
     }
 
 }

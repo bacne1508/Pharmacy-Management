@@ -55,12 +55,12 @@ $(document).ready(function() {
 	    })
 	    .then(res => res.json())
 	    .then(data => {
-	        if (data.success) {
+	        if (data.content.success) {
 	            alert("Modification successful!");
 	            fetchUsers(currentPage);
 	            $('#editUserModal').modal("hide");
 	        } else {
-	            alert("Error: " + data.message);
+	            alert("Error: " + data.content.message);
 	        }
 	    });
 
@@ -80,13 +80,13 @@ $(document).ready(function() {
 	    })
 	    .then(res => res.json())
 	    .then(data => {
-	        if (data.success) {
+	        if (data.content.success) {
 	            alert('Added new Account successfully!');
                     fetchUsers(currentPage);
                     $('#addRoleModal').modal("hide");
                     $('.modal-backdrop').remove();
 	        } else {
-	            alert("Error: " + data.message);
+	            alert("Error: " + data.content.message);
 	        }
 	    });
     });
