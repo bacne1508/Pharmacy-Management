@@ -27,7 +27,47 @@ public class ViewController {
     }
 
     @GetMapping("/admin/account/manage")
-    public String getAdminMovieManage() {
+    public String geAccountManage() {
         return "adminAccountManage";
+    }
+
+    @GetMapping("/user/manage")
+    public String getUserManage() {
+        return "userManage";
+    }
+
+    @GetMapping("/employ/manage")
+    public String getEmployManage() {
+        return "employManage";
+    }
+
+    @GetMapping("/admin/medicine/manage")
+    public String getMedicineManage() {
+        return "category/medicineManage";
+    }
+
+    @GetMapping("/admin/medicine/group/manage")
+    public String getMedicineGroupManage() {
+        return "category/medicineGroupManage";
+    }
+
+    @GetMapping("/admin/medicine/type/manage")
+    public String getMedicineTypeManage() {
+        return "category/medicineTypeManage";
+    }
+
+    @GetMapping("/admin/medicine/unit/manage")
+    public String getMedicineUnitManage() {
+        return "category/medicineUnitManage";
+    }
+
+    @GetMapping("/admin/medicine/supplier/manage")
+    public String getMedicineSupplierManage() {
+        return "category/medicineSupplierManage";
+    }
+
+    @GetMapping("/admin/medicine/branch/manage")
+    public String getMedicineBranchManage() {
+        return "category/medicineBranchManage";
     }
 }

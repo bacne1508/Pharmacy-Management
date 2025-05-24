@@ -33,43 +33,74 @@ class AdminPanel extends Component {
 		                    </a>
 		                    <ul class="submenu nav nav-pills nav-stacked" style="display: none;"> 
 		                        <li role="presentation" data-menu-id="cinema-manage-list"><a href="/admin/account/manage"><i class="fa fa-list-ul sub-icon"></i> Account Managament</a></li>
-		                        <li role="presentation" data-menu-id="role-manage"><a href="/admin/role/manage"><i class="fa fa-id-badge sub-icon"></i> User Management</a></li>
+		                        <li role="presentation" data-menu-id="employ-manage"><a href="/employ/manage"><i class="fa fa-users sub-icon"></i> Employee</a></li>
+		                        <li role="presentation" data-menu-id="customer-manage"><a href="/user/manage"><i class="fa fa-user-circle sub-icon"></i> Customer</a></li>
 		                    </ul>
 		                </li>
 		
 		                <li role="presentation" class="has-submenu" data-menu-id="pharmacity-management">
 		                    <a href="#" data-toggle="submenu">
-		                        <i class="fa fa-bars"></i> Category Management
+		                        <i class="fa fa-bars"></i> Category Medicine Management
 		                        <span class="submenu-arrow"><i class="fa fa-chevron-down"></i></span>
 		                    </a>
 		                    <ul class="submenu nav nav-pills nav-stacked" style="display: none;">
-		                        <li role="presentation" data-menu-id="user-list"><a href="/admin/customer/list"><i class="fa fa-users sub-icon"></i> Employee</a></li>
-		                        <li role="presentation" data-menu-id="role-manage"><a href="/admin/medicine/manage"><i class="fa fa-medkit sub-icon"></i> Medicine</a></li>
-		                        <li role="presentation" data-menu-id="role-manage"><a href="/admin/storage/manage"><i class="fa fa-recycle sub-icon"></i> Storage</a></li>
+		                        <li role="presentation" data-menu-id="medicine-manage"><a href="/admin/medicine/manage"><i class="fa fa-medkit sub-icon"></i> Medicine Management</a></li>
+		                        <li role="presentation" data-menu-id="medicine-group-manage"><a href="/admin/medicine/group/manage"><i class="fa fa-user-md sub-icon"></i> Medicine Group Management</a></li>
+		                        <li role="presentation" data-menu-id="medicine-type-manage"><a href="/admin/medicine/type/manage"><i class="fa fa-plus-square sub-icon"></i> Medicine Type Management</a></li>
+		                        <li role="presentation" data-menu-id="medicine-unit-manage"><a href="/admin/medicine/unit/manage"><i class="fa fa-ticket sub-icon"></i> Medicine Unit Management</a></li>
+		                        <li role="presentation" data-menu-id="storage-manage"><a href="/admin/medicine/storage/manage"><i class="fa fa-recycle sub-icon"></i> Storage Management</a></li>
+		                        <li role="presentation" data-menu-id="branch-manage"><a href="/admin/medicine/branch/manage"><i class="fa fa-building sub-icon"></i> Branch Management</a></li>
+		                        <li role="presentation" data-menu-id="supplier-manage"><a href="/admin/medicine/supplier/manage"><i class="fa fa-id-badge sub-icon"></i> Supplier</a></li>
 		                    </ul>
 		                </li>
 		                
-						<li role="presentation" class="has-submenu" data-menu-id="partner-management">
+						<li role="presentation" class="has-submenu" data-menu-id="purchase-management">
 		                    <a href="#" data-toggle="submenu">
-		                        <i class="fa fa-handshake-o"></i> Business Partner
+		                        <i class="fa fa-shopping-bag"></i> Purchase management
 		                        <span class="submenu-arrow"><i class="fa fa-chevron-down"></i></span>
 		                    </a>
 		                    <ul class="submenu nav nav-pills nav-stacked" style="display: none;">
-		                        <li role="presentation" data-menu-id="user-list"><a href="/admin/user/list"><i class="fa fa-users sub-icon"></i> Customer</a></li>
-		                        <li role="presentation" data-menu-id="role-manage"><a href="/admin/supplier/manage"><i class="fa fa-id-badge sub-icon"></i> Supplier</a></li>
+		                        <li role="presentation" data-menu-id="order-manage"><a href="/admin/order/manage"><i class="fa fa-id-badge sub-icon"></i> Order Management</a></li>
+		                        <li role="presentation" data-menu-id="bill-manage"><a href="/admin/bill/manage"><i class="fa fa-money sub-icon"></i> Bill</a></li>
+		                        <li role="presentation" data-menu-id="purchase-history-manage"><a href="/admin/purchase/history/manage"><i class="fa fa-cogs sub-icon"></i> Purchase History</a></li>
 		                    </ul>
 		                </li>
 		                
-						<li role="presentation" class="has-submenu" data-menu-id="transaction-management">
+						<li role="presentation" class="has-submenu" data-menu-id="warehouse-management">
 		                    <a href="#" data-toggle="submenu">
-		                        <i class="fa fa-credit-card"></i> Transaction
+		                        <i class="fa fa-credit-card"></i> Warehouse and inventory
 		                        <span class="submenu-arrow"><i class="fa fa-chevron-down"></i></span>
 		                    </a>
 		                    <ul class="submenu nav nav-pills nav-stacked" style="display: none;">
-		                        <li role="presentation" data-menu-id="user-list"><a href="/admin/prescription/list"><i class="fa fa-pencil-square-o sub-icon"></i> Prescription</a></li>
-		                        <li role="presentation" data-menu-id="role-manage"><a href="/admin/bill/manage"><i class="fa fa-money sub-icon"></i> Bill</a></li>
+		                        <li role="presentation" data-menu-id="prescription-manage"><a href="/admin/inventory/manage"><i class="fa fa-hourglass sub-icon"></i> Inventory Management</a></li>
+		                        
 		                    </ul>
 		                </li>
+		                
+						<li role="presentation" class="has-submenu" data-menu-id="report-management">
+		                    <a href="#" data-toggle="submenu">
+		                        <i class="fa fa-file"></i> Reports and Statistics
+		                        <span class="submenu-arrow"><i class="fa fa-chevron-down"></i></span>
+		                    </a>
+		                    <ul class="submenu nav nav-pills nav-stacked" style="display: none;">
+		                        <li role="presentation" data-menu-id="prescription-manage"><a href="/admin/inventory/report/list"><i class="fa fa-file-pdf-o sub-icon"></i> Inventory report by expiry</a></li>
+		                        <li role="presentation" data-menu-id="prescription-manage"><a href="/admin/import/report/list"><i class="fa fa-file-pdf-o sub-icon"></i> Report of import - export - inventory by day, month, year</a></li>
+		                        <li role="presentation" data-menu-id="prescription-manage"><a href="/admin/revenue/report/list"><i class="fa fa-file-pdf-o sub-icon"></i> Report revenue and profit by item</a></li>
+		                        
+		                    </ul>
+		                </li>
+		                
+						<li role="presentation" class="has-submenu" data-menu-id="payment-management">
+		                    <a href="#" data-toggle="submenu">
+		                        <i class="fa fa-credit-card"></i> Payment
+		                        <span class="submenu-arrow"><i class="fa fa-chevron-down"></i></span>
+		                    </a>
+		                    <ul class="submenu nav nav-pills nav-stacked" style="display: none;">
+		                        <li role="presentation" data-menu-id="prescription-manage"><a href="/admin/revenue/manage"><i class="fa fa-hourglass sub-icon"></i> Revenue by item</a></li>
+		                        
+		                    </ul>
+		                </li>
+		                
 		                <li role="presentation" id="logout-menu-item"><a href="#"><i class="fa fa-sign-out"></i> Log out</a></li>
 		            </ul>
 		        </div>

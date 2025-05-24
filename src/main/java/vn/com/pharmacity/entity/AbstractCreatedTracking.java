@@ -9,20 +9,20 @@ import lombok.Setter;
 @Setter
 public class AbstractCreatedTracking {
 	@Column(name = "CREATED_DATE")
-    private Date createdDate;
+    protected Date createdDate;
 
     @Column(name = "CREATED_BY")
-    private String createdBy;
+    protected String createdBy;
     
     @Column(name = "UPDATED_DATE")
-    private Date updatedDate;
+    protected Date updatedDate;
 
     @Column(name = "UPDATED_BY")
-    private String updatedBy;
+    protected String updatedBy;
 
     @Column(name = "DELETED_DATE")
-    private Date DELETED_BYDate;
+    protected Date deletedDate;
 
     @Column(name = "DELETED_BY")
-    private String deletedBy;
+    protected String deletedBy;
 }

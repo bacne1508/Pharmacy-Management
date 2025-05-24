@@ -608,7 +608,7 @@ textarea.form-control{
   text-align: left;
 }
 table.table-bordered th {
-    border-color: #1caf9a!important;
+    /*border-color: #1caf9a!important;*/
     padding: 5px 7px;
     vertical-align: middle;
     border-bottom-width: 1px!important;

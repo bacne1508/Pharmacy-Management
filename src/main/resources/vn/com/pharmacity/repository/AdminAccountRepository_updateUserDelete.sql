@@ -1,0 +1,1 @@
+update users set  is_active=0,deleted_by=/*en.deletedBy*/''  where id=/*en.id*/;

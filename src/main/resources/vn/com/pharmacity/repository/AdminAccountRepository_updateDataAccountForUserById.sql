@@ -1,0 +1,1 @@
+UPDATE users SET Username=/*username*/,auth=/*auth*/, ROLE=/*role*/ WHERE id=/*id*/

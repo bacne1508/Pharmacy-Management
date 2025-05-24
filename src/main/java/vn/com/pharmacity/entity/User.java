@@ -60,4 +60,7 @@ public class User extends AbstractCreatedTracking{
     @Column(name="Is_Active")
     private Boolean isActive; // Trạng thái hoạt động - bit
     
+    @Column(name="address")
+    private String address;
+    
 }

@@ -32,4 +32,7 @@ public class AppApiExceptionCodeConstant {
 	public static final String E402610_APPAPI_NOT_FOUND_SEAT = "402610_APPAPI_NOT_FOUND_SEAT";
 	/** Sort invalid file extension error not found */
 	public static final String E402611_APPAPI_FILE_EXTENSION_NOT_ALLOWED = "402611_APPAPI_FILE_EXTENSION_NOT_ALLOWED";
+
+    public static final String E402612_APPAPI_NOT_FOUND = "402611_APPAPI_NOT_FOUND";
+    public static final String E402613_APPAPI_ERROR = "402611_APPAPI_ERROR";
 }

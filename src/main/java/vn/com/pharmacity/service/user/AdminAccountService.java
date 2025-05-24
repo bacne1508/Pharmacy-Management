@@ -4,6 +4,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
 import vn.com.pharmacity.dto.UserDto;
+import vn.com.pharmacity.webapp.ResponseVO;
 
 /**
  * @author Bac
@@ -12,10 +13,23 @@ import vn.com.pharmacity.dto.UserDto;
 public interface AdminAccountService {
     /**
      * Get all accounts
+     * @param username 
      * 
      * @param pageable
      * @return
      */
-    Page<UserDto> searchAllAccount(Pageable pageable);
+    Page<UserDto> searchAllAccount(String userName, Pageable pageable);
+
+    boolean deleteRole(Integer id);
+
+    ResponseVO updateDataAccountForUser(UserDto editForm);
+
+    ResponseVO saveAccountForUser(UserDto form);
+
+    ResponseVO updateUserInformation(UserDto editForm);
+
+    Page<UserDto> searchAllUser(String userName, String fullName, String email, String phone, Pageable pageable);
+
+    Page<UserDto> searchAllEmploy(String userName, String fullName, String email, String phone, Pageable pageable);
 
 }

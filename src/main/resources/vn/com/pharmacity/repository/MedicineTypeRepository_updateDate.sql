@@ -1,0 +1,1 @@
+update MedicineTypes set  del_flag= 0  where id=/*en.id*/;

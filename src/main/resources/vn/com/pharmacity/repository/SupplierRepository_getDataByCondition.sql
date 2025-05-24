@@ -1,0 +1,1 @@
+select * from Suppliers where email= /*email*/''

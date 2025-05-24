@@ -236,3 +236,14 @@ function isNumber(evt, element) {
 function isFormatVnd(number){
 	return Number(number).toLocaleString('vi-VN');
 }
+
+function formatDateStr(dateStr) {
+	if (!dateStr) return '';
+	const date = new Date(dateStr);
+	if (isNaN(date)) return '';
+	return date.toLocaleDateString('vi-VN'); // "dd/MM/yyyy" format theo locale Việt Nam
+}
+
+function safeValue(value) {
+	return value == null ? '' : value;
+}
