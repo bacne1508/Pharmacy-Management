@@ -1,0 +1,49 @@
+INSERT Branches(
+	Branches_Code,
+	Branches_Name,
+	Address,
+	Province_Code,
+	Province,
+	District_Code,
+	District,
+	Ward_Code,
+	Ward,
+	Phone,
+	Manager,
+	Email,
+	Is_Active,
+	Created_Date,
+	Created_By
+)
+
+VALUES (
+/*form.branchesCode*/
+,
+/*form.branchesName*/
+,
+/*form.address*/
+,
+/*form.provinceCode*/
+,
+/*form.province*/
+,
+/*form.districtCode*/
+,
+/*form.district*/
+,
+/*form.wardCode*/
+,
+/*form.ward*/
+,
+/*form.phone*/
+,
+/*form.manager*/
+,
+/*form.email*/
+,
+1
+,
+/*form.createdDate*/
+,
+/*form.createdBy*/
+)

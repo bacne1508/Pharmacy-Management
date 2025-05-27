@@ -1,0 +1,1 @@
+SELECT * FROM Ward WHERE ma_qh = /*districtCode*/

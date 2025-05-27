@@ -60,6 +60,7 @@ public class AppCoreConstant {
     public static final String TABLE_MEDICINE_TYPE = "MedicineTypes";
     public static final String TABLE_MEDICINE_UNIT = "MedicineUnits";
     public static final String TABLE_MEDICINE_SUPPLIER = "Suppliers";
+    public static final String TABLE_MEDICINE_BRANCH = "Branches";
 	public static final String TABLE_AUDIT_LOGS = "AuditLogs";
 	//public static final String TABLE_TICKET_DETAIL_SEAT = "ticket_detail_seat";
 //	public static final String TABLE_ROW_OF_SEAT = "row_of_seat";

@@ -6,6 +6,7 @@ import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import org.springframework.util.MultiValueMap;
 
@@ -82,7 +83,7 @@ implements MedicineSupplierService {
     protected void deleteEntity(Long id) {
         Supplier entity = supplierRepository.findOne(id);
         if (entity != null) {
-            entity.setDeletedBy(UserProfileUtils.getUserNameLogin());
+            entity.setDeletedBy(SecurityContextHolder.getContext().getAuthentication().getName());
             entity.setDeletedDate(new Date());
             supplierRepository.updateDate(entity);
         }

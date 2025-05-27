@@ -1,0 +1,1 @@
+select * from Branches where Branches_Code= /*branchCode*/''

@@ -1,0 +1,1 @@
+SELECT *FROM District WHERE ma_tp = /*provinceCode*/
