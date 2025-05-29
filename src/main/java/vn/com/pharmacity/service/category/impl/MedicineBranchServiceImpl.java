@@ -12,11 +12,8 @@ import org.springframework.util.MultiValueMap;
 
 import lombok.RequiredArgsConstructor;
 import vn.com.pharmacity.annotation.CoreReadOnlyTx;
-import vn.com.pharmacity.authentication.UserProfileUtils;
 import vn.com.pharmacity.dto.MedicineBranchDto;
-import vn.com.pharmacity.dto.SupplierDto;
 import vn.com.pharmacity.entity.MedicineBranch;
-import vn.com.pharmacity.entity.Supplier;
 import vn.com.pharmacity.repository.MedicineBranchRepository;
 import vn.com.pharmacity.response.ObjectDataRes;
 import vn.com.pharmacity.service.category.MedicineBranchService;
@@ -70,7 +67,7 @@ implements MedicineBranchService {
             if (!existing.isEmpty()) {
                 throw new RuntimeException(BRANCH_CREATE_ERROR);
             }
-            dto.setCreatedBy(UserProfileUtils.getUserNameLogin());
+            dto.setCreatedBy(SecurityContextHolder.getContext().getAuthentication().getName());
             dto.setCreatedDate(new Date());
             medicineBranchRepository.saveData(dto);
         } else {

@@ -1,0 +1,1 @@
+select * from Medicine where code= /*code*/''

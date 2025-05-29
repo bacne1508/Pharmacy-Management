@@ -247,3 +247,90 @@ function formatDateStr(dateStr) {
 function safeValue(value) {
 	return value == null ? '' : value;
 }
+
+function reverseStrDate(input) {
+	return input.split(" ").reverse().join(" ");
+}
+
+function isBlank(str) {
+	return !(str && (str + '').trim().length > 0);
+}
+
+function parseDateCustom(dateString) {
+	dateString = dateString.replace(/\/|-/g, ' ');
+	// phải đảo chuỗi lại để truyền vô Date.parse dạng yyyy mm dd
+	var dateLong = Date.parse(reverseStrDate(dateString));
+	var dateNew = new Date(dateLong);
+	return dateNew;
+}
+
+function changeDatepickerById(idEffectedDate, idExpiredDate, idFrom, idTo, startDateParam) {
+	var roundDay = 10000;
+	var startDate = new Date('01/01/2010');
+	$(idFrom).prop('autocomplete', 'off');
+	$(idTo).prop('autocomplete', 'off');
+	$(idTo)
+	if (startDateParam != null && startDateParam != 'undefined' && startDateParam != '') {
+		startDate = startDateParam;
+		if (idEffectedDate == null || idEffectedDate == '' || idEffectedDate == 'undefined') {
+			idEffectedDate = startDateParam;
+		}
+	}
+
+	if (idEffectedDate != null && idEffectedDate != "undefined" && idEffectedDate != "") {
+		startDate = idEffectedDate;
+	}
+
+	var FromEndDate = new Date();
+	FromEndDate.setDate(FromEndDate.getDate() + roundDay);
+
+	if (idExpiredDate != null && idExpiredDate != "undefined" && idExpiredDate != "") {
+		FromEndDate = idExpiredDate;
+	}
+	//	
+	var ToEndDate = new Date();
+	ToEndDate.setDate(ToEndDate.getDate() + roundDay);
+	
+	 //dùng on change vì changeDate không bắt được sự kiện change giá trị trực tiếp trong text box.
+	$(idFrom)
+		.on('change', function () {
+			var strDate = $(idFrom).val();
+			if (!isBlank(strDate)) {
+				var date = parseDateCustom(strDate);
+				startDate = new Date(date);
+				startDate.setDate(startDate.getDate(date));
+				$(idTo).datepicker('setStartDate', startDate);
+			} else {
+				$(idTo).datepicker('setStartDate', null);
+			}
+
+		}).keyup(function () {
+			if (isBlank($(idFrom).val())) {
+				$(idTo).datepicker('setStartDate', null);
+			}
+		})
+	$(idTo).on('change', function () {
+		var strDate = $(idTo).val();
+		if (!isBlank(strDate)){
+			var date = parseDateCustom(strDate);
+			endDate = new Date(date);
+			endDate.setDate(endDate.getDate(date));
+			$(idFrom).datepicker('setEndDate', endDate);
+		} else {
+			$(idFrom).datepicker('setEndDate', null);
+		}
+	}).keyup(function () {
+		if (isBlank($(idTo).val())) {
+			$(idFrom).datepicker('setEndDate', null);
+		}
+	});
+	
+	if ($(idFrom).val()) {
+		$(idFrom).datepicker('setDate', $(idFrom).val());
+
+	}
+
+	if ($(idTo).val()) {
+		$(idTo).datepicker('setDate', $(idTo).val());
+	}
+}

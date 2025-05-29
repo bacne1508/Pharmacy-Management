@@ -1,0 +1,59 @@
+INSERT INTO Medicine (
+    code, 
+    name, 
+    medicine_images, 
+    description, 
+    Medicine_Groups_code, 
+    Medicine_Units_code, 
+    Medicine_Types_code, 
+    ingredient, 
+    strength, 
+    manufacturer, 
+    origin_country, 
+    purchase_price, 
+    sale_price, 
+    quantity, 
+    Date_of_manufacture, 
+    Product_expiry_date, 
+    is_active,
+    created_Date,
+    created_By
+) VALUES (
+/*form.code*/
+,
+/*form.name*/
+,
+/*form.medicineImages*/
+,
+/*form.description*/
+,
+/*form.medicineGroupsCode*/
+,
+/*form.medicineUnitsCode*/
+,
+/*form.medicineTypesCode*/
+,
+/*form.ingredient*/
+,
+/*form.strength*/
+,
+/*form.manufacturer*/
+,
+/*form.originCountry*/
+,
+/*form.purchasePrice*/
+,
+/*form.salePrice*/
+,
+/*form.quantity*/
+,
+/*form.dateOfManufacture*/
+,
+/*form.productExpiryDate*/
+,
+1
+,
+/*form.createdDate*/
+,
+/*form.createdBy*/
+);

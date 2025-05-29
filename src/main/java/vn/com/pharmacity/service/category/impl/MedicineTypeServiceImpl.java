@@ -1,29 +1,23 @@
 package vn.com.pharmacity.service.category.impl;
 
-import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
-import java.util.Objects;
 import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageImpl;
-import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.util.MultiValueMap;
 
 import lombok.RequiredArgsConstructor;
 import vn.com.pharmacity.annotation.CoreReadOnlyTx;
-import vn.com.pharmacity.dto.MedicineGroupDto;
+import vn.com.pharmacity.dto.CommonDto;
 import vn.com.pharmacity.dto.MedicineTypeDto;
-import vn.com.pharmacity.entity.MedicineGroup;
 import vn.com.pharmacity.entity.MedicineType;
 import vn.com.pharmacity.repository.MedicineTypeRepository;
 import vn.com.pharmacity.response.ObjectDataRes;
-import vn.com.pharmacity.service.category.MedicineGroupService;
 import vn.com.pharmacity.service.category.MedicineTypeService;
 import vn.com.pharmacity.service.impl.BaseRestServiceImpl;
-import vn.com.pharmacity.webapp.ResponseVO;
 
 /**
  * Define user identity as a constant
@@ -98,5 +92,10 @@ implements MedicineTypeService {
         response.setTotalData((int) page.getTotalElements());
         response.setDatas(page.getContent());
         return response;
+    }
+
+    @Override
+    public Collection<CommonDto> findAll() {
+        return medicineTypeRepository.findAllTypes();
     }
 }

@@ -12,7 +12,6 @@ import org.springframework.util.MultiValueMap;
 
 import lombok.RequiredArgsConstructor;
 import vn.com.pharmacity.annotation.CoreReadOnlyTx;
-import vn.com.pharmacity.authentication.UserProfileUtils;
 import vn.com.pharmacity.dto.SupplierDto;
 import vn.com.pharmacity.entity.Supplier;
 import vn.com.pharmacity.repository.SupplierRepository;

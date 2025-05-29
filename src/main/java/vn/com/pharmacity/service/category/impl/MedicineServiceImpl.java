@@ -1,23 +1,23 @@
 package vn.com.pharmacity.service.category.impl;
 
-import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageImpl;
-import org.springframework.data.domain.Pageable;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
+import org.springframework.util.MultiValueMap;
 
 import lombok.RequiredArgsConstructor;
 import vn.com.pharmacity.annotation.CoreReadOnlyTx;
 import vn.com.pharmacity.dto.MedicineDto;
-import vn.com.pharmacity.dto.UserDto;
 import vn.com.pharmacity.entity.Medicine;
-import vn.com.pharmacity.entity.User;
 import vn.com.pharmacity.repository.MedicineRepository;
+import vn.com.pharmacity.response.ObjectDataRes;
 import vn.com.pharmacity.service.category.MedicineService;
-import vn.com.pharmacity.webapp.ResponseVO;
+import vn.com.pharmacity.service.impl.BaseRestServiceImpl;
 
 /**
  * Define user identity as a constant
@@ -28,48 +28,83 @@ import vn.com.pharmacity.webapp.ResponseVO;
 @CoreReadOnlyTx
 @Service
 @RequiredArgsConstructor
-public class MedicineServiceImpl implements MedicineService {
+public class MedicineServiceImpl
+extends BaseRestServiceImpl<ObjectDataRes<MedicineDto>, MedicineDto, Long>
+implements MedicineService {
 
     @Autowired
     private MedicineRepository medicineRepository;
     
     private static final String MEDICINE_EXIST = "Medicine already exists!";
-
-    private List<MedicineDto> list2VOList(List<Medicine> entityList) {
-        List<MedicineDto> dtoList = new ArrayList<>();
-        for (Medicine entity : entityList) {
-            dtoList.add(new MedicineDto(entity));
-        }
-        return dtoList;
-    }
     
+    private static final String BRANCH_CREATE_ERROR = "Medicine create error!";
+
     @Override
-    public Page<MedicineDto> searchAllByCondition(String code, String name, Pageable pageable) {
-        try {
-            List<Medicine> entity = medicineRepository.searchAllByCondition(code, name);
-            List<MedicineDto> dtoList = list2VOList(entity);
+    protected List<MedicineDto> findAllByCondition(MultiValueMap<String, String> params) {
+        String code = params.getFirst("code");
+        String name = params.getFirst("name");
 
-            int start = (int) pageable.getOffset();
-            int end = Math.min(start + pageable.getPageSize(), dtoList.size());
-            List<MedicineDto> pagedList = dtoList.subList(start, end);
+        List<Medicine> entities = medicineRepository.searchAllByCondition(code, name);
+        return entities.stream().map(MedicineDto::new).collect(Collectors.toList());
+    }
 
-            return new PageImpl<>(pagedList, pageable, dtoList.size());
-        } catch (Exception e) {
-            e.printStackTrace();
-            return Page.empty(); // Return an empty page in case of an error
+    @Override
+    protected MedicineDto findById(Long id) {
+        Medicine entity = medicineRepository.findOne(id);
+        return entity != null ? new MedicineDto(entity) : null;
+    }
+
+    @Override
+    protected MedicineDto saveEntity(MedicineDto dto) {
+        List<Medicine> existing = medicineRepository.getDataByCondition(dto.getCode());
+
+        if (dto.getId() == 0) {
+            // Create
+            if (!existing.isEmpty()) {
+                throw new RuntimeException(BRANCH_CREATE_ERROR);
+            }
+            dto.setCreatedBy(SecurityContextHolder.getContext().getAuthentication().getName());
+            dto.setCreatedDate(new Date());
+            dto.setMedicineImages(dto.getBase64Images().get(0)); // Handle image conversion if needed
+            medicineRepository.saveData(dto);
+        } else {
+            // Update
+            if (existing == null || existing.isEmpty()) {
+                throw new RuntimeException(MEDICINE_EXIST);
+            }
+            if (existing.size() > 1) {
+                throw new RuntimeException(MEDICINE_EXIST);
+            }
+            dto.setUpdatedBy(SecurityContextHolder.getContext().getAuthentication().getName());
+            dto.setUpdatedDate(new Date());
+            if (dto.getBase64Images() == null || dto.getBase64Images().isEmpty()) {
+                dto.setMedicineImages(existing.get(0).getMedicineImages()); // Ensure at least one image is present    
+            }else {
+                dto.setMedicineImages(dto.getBase64Images().get(0));
+            }
+            
+            medicineRepository.updateData(dto);
+        }
+
+        return dto;
+    }
+
+    @Override
+    protected void deleteEntity(Long id) {
+        Medicine entity = medicineRepository.findOne(id);
+        if (entity != null) {
+            entity.setDeletedBy(SecurityContextHolder.getContext().getAuthentication().getName());
+            entity.setDeletedDate(new Date());
+            medicineRepository.updateDate(entity);
         }
     }
 
     @Override
-    public boolean deleteById(Integer id) {
-        // TODO Auto-generated method stub
-        return false;
-    }
-
-    @Override
-    public ResponseVO updateDataByCondition(MedicineDto editForm) {
-        // TODO Auto-generated method stub
-        return null;
+    protected ObjectDataRes<MedicineDto> createDataRes(Page<MedicineDto> page) {
+        ObjectDataRes<MedicineDto> response = new ObjectDataRes<>();
+        response.setTotalData((int) page.getTotalElements());
+        response.setDatas(page.getContent());
+        return response;
     }
 
     // Add your service methods here

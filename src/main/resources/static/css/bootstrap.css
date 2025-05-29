@@ -3823,10 +3823,63 @@ tbody.collapse.in {
   clip: rect(0, 0, 0, 0);
   pointer-events: none;
 }
+
+.datepicker {
+    padding: 0 !important;
+}
+.input-group.datepicker {
+  flex-wrap: nowrap !important;       /* Không cho wrap xuống hàng */
+  align-items: center !important;     /* Căn giữa theo chiều dọc */
+  height: auto;                       /* Không cố định chiều cao */
+}
+.input-group.datepicker .form-control {
+  height: 38px;                       /* Chiều cao tiêu chuẩn */
+  padding: 6px 12px;
+}
+
+.input-group-append {
+  display: flex !important;
+  /*align-items: center !important;*/
+  height: 38px;                       /* Cùng chiều cao với input */
+  margin-left: -1px;
+}
+
+.input-group-append, .input-group-prepend {
+    display: -ms-flexbox;
+    display: flex
+;
+}
+
+.input-group-text {
+    display: -ms-flexbox;
+    display: flex;
+    -ms-flex-align: center;
+    align-items: center;
+    padding: .375rem .75rem;
+    margin-bottom: 0;
+    font-size: 1rem;
+    font-weight: 400;
+    line-height: 1.5;
+    color: #495057;
+    text-align: center;
+    white-space: nowrap;
+    background-color: #e9ecef;
+    border: 1px solid #ced4da;
+    border-radius: .25rem;
+}
+.input-group .input-group-text {
+    padding: 2px 8px 4px 8px;
+    font-size: 14px;
+}
 .input-group {
-  position: relative;
-  display: table;
-  border-collapse: separate;
+    position: relative;
+    display: -ms-flexbox;
+    display: flex;
+    -ms-flex-wrap: wrap;
+    flex-wrap: wrap;
+    -ms-flex-align: stretch;
+    align-items: stretch;
+    width: 100%;
 }
 .input-group[class*="col-"] {
   float: none;
@@ -3834,11 +3887,7 @@ tbody.collapse.in {
   padding-right: 0;
 }
 .input-group .form-control {
-  position: relative;
-  z-index: 2;
-  float: left;
-  width: 100%;
-  margin-bottom: 0;
+  height: 38px;
 }
 .input-group .form-control:focus {
   z-index: 3;
@@ -5987,7 +6036,8 @@ button.close {
 }
 @media (min-width: 768px) {
   .modal-dialog {
-    width: 600px;
+     width: 90%; /* hoặc 900px */
+    max-width: 1050px;
     margin: 30px auto;
   }
   .modal-content {
@@ -6804,4 +6854,9 @@ button.close {
 .nav-stacked .has-submenu .submenu li .sub-icon {
     margin-right: 8px;
     font-size: 0.9em; /* Kích thước icon con */
+}
+
+.error {
+    color: #ff0000;
+    word-break: break-word;
 }

@@ -12,6 +12,7 @@
 	<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 	<!-- Bootstrap JS -->
 	<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.6.0/js/bootstrap.bundle.min.js"></script>
+	<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 </head>
 
 <body>
@@ -46,7 +47,7 @@
 							</div>
 						</div>
 					</div>
-				</div>				
+				</div>
 				<div class="bg-content clearfix" id="role-card">
 					<div class="table-wrapper" style="overflow-x: auto;">
 						<table class="table table-bordered table-striped">
@@ -55,25 +56,24 @@
 									<th>Medicine Image</th>
 									<th>Code</th>
 									<th>Name</th>
-									<th>Description</th>									
-									<th>Address</th>
-									<th>Medicine Groups Code</th>										
-									<th>Medicine Units Code</th>										
-									<th>Medicine Type Code</th>										
-									<th>Ingredient</th>										
-									<th>Strength</th>										
-									<th>Manufacturer</th>										
-									<th>Origin Contry</th>									
-									<th>Purchase Price</th>									
-									<th>Sale Price</th>									
-									<th>Quantity</th>									
-									<th>Date Of Manufacturer</th>									
-									<th>Product Expiry Date</th>									
-									<th>Is Active</th>									
-									<th>Created By</th>									
-									<th>Created Date</th>									
-									<th>Updated By</th>									
-									<th>Updated Date</th>										
+									<th>Description</th>
+									<th>Medicine Groups Code</th>
+									<th>Medicine Units Code</th>
+									<th>Medicine Type Code</th>
+									<th>Ingredient</th>
+									<th>Strength</th>
+									<th>Manufacturer</th>
+									<th>Origin Contry</th>
+									<th>Purchase Price</th>
+									<th>Sale Price</th>
+									<th>Quantity</th>
+									<th>Date Of Manufacturer</th>
+									<th>Product Expiry Date</th>
+									<th>Is Active</th>
+									<th>Created By</th>
+									<th>Created Date</th>
+									<th>Updated By</th>
+									<th>Updated Date</th>
 									<th>Edit</th>
 									<th>Delete</th>
 								</tr>
@@ -85,71 +85,328 @@
 				<div id="userTableContainer"></div>
 				<ul class="pagination" id="pagination"></ul>
 			</div>
-		</div>		
+		</div>
 		<!--Delete the character prompt box-->
-		<div class="modal fade" id="roleDelModal" tabindex="-1" role="dialog" aria-labelledby="roleDelModalLabel" aria-hidden="true">
-		    <div class="modal-dialog">
-		        <div class="modal-content">
-		            <div class="modal-header">
-		                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">x</button>
-		                <h4 class="modal-title" id="roleDelModalLabel">Delete the role</h4>
-		            </div>
-		            <div class="modal-body">Do you want to delete this role cruelly??</div>
-		            <div class="modal-footer">
-		                <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
-		                <button type="button" class="btn btn-danger" id="commitRoleDel">Confirm delete</button>
-		            </div>
-		        </div>
-		    </div>
+		<div class="modal fade" id="roleDelModal" tabindex="-1" role="dialog" aria-labelledby="roleDelModalLabel"
+			aria-hidden="true">
+			<div class="modal-dialog">
+				<div class="modal-content">
+					<div class="modal-header">
+						<button type="button" class="close" data-dismiss="modal" aria-hidden="true">x</button>
+						<h4 class="modal-title" id="roleDelModalLabel">Delete the medicine</h4>
+					</div>
+					<div class="modal-body">Do you want to delete this medicine cruelly??</div>
+					<div class="modal-footer">
+						<button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+						<button type="button" class="btn btn-danger" id="commitRoleDel">Confirm delete</button>
+					</div>
+				</div>
+			</div>
 		</div>
 		<!--Modify the character information form-->
 		<div class="modal fade" id="editUserModal" tabindex="-1" role="dialog" aria-labelledby="editRoleModalLabel">
-		    <div class="modal-dialog" role="document">
-		        <div class="modal-content">
-		            <div class="modal-header">
-		                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-		                <h4 class="modal-title" id="editRoleModalLabel">Modify the information</h4>
-		            </div>
-		            <div class="modal-body">
-		                <form class="form-horizontal" role="form">						
+			<div class="modal-dialog" role="document">
+				<div class="modal-content">
+					<div class="modal-header">
+						<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
+								aria-hidden="true">&times;</span></button>
+						<h4 class="modal-title" id="editRoleModalLabel">Modify the information</h4>
+					</div>
+					<div class="modal-body">
+						<form class="form-horizontal" role="form">
 							<div class="form-group">
-							   <label class="col-sm-2 control-label" for="edit-usn-input">Username</label>
-							   <div class="col-sm-10">
-							       <input type="text" class="form-control" id="edit-usn-input" placeholder="Please enter the new username" readonly>
-							   </div>
+								<label class="col-sm-2 control-label" for="edit-medicine-image-input">Medicine Images</label>
+								<div class="col-sm-4">
+									<input type="file" class="form-control" id="edit-medicine-images-input"
+										accept="image/*" multiple>
+									<input type="hidden" id="edit-base64-images-hidden" name="base64Images">
+									<!-- Để lưu base64 gửi về DB -->
+								</div>
 							</div>
-		                    <div class="form-group">
-		                        <label class="col-sm-2 control-label" for="edit-full-name-input">Full Name</label>
-		                        <div class="col-sm-10">
-		                            <input type="text" class="form-control" id="edit-full-name-input" placeholder="Please enter the new full name">
-		                        </div>
-		                    </div>
-		                    <div class="form-group">
-		                        <label class="col-sm-2 control-label" for="edit-email-input">Email</label>
-		                        <div class="col-sm-10">
-		                            <input type="text" class="form-control" id="edit-email-input" placeholder="Please enter the new email">
-		                        </div>
-		                    </div>
-		                    <div class="form-group">
-		                        <label class="col-sm-2 control-label" for="edit-phone-input">Phone</label>
-		                        <div class="col-sm-10">
-		                            <input type="text" class="form-control" id="edit-phone-input" placeholder="Please enter the new phone"></input>
-		                        </div>
-		                    </div>							
+
+							<!-- Hiển thị ảnh preview -->
+							<div id="edit-image-preview" class="row" style="margin-top: 10px; margin-left: 180px;">
+							<input type="hidden" id="edit-base64-images-hidden-input" name="imageFileNames">
+							</div>
+
 							<div class="form-group">
-							   <label class="col-sm-2 control-label" for="edit-address-input">Address</label>
-							   <div class="col-sm-10">
-							       <input type="text" class="form-control" id="edit-address-input" placeholder="Please enter the new address"></input>
-							   </div>
+								<label class="col-sm-2 control-label" for="edit-code-input">Code</label>
+								<div class="col-sm-4">
+									<input type="text" class="form-control j-required" id="edit-code-input"
+										placeholder="Please enter the new code">
+								</div>
+
+								<label class="col-sm-2 control-label" for="edit-name-input">Name</label>
+								<div class="col-sm-4">
+									<input type="text" class="form-control" id="edit-name-input"
+										placeholder="Please enter the new name">
+								</div>
 							</div>
-		                </form>
-		            </div>
-		            <div class="modal-footer">
-		                <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
-		                <button type="button" class="btn btn-primary" id="edit-submit-btn">Submit</button>
-		            </div>
-		        </div>
-		    </div>
+							<div class="form-group">
+								<label class="col-sm-2 control-label" for="edit-medicine-groups-code-input">Medicine
+									Group Code</label>
+								<div class="col-sm-4">
+									<select class="form-control" id="edit-medicine-groups-code-input"></select>
+								</div>
+
+								<label class="col-sm-2 control-label" for="edit-medicine-units-code-input">Medicine Unit
+									Code</label>
+								<div class="col-sm-4">
+									<select class="form-control" id="edit-medicine-units-code-input"></select>
+								</div>
+
+							</div>
+							<div class="form-group">
+								<label class="col-sm-2 control-label" for="edit-medicine-types-code-input">Medicine Type
+									Code</label>
+								<div class="col-sm-4">
+									<select class="form-control" id="edit-medicine-types-code-input"></select>
+								</div>
+
+								<label class="col-sm-2 control-label" for="edit-ingredient-input">Ingredient</label>
+								<div class="col-sm-4">
+									<input type="text" class="form-control" id="edit-ingredient-input"
+										placeholder="Please enter the new ingredient"></input>
+								</div>
+							</div>
+							<div class="form-group">
+								<label class="col-sm-2 control-label" for="edit-strength-input">Strength</label>
+								<div class="col-sm-4">
+									<input type="text" class="form-control" id="edit-strength-input"
+										placeholder="Please enter the new strenght"></input>
+								</div>
+
+								<label class="col-sm-2 control-label" for="edit-manudacturer-input">Manufacturer</label>
+								<div class="col-sm-4">
+									<input type="text" class="form-control" id="edit-manufacturer-input"
+										placeholder="Please enter the new manufacturer"></input>
+								</div>
+							</div>
+							<div class="form-group">
+								<label class="col-sm-2 control-label" for="edit-origin-country-input">Origin
+									Country</label>
+								<div class="col-sm-4">
+									<input type="text" class="form-control" id="edit-origin-country-input"
+										placeholder="Please enter the new origin country"></input>
+								</div>
+
+								<label class="col-sm-2 control-label" for="edit-purchase-price-input">Purchase
+									Price</label>
+								<div class="col-sm-4">
+									<input type="text" class="form-control" id="edit-purchase-price-input"
+										placeholder="Please enter the new purchase price"></input>
+								</div>
+							</div>
+							<div class="form-group">
+								<label class="col-sm-2 control-label" for="edit-sale-price-input">Sale Price</label>
+								<div class="col-sm-4">
+									<input type="text" class="form-control" id="edit-sale-price-input"
+										placeholder="Please enter the new origin country"></input>
+								</div>
+
+								<label class="col-sm-2 control-label" for="edit-quantity-input">Quantity</label>
+								<div class="col-sm-4">
+									<input type="text" class="form-control" id="edit-quantity-input"
+										placeholder="Please enter the new quantity"></input>
+								</div>
+							</div>
+							<div class="form-group">
+								<label class="col-sm-2 control-label" for="edit-date-of-manufacture-input">Date Of
+									Manufacture</label>
+								<div class="col-sm-4">
+									<div class="input-group date datepicker">
+										<input type="text" class="form-control" id="edit-date-of-manufacture-input"
+											placeholder="dd/MM/yyyy">
+										<div class="input-group-append">
+											<span class="input-group-text">
+												<i class="fa fa-calendar"></i>
+											</span>
+										</div>
+									</div>
+								</div>
+
+								<label class="col-sm-2 required" for="edit-product-expiry-date-input">Product Expiry
+									Date</label>
+								<div class="col-sm-4">
+									<div class="input-group date datepicker">
+										<input type="text" class="form-control" id="edit-product-expiry-date-input"
+											placeholder="dd/MM/yyyy">
+										<div class="input-group-append">
+											<span class="input-group-text">
+												<i class="fa fa-calendar"></i>
+											</span>
+										</div>
+									</div>
+								</div>
+							</div>
+							<div class="form-group">
+								<label class="col-sm-2 control-label" for="edit-disc-input">Description</label>
+								<div class="col-sm-10">
+									<textarea type="text" class="form-control" id="edit-desc-input"
+										placeholder="Please enter the new description"></textarea>
+								</div>
+							</div>
+						</form>
+					</div>
+					<div class="modal-footer">
+						<button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+						<button type="button" class="btn btn-primary" id="edit-submit-btn">Submit</button>
+					</div>
+				</div>
+			</div>
+		</div>
+		<!--New character information form-->
+		<div class="modal fade" id="addRoleModal" tabindex="-1" role="dialog" aria-labelledby="addRoleModalLabel">
+			<div class="modal-dialog" role="document">
+				<div class="modal-content">
+					<div class="modal-header">
+						<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
+								aria-hidden="true">&times;</span></button>
+						<h4 class="modal-title" id="addRoleModalLabel">New medicine</h4>
+					</div>
+					<div class="modal-body">
+						<form class="form-horizontal" role="form">
+							<div class="form-group">
+								<label class="col-sm-2 control-label" for="add-medicine-image-input">Medicine
+									Images</label>
+								<div class="col-sm-4">
+									<input type="file" class="form-control" id="add-medicine-images-input"
+										accept="image/*" multiple>
+									<input type="hidden" id="base64-images-hidden" name="base64Images">
+									<!-- Để lưu base64 gửi về DB -->
+								</div>
+							</div>
+
+							<!-- Hiển thị ảnh preview -->
+							<div id="image-preview-list" class="row" style="margin-top: 10px; margin-left: 180px;">
+							<input type="hidden" id="add-base64-images-hidden-input" name="imageFileNames">
+							</div>
+
+							<div class="form-group">
+								<label class="col-sm-2 control-label" for="add-code-input">Code</label>
+								<div class="col-sm-4">
+									<input type="text" class="form-control j-required" id="add-code-input"
+										placeholder="Please enter the new code">
+								</div>
+
+								<label class="col-sm-2 control-label" for="add-name-input">Name</label>
+								<div class="col-sm-4">
+									<input type="text" class="form-control" id="add-name-input"
+										placeholder="Please enter the new name">
+								</div>
+							</div>
+							<div class="form-group">
+								<label class="col-sm-2 control-label" for="add-medicine-groups-code-input">Medicine
+									Group Code</label>
+								<div class="col-sm-4">
+									<select class="form-control" id="add-medicine-groups-code-input"></select>
+								</div>
+
+								<label class="col-sm-2 control-label" for="add-medicine-units-code-input">Medicine Unit
+									Code</label>
+								<div class="col-sm-4">
+									<select class="form-control" id="add-medicine-units-code-input"></select>
+								</div>
+
+							</div>
+							<div class="form-group">
+								<label class="col-sm-2 control-label" for="add-medicine-types-code-input">Medicine Type
+									Code</label>
+								<div class="col-sm-4">
+									<select class="form-control" id="add-medicine-types-code-input"></select>
+								</div>
+
+								<label class="col-sm-2 control-label" for="add-ingredient-input">Ingredient</label>
+								<div class="col-sm-4">
+									<input type="text" class="form-control" id="add-ingredient-input"
+										placeholder="Please enter the new ingredient"></input>
+								</div>
+							</div>
+							<div class="form-group">
+								<label class="col-sm-2 control-label" for="add-strength-input">Strength</label>
+								<div class="col-sm-4">
+									<input type="text" class="form-control" id="add-strength-input"
+										placeholder="Please enter the new strenght"></input>
+								</div>
+
+								<label class="col-sm-2 control-label" for="add-manudacturer-input">Manufacturer</label>
+								<div class="col-sm-4">
+									<input type="text" class="form-control" id="add-manufacturer-input"
+										placeholder="Please enter the new manufacturer"></input>
+								</div>
+							</div>
+							<div class="form-group">
+								<label class="col-sm-2 control-label" for="add-origin-country-input">Origin
+									Country</label>
+								<div class="col-sm-4">
+									<input type="text" class="form-control" id="add-origin-country-input"
+										placeholder="Please enter the new origin country"></input>
+								</div>
+
+								<label class="col-sm-2 control-label" for="add-purchase-price-input">Purchase
+									Price</label>
+								<div class="col-sm-4">
+									<input type="text" class="form-control" id="add-purchase-price-input"
+										placeholder="Please enter the new purchase price"></input>
+								</div>
+							</div>
+							<div class="form-group">
+								<label class="col-sm-2 control-label" for="add-sale-price-input">Sale Price</label>
+								<div class="col-sm-4">
+									<input type="text" class="form-control" id="add-sale-price-input"
+										placeholder="Please enter the new origin country"></input>
+								</div>
+
+								<label class="col-sm-2 control-label" for="add-quantity-input">Quantity</label>
+								<div class="col-sm-4">
+									<input type="text" class="form-control" id="add-quantity-input"
+										placeholder="Please enter the new quantity"></input>
+								</div>
+							</div>
+							<div class="form-group">
+								<label class="col-sm-2 control-label" for="add-date-of-manufacture-input">Date Of
+									Manufacture</label>
+								<div class="col-sm-4">
+									<div class="input-group date datepicker">
+										<input type="text" class="form-control" id="add-date-of-manufacture-input"
+											placeholder="dd/MM/yyyy">
+										<div class="input-group-append">
+											<span class="input-group-text">
+												<i class="fa fa-calendar"></i>
+											</span>
+										</div>
+									</div>
+								</div>
+
+								<label class="col-sm-2 required" for="add-product-expiry-date-input">Product Expiry
+									Date</label>
+								<div class="col-sm-4">
+									<div class="input-group date datepicker">
+										<input type="text" class="form-control" id="add-product-expiry-date-input"
+											placeholder="dd/MM/yyyy">
+										<div class="input-group-append">
+											<span class="input-group-text">
+												<i class="fa fa-calendar"></i>
+											</span>
+										</div>
+									</div>
+								</div>
+							</div>
+							<div class="form-group">
+								<label class="col-sm-2 control-label" for="add-disc-input">Description</label>
+								<div class="col-sm-10">
+									<textarea type="text" class="form-control" id="add-desc-input"
+										placeholder="Please enter the new description"></textarea>
+								</div>
+							</div>
+						</form>
+					</div>
+					<div class="modal-footer">
+						<button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+						<button type="button" class="btn btn-primary" id="add-submit-btn">Submit</button>
+					</div>
+				</div>
+			</div>
 		</div>
 	</div>
 </body>

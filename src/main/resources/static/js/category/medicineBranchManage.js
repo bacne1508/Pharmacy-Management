@@ -87,7 +87,7 @@ $(document).ready(function() {
 	    .then(res => res.json())
 	    .then(data => {
 	        if (data.content.success) {
-	            alert('Added new Account successfully!');
+	            alert('Added new branch successfully!');
                     fetchUsers(currentPage);
                     $('#addRoleModal').modal("hide");
                     $('.modal-backdrop').remove();

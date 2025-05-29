@@ -74,4 +74,7 @@ public class Medicine extends AbstractCreatedTracking {
     
     @Column(name="is_Active")
     private int isActive;
+    
+    @Column(name="file_name")
+    private String fileName;
 }

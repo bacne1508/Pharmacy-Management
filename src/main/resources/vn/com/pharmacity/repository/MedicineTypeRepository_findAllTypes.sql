@@ -1,0 +1,1 @@
+SELECT * FROM MedicineTypes mt WHERE del_flag =1;

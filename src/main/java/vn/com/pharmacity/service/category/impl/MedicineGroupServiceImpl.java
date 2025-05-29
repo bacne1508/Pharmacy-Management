@@ -1,5 +1,6 @@
 package vn.com.pharmacity.service.category.impl;
 
+import java.util.Collection;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -8,6 +9,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.util.MultiValueMap;
 
 import lombok.RequiredArgsConstructor;
+import vn.com.pharmacity.dto.CommonDto;
 import vn.com.pharmacity.dto.MedicineGroupDto;
 import vn.com.pharmacity.entity.MedicineGroup;
 import vn.com.pharmacity.repository.MedicineGroupRepository;
@@ -81,5 +83,10 @@ public class MedicineGroupServiceImpl
         response.setTotalData((int) page.getTotalElements());
         response.setDatas(page.getContent());
         return response;
+    }
+
+    @Override
+    public Collection<CommonDto> findAll() {
+        return medicineGroupRepository.findAllGroup();
     }
 }

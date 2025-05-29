@@ -1,0 +1,1 @@
+SELECT * FROM MedicineUnits WHERE del_flag =1;

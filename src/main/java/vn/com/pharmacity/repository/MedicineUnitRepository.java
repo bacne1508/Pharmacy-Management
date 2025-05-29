@@ -1,11 +1,12 @@
 package vn.com.pharmacity.repository;
 
+import java.util.Collection;
 import java.util.List;
 
 import org.springframework.data.repository.query.Param;
 
 import jp.xet.springframework.data.mirage.repository.query.Modifying;
-
+import vn.com.pharmacity.dto.CommonDto;
 import vn.com.pharmacity.dto.MedicineUnitDto;
 import vn.com.pharmacity.entity.MedicineUnit;
 
@@ -32,5 +33,7 @@ public interface MedicineUnitRepository extends DbRepository<MedicineUnit, Long>
     // update
     @Modifying
     void updateData(@Param("en") MedicineUnitDto editForm);
+
+    Collection<CommonDto> findAllTypes();
 
 }
