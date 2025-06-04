@@ -1,5 +1,7 @@
 package vn.com.pharmacity.service.category.impl;
 
+import java.text.SimpleDateFormat;
+import java.util.Collection;
 import java.util.Date;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -11,13 +13,16 @@ import org.springframework.stereotype.Service;
 import org.springframework.util.MultiValueMap;
 
 import lombok.RequiredArgsConstructor;
+import lombok.extern.log4j.Log4j;
 import vn.com.pharmacity.annotation.CoreReadOnlyTx;
+import vn.com.pharmacity.dto.CommonDto;
 import vn.com.pharmacity.dto.MedicineDto;
 import vn.com.pharmacity.entity.Medicine;
 import vn.com.pharmacity.repository.MedicineRepository;
 import vn.com.pharmacity.response.ObjectDataRes;
 import vn.com.pharmacity.service.category.MedicineService;
 import vn.com.pharmacity.service.impl.BaseRestServiceImpl;
+import vn.com.pharmacity.utils.BarcodeUtil;
 
 /**
  * Define user identity as a constant
@@ -28,6 +33,7 @@ import vn.com.pharmacity.service.impl.BaseRestServiceImpl;
 @CoreReadOnlyTx
 @Service
 @RequiredArgsConstructor
+@Log4j
 public class MedicineServiceImpl
 extends BaseRestServiceImpl<ObjectDataRes<MedicineDto>, MedicineDto, Long>
 implements MedicineService {
@@ -63,9 +69,15 @@ implements MedicineService {
             if (!existing.isEmpty()) {
                 throw new RuntimeException(BRANCH_CREATE_ERROR);
             }
+            dto.setCode(this.generalCode("medicine", "code", "M_", 5));
             dto.setCreatedBy(SecurityContextHolder.getContext().getAuthentication().getName());
             dto.setCreatedDate(new Date());
             dto.setMedicineImages(dto.getBase64Images().get(0)); // Handle image conversion if needed
+            try {
+                dto.setBarcode(BarcodeUtil.generateBarcodeBase64(dto.getCode()));
+            } catch (Exception e) {
+                log.error("Error generating barcode for medicine: {}", e);
+            }
             medicineRepository.saveData(dto);
         } else {
             // Update
@@ -89,6 +101,37 @@ implements MedicineService {
         return dto;
     }
 
+    private String generalCode(String tableName, String columnName, String perfix, Integer length) {
+        String codeNO = "";
+
+        try {
+            String yy = new SimpleDateFormat("yy").format(new Date());
+            String mm = new SimpleDateFormat("MM").format(new Date());
+
+            String perfixCode = perfix + yy + mm;
+            String maxNO = medicineRepository.findMaxNo(tableName, columnName, perfixCode);
+
+            String formatLength = "%05d";
+
+            if (length != null) {
+                formatLength = "%0".concat(String.valueOf(length)).concat("d");
+            }
+
+            if (maxNO == null || "".equals(maxNO.trim())) {
+                codeNO = perfixCode + "." + String.format(formatLength, 1);
+            } else {
+                String[] lstForm = maxNO.split("\\.");
+                String number = lstForm[1];
+                String nextNumber = String.format(formatLength, Integer.valueOf(number) + 1);
+                codeNO = lstForm[0] + "." + nextNumber;
+            }
+            log.info("CODE GENERALIZED: " + codeNO);
+        } catch (Exception e) {
+            log.error(e.getMessage());
+        }
+        return codeNO;
+    }
+
     @Override
     protected void deleteEntity(Long id) {
         Medicine entity = medicineRepository.findOne(id);
@@ -107,6 +150,14 @@ implements MedicineService {
         return response;
     }
 
-    // Add your service methods here
+    @Override
+    public List<Medicine> getAll(MedicineDto dto) {
+        return medicineRepository.searchAllByCondition(null, null);
+    }
+
+    @Override
+    public Collection<CommonDto> findAll() {
+        return medicineRepository.findAllMedicine();
+    }
 
 }

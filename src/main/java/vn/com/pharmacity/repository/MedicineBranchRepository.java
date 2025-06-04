@@ -1,10 +1,12 @@
 package vn.com.pharmacity.repository;
 
+import java.util.Collection;
 import java.util.List;
 
 import org.springframework.data.repository.query.Param;
 
 import jp.xet.springframework.data.mirage.repository.query.Modifying;
+import vn.com.pharmacity.dto.CommonDto;
 import vn.com.pharmacity.dto.MedicineBranchDto;
 import vn.com.pharmacity.entity.MedicineBranch;
 
@@ -23,5 +25,7 @@ public interface MedicineBranchRepository extends DbRepository<MedicineBranch, L
     MedicineBranchDto updateDate(@Param("form") MedicineBranch entity);
 
     List<MedicineBranch> getDataByCondition(@Param("branchCode") String branchCode);
+
+    Collection<CommonDto> findAllBranch();
 
 }

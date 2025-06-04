@@ -1,1 +1,1 @@
-select * from Medicine where code= /*code*/''
+select * from Medicine WHERE is_active = 1 and code= /*code*/''

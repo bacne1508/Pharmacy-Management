@@ -1,10 +1,12 @@
 package vn.com.pharmacity.repository;
 
+import java.util.Collection;
 import java.util.List;
 
 import org.springframework.data.repository.query.Param;
 
 import jp.xet.springframework.data.mirage.repository.query.Modifying;
+import vn.com.pharmacity.dto.CommonDto;
 import vn.com.pharmacity.dto.MedicineDto;
 import vn.com.pharmacity.entity.Medicine;
 
@@ -23,5 +25,9 @@ public interface MedicineRepository extends DbRepository<Medicine, Long> {
     MedicineDto updateDate(@Param("form") Medicine entity);
 
     List<Medicine> getDataByCondition(@Param("code") String code);
+
+    String findMaxNo(@Param("tableName") String tableName, @Param("columnName") String columnName, @Param("prefix") String perfixCode);
+
+    Collection<CommonDto> findAllMedicine();
 
 }

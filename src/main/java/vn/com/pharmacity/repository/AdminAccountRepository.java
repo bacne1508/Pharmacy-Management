@@ -1,11 +1,13 @@
 package vn.com.pharmacity.repository;
 
+import java.util.Collection;
 import java.util.List;
 
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
 import jp.xet.springframework.data.mirage.repository.query.Modifying;
+import vn.com.pharmacity.dto.CommonDto;
 import vn.com.pharmacity.dto.UserDto;
 import vn.com.pharmacity.entity.User;
 
@@ -32,5 +34,7 @@ public interface AdminAccountRepository extends DbRepository<User, Long> {
     List<User> selectAllUserByCondition(@Param("userName") String userName, @Param("fullName") String fullName, @Param("email") String email, @Param("phone") String phone);
 
     List<User> selectAllEmployByCondition(@Param("userName") String userName, @Param("fullName") String fullName, @Param("email") String email, @Param("phone") String phone);
+
+    Collection<CommonDto> findAllUser();
 
 }

@@ -70,4 +70,19 @@ public class ViewController {
     public String getMedicineBranchManage() {
         return "category/medicineBranchManage";
     }
+
+    @GetMapping("/admin/medicine/storage/manage")
+    public String getMedicineStorageManage() {
+        return "category/medicineStorageManage";
+    }
+
+    @GetMapping("/admin/purchase/order/request/manage")
+    public String getPurchaseOrderRequestManage() {
+        return "Purchase/purchaseOrderRequestManage";
+    }
+
+    @GetMapping("/admin/purchase/order/manage")
+    public String getPurchaseOrderManage() {
+        return "Purchase/purchaseOrderManage";
+    }
 }

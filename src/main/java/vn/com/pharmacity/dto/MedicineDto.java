@@ -37,6 +37,9 @@ public class MedicineDto extends AbstractCreatedTracking {
     private Date productExpiryDate; // Ngày hết hạn sản phẩm
     private List<String> base64Images; // Base64 encoded images
     private String fileName; // Tên file hình ảnh
+    private String barcode; // Mã vạch của thuốc
+    private int stockQuantity; // Số lượng tồn kho
+    private int minStockLevel; // Mức tồn kho tối thiểu
     
     public MedicineDto() {
         // Default constructor
@@ -68,5 +71,8 @@ public class MedicineDto extends AbstractCreatedTracking {
         this.updatedDate = entity.getUpdatedDate();
         this.deletedBy = entity.getDeletedBy();
         this.deletedDate = entity.getDeletedDate();
+        this.barcode = entity.getBarcode();
+        this.stockQuantity = entity.getStockQuantity();
+        this.minStockLevel = entity.getMinStockLevel();
     }
 }

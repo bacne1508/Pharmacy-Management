@@ -1,0 +1,4 @@
+SELECT ID AS ID, CODE AS CODE, NAME AS NAME
+FROM Medicine
+WHERE
+Is_Active = 1

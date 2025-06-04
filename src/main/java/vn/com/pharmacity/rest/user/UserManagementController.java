@@ -1,7 +1,9 @@
 package vn.com.pharmacity.rest.user;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -16,6 +18,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import lombok.RequiredArgsConstructor;
+import vn.com.pharmacity.dto.CommonDto;
 import vn.com.pharmacity.dto.UserDto;
 import vn.com.pharmacity.exception.SystemException;
 import vn.com.pharmacity.service.user.AdminAccountService;
@@ -68,5 +71,12 @@ public class UserManagementController {
     @PostMapping("/edit")
     public ResponseVO updateAccount(@RequestBody UserDto editForm) {
         return adminAccountService.updateUserInformation(editForm);
+    }
+    
+    @GetMapping("/user-groups")
+    public List<CommonDto> getUserGroups() {
+        return adminAccountService.findAll().stream()
+            .map(g -> new CommonDto(g.getId(),g.getCode(), g.getName()))
+            .collect(Collectors.toList());
     }
 }

@@ -72,9 +72,14 @@ $(document).ready(function() {
 	    .then(res => res.json())
 	    .then(data => {
 	        if (data.success) {
-	            alert("Modification successful!");
-	            fetchUsers(currentPage);
-	            $('#editUserModal').modal("hide");
+				if(data.content.success){
+		            alert("Modification successful!");
+		            fetchUsers(currentPage);
+		            $('#editUserModal').modal("hide");
+                    $('.modal-backdrop').remove();
+				}else{
+					alert("Error: " + data.content.message);
+				}
 	        } else {
 	            alert("Error: " + data.message);
 	        }
@@ -110,6 +115,21 @@ $(document).ready(function() {
 	        }
 	    });
     });
+    
+    //export
+	$("#btnExport").unbind('click').bind('click', function(){
+		fetch('/api/auth/medicine/export')
+	    .then(res => res.blob())
+	    .then(blob => {
+	      const url = window.URL.createObjectURL(blob);
+	      const link = document.createElement('a');
+	      link.href = url;
+	      link.download = 'thuoc.xlsx';
+	      document.body.appendChild(link);
+	      link.click();
+	      link.remove();
+	    });
+	});
     
     loadImage();
     loadMedicineSelectOptions();
@@ -174,6 +194,7 @@ function fetchUsersSearch(page, size) {
 }
 
 function fetchUsers(page) {
+	debugger;
 	fetch(`/api/auth/medicine/all?page=${page}&size=${size}`)
 		.then(res => res.json())
 		.then(data => {
@@ -243,31 +264,32 @@ function renderRole(roles) {
 		for (let roleAcc of roles) {
 			roleTableContent +=
 				'<tr>' +
-				'<td>' + renderImage(roleAcc.medicineImages) + '</td>' +
-				'<td>' + safeValue(roleAcc.code) + '</td>' +
-				'<td>' + safeValue(roleAcc.name) + '</td>' +
-				'<td style="width: 150px;min-width: 400px;">' + safeValue(roleAcc.description) + '</td>' +
-				'<td>' + safeValue(roleAcc.medicineGroupsCode) + '</td>' +
-				'<td>' + safeValue(roleAcc.medicineUnitsCode) + '</td>' +
-				'<td>' + safeValue(roleAcc.medicineTypesCode) + '</td>' +
-				'<td style="width: 150px;min-width: 300px;">' + safeValue(roleAcc.ingredient) + '</td>' +
-				'<td style="width: 150px;min-width: 300px;">' + safeValue(roleAcc.strength) + '</td>' +
-				'<td>' + safeValue(roleAcc.manufacturer) + '</td>' +
-				'<td>' + safeValue(roleAcc.originCountry) + '</td>' +
-				'<td>' + safeValue(roleAcc.purchasePrice) + '</td>' +
-				'<td>' + safeValue(roleAcc.salePrice) + '</td>' +
-				'<td>' + safeValue(roleAcc.quantity) + '</td>' +
-				'<td>' + safeValue(roleAcc.dateOfManufacture) + '</td>' +
-				'<td>' + safeValue(roleAcc.productExpiryDate) + '</td>' +
-				'<td>' + safeValue(roleAcc.isActive) + '</td>' +
-				'<td>' + safeValue(roleAcc.createdBy) + '</td>' +
-				'<td>' + formatDateStr(roleAcc.createdDate) + '</td>' +
-				'<td>' + safeValue(roleAcc.updatedBy) + '</td>' +
-				'<td>' + formatDateStr(roleAcc.updatedDate) + '</td>' +
-				'<td class="text-center min-wd-100">' + getEditBtn(roleAcc.id, roleAcc.medicineImages, roleAcc.code, roleAcc.name, roleAcc.description,
-				 roleAcc.medicineGroupsCode, roleAcc.medicineUnitsCode, roleAcc.medicineTypesCode, roleAcc.ingredient, roleAcc.strength, roleAcc.manufacturer, roleAcc.originCountry,
-				  roleAcc.purchasePrice, roleAcc.salePrice, roleAcc.quantity, roleAcc.dateOfManufacture, roleAcc.productExpiryDate ) + '</td>' +
-				'<td class="text-center min-wd-100">' + getDelBtn(roleAcc.id) + '</td>' +
+					'<td>' + renderImage(roleAcc.medicineImages) + '</td>' +
+					'<td>' + safeValue(roleAcc.code) + '</td>' +
+					'<td>' + safeValue(roleAcc.name) + '</td>' +
+					'<td style="width: 150px;min-width: 400px;">' + safeValue(roleAcc.description) + '</td>' +
+					'<td>' + safeValue(roleAcc.medicineGroupsCode) + '</td>' +
+					'<td>' + safeValue(roleAcc.medicineUnitsCode) + '</td>' +
+					'<td>' + safeValue(roleAcc.medicineTypesCode) + '</td>' +
+					'<td style="width: 150px;min-width: 300px;">' + safeValue(roleAcc.ingredient) + '</td>' +
+					'<td style="width: 150px;min-width: 300px;">' + safeValue(roleAcc.strength) + '</td>' +
+					'<td>' + safeValue(roleAcc.manufacturer) + '</td>' +
+					'<td>' + safeValue(roleAcc.originCountry) + '</td>' +
+					'<td>' + safeValue(roleAcc.purchasePrice) + '</td>' +
+					'<td>' + safeValue(roleAcc.salePrice) + '</td>' +
+					'<td>' + safeValue(roleAcc.quantity) + '</td>' +
+					'<td>' + safeValue(roleAcc.dateOfManufacture) + '</td>' +
+					'<td>' + safeValue(roleAcc.productExpiryDate) + '</td>' +
+					'<td>' + safeValue(roleAcc.isActive) + '</td>' +
+					'<td>' + safeValue(roleAcc.createdBy) + '</td>' +
+					'<td>' + formatDateStr(roleAcc.createdDate) + '</td>' +
+					'<td>' + safeValue(roleAcc.updatedBy) + '</td>' +
+					'<td>' + formatDateStr(roleAcc.updatedDate) + '</td>' +
+					'<td class="text-center min-wd-100">' + getEditBtn(roleAcc.id, roleAcc.medicineImages, roleAcc.code, roleAcc.name, roleAcc.description,
+					 roleAcc.medicineGroupsCode, roleAcc.medicineUnitsCode, roleAcc.medicineTypesCode, roleAcc.ingredient, roleAcc.strength, roleAcc.manufacturer, roleAcc.originCountry,
+					  roleAcc.purchasePrice, roleAcc.salePrice, roleAcc.quantity, roleAcc.dateOfManufacture, roleAcc.productExpiryDate ) + '</td>' +
+					'<td class="text-center min-wd-100">' + getDelBtn(roleAcc.id) + '</td>' +
+					'<td class="text-center min-wd-100">' + getViewBarcode(roleAcc.code, roleAcc.name, roleAcc.salePrice) + '</td>' +
 				'</tr>';
 		}
 	}
@@ -326,6 +348,31 @@ function handleEditClick(btn) {
 
     editRole(id, medicineImages, code, name, description, groupCode, unitCode, typeCode, ingredient,
         strength, manufacturer, originCountry, purchasePrice, salePrice, quantity, dateOfManufacture, productExpiryDate);
+}
+
+function getViewBarcode(code, name, salePrice) {
+	return `<button class='btn btn-outline-primary btn-sm' onclick='viewBarcode("${code}", "${name}", "${salePrice}")' title="Xem mã vạch">
+				<i class="fa fa-eye"></i>
+			</button>`;
+}
+
+function viewBarcode(code, name,salePrice) {
+	// Gán thông tin
+	document.getElementById("barcodeName").innerText = name;
+	document.getElementById("barcodeCode").innerText = code;
+
+	// Vẽ mã vạch bằng JsBarcode
+	JsBarcode("#barcodeSvg", salePrice, {
+		format: "CODE128",
+		lineColor: "#000",
+		width: 2,
+		height: 60,
+		displayValue: true
+	});
+
+	// Hiển thị modal (với Bootstrap 5)
+	let barcodeModal = new bootstrap.Modal(document.getElementById('barcodeModal'));
+	barcodeModal.show();
 }
 
 
@@ -429,10 +476,7 @@ manufacturer, originCountry, purchasePrice, salePrice, quantity, dateOfManufactu
  * @param form
  */
 function validateEditForm(form) {
-    if (!form.code) {
-        alert("Please enter the code!");
-        return false;
-    }
+    
     if (!form.name) {
         alert("Please enter the name!");
         return false;

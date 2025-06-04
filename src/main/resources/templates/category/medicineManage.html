@@ -43,7 +43,10 @@
 									<span> Cancel</span>
 								</a> <a class="u-btn-common u-btn-effect" id="btnSearch"> <i class="fa fa-search"
 										aria-hidden="true"></i> <span>Search</span>
+								</a> <a type="button" class="u-btn-common u-btn-effect" id="btnExport">
+									<i class="fa fa-download"></i> Export
 								</a>
+
 							</div>
 						</div>
 					</div>
@@ -76,6 +79,7 @@
 									<th>Updated Date</th>
 									<th>Edit</th>
 									<th>Delete</th>
+									<th>Mã vạch</th>
 								</tr>
 							</thead>
 							<tbody id="user-table"></tbody>
@@ -84,6 +88,26 @@
 				</div>
 				<div id="userTableContainer"></div>
 				<ul class="pagination" id="pagination"></ul>
+			</div>
+		</div>
+		<!--View Barcode the character prompt box-->
+		<div class="modal fade" id="barcodeModal" tabindex="-1" role="dialog" aria-labelledby="barcodeModalLabel"
+			aria-hidden="true">
+			<div class="modal-dialog">
+				<div class="modal-content">
+					<div class="modal-header">
+						<button type="button" class="close" data-dismiss="modal" aria-hidden="true">x</button>
+						<h5 class="modal-title"><i class="fa fa-barcode"></i> Thông tin mã vạch</h5>
+					</div>
+					<div class="modal-body text-center">
+						<svg id="barcodeSvg"></svg>
+						<p class="mt-3"><strong>Drug name:</strong> <span id="barcodeName"></span></p>
+						<p><strong>Drug code:</strong> <span id="barcodeCode"></span></p>
+					</div>
+					<div class="modal-footer">
+						<button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+					</div>
+				</div>
 			</div>
 		</div>
 		<!--Delete the character prompt box-->
@@ -104,18 +128,19 @@
 			</div>
 		</div>
 		<!--Modify the character information form-->
-		<div class="modal fade" id="editUserModal" tabindex="-1" role="dialog" aria-labelledby="editRoleModalLabel">
-			<div class="modal-dialog" role="document">
+		<div class="modal fade" id="editUserModal" tabindex="-1" role="dialog" aria-labelledby="editRoleModalLabel"
+			aria-hidden="true">
+			<div class="modal-dialog">
 				<div class="modal-content">
 					<div class="modal-header">
-						<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
-								aria-hidden="true">&times;</span></button>
+						<button type="button" class="close" data-dismiss="modal" aria-hidden="true">x</button>
 						<h4 class="modal-title" id="editRoleModalLabel">Modify the information</h4>
 					</div>
 					<div class="modal-body">
 						<form class="form-horizontal" role="form">
 							<div class="form-group">
-								<label class="col-sm-2 control-label" for="edit-medicine-image-input">Medicine Images</label>
+								<label class="col-sm-2 control-label" for="edit-medicine-image-input">Medicine
+									Images</label>
 								<div class="col-sm-4">
 									<input type="file" class="form-control" id="edit-medicine-images-input"
 										accept="image/*" multiple>
@@ -126,14 +151,14 @@
 
 							<!-- Hiển thị ảnh preview -->
 							<div id="edit-image-preview" class="row" style="margin-top: 10px; margin-left: 180px;">
-							<input type="hidden" id="edit-base64-images-hidden-input" name="imageFileNames">
+								<input type="hidden" id="edit-base64-images-hidden-input" name="imageFileNames">
 							</div>
 
 							<div class="form-group">
 								<label class="col-sm-2 control-label" for="edit-code-input">Code</label>
 								<div class="col-sm-4">
-									<input type="text" class="form-control j-required" id="edit-code-input"
-										placeholder="Please enter the new code">
+									<input type="text" class="form-control" id="edit-code-input"
+										placeholder="Please enter the new code" disabled>
 								</div>
 
 								<label class="col-sm-2 control-label" for="edit-name-input">Name</label>
@@ -279,14 +304,14 @@
 
 							<!-- Hiển thị ảnh preview -->
 							<div id="image-preview-list" class="row" style="margin-top: 10px; margin-left: 180px;">
-							<input type="hidden" id="add-base64-images-hidden-input" name="imageFileNames">
+								<input type="hidden" id="add-base64-images-hidden-input" name="imageFileNames">
 							</div>
 
 							<div class="form-group">
 								<label class="col-sm-2 control-label" for="add-code-input">Code</label>
 								<div class="col-sm-4">
 									<input type="text" class="form-control j-required" id="add-code-input"
-										placeholder="Please enter the new code">
+										placeholder="Please enter the new code" disabled>
 								</div>
 
 								<label class="col-sm-2 control-label" for="add-name-input">Name</label>

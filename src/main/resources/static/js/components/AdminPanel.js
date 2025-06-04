@@ -60,8 +60,9 @@ class AdminPanel extends Component {
 		                        <span class="submenu-arrow"><i class="fa fa-chevron-down"></i></span>
 		                    </a>
 		                    <ul class="submenu nav nav-pills nav-stacked" style="display: none;">
-		                        <li role="presentation" data-menu-id="order-manage"><a href="/admin/order/manage"><i class="fa fa-id-badge sub-icon"></i> Order Management</a></li>
-		                        <li role="presentation" data-menu-id="bill-manage"><a href="/admin/bill/manage"><i class="fa fa-money sub-icon"></i> Bill</a></li>
+		                        <li role="presentation" data-menu-id="order-request-manage"><a href="/admin/purchase/order/request/manage"><i class="fa fa-id-badge sub-icon"></i> Order Request Management</a></li>
+		                        <li role="presentation" data-menu-id="order-manage"><a href="/admin/purchase/order/manage"><i class="fa fa-id-badge sub-icon"></i> Order Management</a></li>
+		                        <li role="presentation" data-menu-id="bill-manage"><a href="/admin/purchase/bill/manage"><i class="fa fa-money sub-icon"></i> Bill</a></li>
 		                        <li role="presentation" data-menu-id="purchase-history-manage"><a href="/admin/purchase/history/manage"><i class="fa fa-cogs sub-icon"></i> Purchase History</a></li>
 		                    </ul>
 		                </li>

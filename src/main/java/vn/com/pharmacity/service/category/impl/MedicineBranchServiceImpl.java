@@ -1,5 +1,6 @@
 package vn.com.pharmacity.service.category.impl;
 
+import java.util.Collection;
 import java.util.Date;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -12,6 +13,7 @@ import org.springframework.util.MultiValueMap;
 
 import lombok.RequiredArgsConstructor;
 import vn.com.pharmacity.annotation.CoreReadOnlyTx;
+import vn.com.pharmacity.dto.CommonDto;
 import vn.com.pharmacity.dto.MedicineBranchDto;
 import vn.com.pharmacity.entity.MedicineBranch;
 import vn.com.pharmacity.repository.MedicineBranchRepository;
@@ -102,6 +104,11 @@ implements MedicineBranchService {
         response.setTotalData((int) page.getTotalElements());
         response.setDatas(page.getContent());
         return response;
+    }
+
+    @Override
+    public Collection<CommonDto> findAll() {
+        return medicineBranchRepository.findAllBranch();
     }
 
 }

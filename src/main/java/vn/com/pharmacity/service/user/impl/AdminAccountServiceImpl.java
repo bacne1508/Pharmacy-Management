@@ -2,6 +2,7 @@
 package vn.com.pharmacity.service.user.impl;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Date;
 import java.util.List;
 import java.util.Objects;
@@ -19,6 +20,7 @@ import lombok.RequiredArgsConstructor;
 import vn.com.pharmacity.annotation.CoreReadOnlyTx;
 import vn.com.pharmacity.authentication.UserProfileUtils;
 import vn.com.pharmacity.constant.PharmacityConstant;
+import vn.com.pharmacity.dto.CommonDto;
 import vn.com.pharmacity.dto.UserDto;
 import vn.com.pharmacity.entity.User;
 import vn.com.pharmacity.exception.SystemException;
@@ -202,5 +204,10 @@ public class AdminAccountServiceImpl implements AdminAccountService {
             e.printStackTrace();
             return Page.empty(); // Return an empty page in case of an error
         }
+    }
+
+    @Override
+    public Collection<CommonDto> findAll() {
+        return adminAccountRepository.findAllUser();
     }
 }

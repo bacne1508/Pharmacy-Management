@@ -1,0 +1,228 @@
+<!DOCTYPE html>
+<html layout:decorate="~{layouts/layout}" xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org"
+	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" lang="en">
+
+<head>
+	<meta charset="UTF-8">
+	<title>Medicine Storage Management</title>
+	<!-- Introduce the CSS style file -->
+	<script th:src="@{/js/components/PharmacityItem/PharmacityItem.js}"></script>
+	<script th:src="@{/js/category/medicineStorageManage.js}"></script>
+	<!-- jQuery -->
+	<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+	<!-- Bootstrap JS -->
+	<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.6.0/js/bootstrap.bundle.min.js"></script>
+	<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+</head>
+
+<body>
+	<div layout:fragment="body">
+		<div th:replace="~{adminHeader :: mainHeader}"></div>
+		<div class="main-container">
+			<div class="nav-left-container"></div>
+			<div class="content-container">
+				<div class="page-content">
+					<span class="title gray-text">Medicine Storage Management</span>
+					<button type="button" class="btn btn-primary" data-backdrop="static" data-toggle="modal"
+						data-target="#addRoleModal"><i class="icon-plus-sign"></i> Add new storage</button>
+				</div>
+				<div class="bg-content clearfix">
+					<div data-toggle="collapse" data-target="#search-box" class="header-box">
+						<h2 class="title-box">Search area</h2>
+						<i class="fa fa-minus pull-right" aria-hidden="true"></i>
+					</div>
+					<div class="collapse show" id="search-box">
+						<div class="content-box">
+							<div class="user-search-list"></div>
+						</div>
+						<!-- button footer -->
+						<div class="col-12 center">
+							<div class="box-btn-footer">
+								<a class="u-btn-grey u-btn-effect" id="btnClear"> <i class="fa fa-eraser"
+										aria-hidden="true"></i>
+									<span> Cancel</span>
+								</a> <a class="u-btn-common u-btn-effect" id="btnSearch"> <i class="fa fa-search"
+										aria-hidden="true"></i> <span>Search</span>
+								</a> <a type="button" class="u-btn-common u-btn-effect" id="btnExport">
+									<i class="fa fa-download"></i> Export
+								</a>
+
+							</div>
+						</div>
+					</div>
+				</div>
+				<div class="bg-content clearfix" id="role-card">
+					<div class="table-wrapper" style="overflow-x: auto;">
+						<table class="table table-bordered table-striped">
+							<thead>
+								<tr>
+									<th>Warehouse Code</th>
+									<th>Warehouse Name</th>
+									<th>Warehouse Type</th>
+									<th>Branches Code</th>
+									<th>Manager Name</th>
+									<th>Phone</th>
+									<th>Is Active</th>
+									<th>Created By</th>
+									<th>Created Date</th>
+									<th>Updated By</th>
+									<th>Updated Date</th>
+									<th>Edit</th>
+									<th>Delete</th>
+								</tr>
+							</thead>
+							<tbody id="user-table"></tbody>
+						</table>
+					</div>
+				</div>
+				<div id="userTableContainer"></div>
+				<ul class="pagination" id="pagination"></ul>
+			</div>
+		</div>
+		<!--Delete the character prompt box-->
+		<div class="modal fade" id="roleDelModal" tabindex="-1" role="dialog" aria-labelledby="roleDelModalLabel"
+			aria-hidden="true">
+			<div class="modal-dialog">
+				<div class="modal-content">
+					<div class="modal-header">
+						<button type="button" class="close" data-dismiss="modal" aria-hidden="true">x</button>
+						<h4 class="modal-title" id="roleDelModalLabel">Delete the storage</h4>
+					</div>
+					<div class="modal-body">Do you want to delete this storage cruelly??</div>
+					<div class="modal-footer">
+						<button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+						<button type="button" class="btn btn-danger" id="commitRoleDel">Confirm delete</button>
+					</div>
+				</div>
+			</div>
+		</div>
+		<!--Modify the character information form-->
+		<div class="modal fade" id="editUserModal" tabindex="-1" role="dialog" aria-labelledby="editRoleModalLabel"
+			aria-hidden="true">
+			<div class="modal-dialog">
+				<div class="modal-content">
+					<div class="modal-header">
+						<button type="button" class="close" data-dismiss="modal" aria-hidden="true">x</button>
+						<h4 class="modal-title" id="editRoleModalLabel">Modify the information</h4>
+					</div>
+					<div class="modal-body">
+						<form class="form-horizontal" role="form">
+							<div class="form-group">
+								<label class="col-sm-2 control-label" for="edit-warehouse-code-input">Warehouse
+									Code</label>
+								<div class="col-sm-4">
+									<input type="text" class="form-control" id="edit-warehouse-code-input"
+										placeholder="Please enter the new warehouse code" disabled>
+								</div>
+
+								<label class="col-sm-2 control-label" for="edit-warehouse-name-input">Warehouse
+									Name</label>
+								<div class="col-sm-4">
+									<input type="text" class="form-control" id="edit-warehouse-name-input"
+										placeholder="Please enter the new warehouse name">
+								</div>
+							</div>
+							<div class="form-group">
+								<label class="col-sm-2 control-label" for="edit-warehouse-type-input">Warehouse
+									Type</label>
+								<div class="col-sm-4">
+									<input type="text" class="form-control" id="edit-warehouse-type-input"
+										placeholder="Please enter the new warehouse type">
+								</div>
+
+								<label class="col-sm-2 control-label" for="edit-branches-code-input">Branches
+									Code</label>
+								<div class="col-sm-4">
+									<select class="form-control" id="edit-branches-code-input"></select>
+								</div>
+
+							</div>
+							<div class="form-group">
+								<label class="col-sm-2 control-label" for="edit-manager-name-input">Manager Name</label>
+								<div class="col-sm-4">
+									<input type="text" class="form-control" id="edit-manager-name-input"
+										placeholder="Please enter the new manager name"></input>
+								</div>
+
+								<label class="col-sm-2 control-label" for="edit-phone-input">Phone</label>
+								<div class="col-sm-4">
+									<input type="text" class="form-control" id="edit-phone-input"
+										placeholder="Please enter the new phone"></input>
+								</div>
+							</div>
+						</form>
+					</div>
+					<div class="modal-footer">
+						<button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+						<button type="button" class="btn btn-primary" id="edit-submit-btn">Submit</button>
+					</div>
+				</div>
+			</div>
+		</div>
+		<!--New character information form-->
+		<div class="modal fade" id="addRoleModal" tabindex="-1" role="dialog" aria-labelledby="addRoleModalLabel">
+			<div class="modal-dialog" role="document">
+				<div class="modal-content">
+					<div class="modal-header">
+						<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
+								aria-hidden="true">&times;</span></button>
+						<h4 class="modal-title" id="addRoleModalLabel">New storage</h4>
+					</div>
+					<div class="modal-body">
+						<form class="form-horizontal" role="form">
+							<div class="form-group">
+								<label class="col-sm-2 control-label" for="add-warehouse-code-input">Warehouse
+									Code</label>
+								<div class="col-sm-4">
+									<input type="text" class="form-control" id="add-warehouse-code-input"
+										placeholder="Please enter the new warehouse code">
+								</div>
+
+								<label class="col-sm-2 control-label" for="add-warehouse-name-input">Warehouse
+									Name</label>
+								<div class="col-sm-4">
+									<input type="text" class="form-control" id="add-warehouse-name-input"
+										placeholder="Please enter the new warehouse name">
+								</div>
+							</div>
+							<div class="form-group">
+								<label class="col-sm-2 control-label" for="add-warehouse-type-input">Warehouse
+									Type</label>
+								<div class="col-sm-4">
+									<input type="text" class="form-control" id="add-warehouse-type-input"
+										placeholder="Please enter the new warehouse type">
+								</div>
+
+								<label class="col-sm-2 control-label" for="add-branches-code-input">Branches
+									Code</label>
+								<div class="col-sm-4">
+									<select class="form-control" id="add-branches-code-input"></select>
+								</div>
+
+							</div>
+							<div class="form-group">
+								<label class="col-sm-2 control-label" for="add-manager-name-input">Manager Name</label>
+								<div class="col-sm-4">
+									<input type="text" class="form-control" id="add-manager-name-input"
+										placeholder="Please enter the new manager name"></input>
+								</div>
+
+								<label class="col-sm-2 control-label" for="add-phone-input">Phone</label>
+								<div class="col-sm-4">
+									<input type="text" class="form-control" id="add-phone-input"
+										placeholder="Please enter the new phone"></input>
+								</div>
+							</div>
+						</form>
+					</div>
+					<div class="modal-footer">
+						<button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+						<button type="button" class="btn btn-primary" id="add-submit-btn">Submit</button>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</body>
+
+</html>

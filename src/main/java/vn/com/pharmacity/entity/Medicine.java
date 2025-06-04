@@ -77,4 +77,13 @@ public class Medicine extends AbstractCreatedTracking {
     
     @Column(name="file_name")
     private String fileName;
+    
+    @Column(name="barcode")
+    private String barcode;
+    
+    @Column(name="stock_quantity")
+    private int stockQuantity; // Current stock quantity in the warehouse
+    
+    @Column(name="min_stock_level")
+    private int minStockLevel; // Minimum stock level before reordering
 }

@@ -32,7 +32,7 @@ public class MedicineTypeManagementController extends BaseRestController<ObjectD
     @GetMapping("/medicine-types")
     public List<CommonDto> getMedicineGroups() {
         return medicineTypeService.findAll().stream()
-            .map(g -> new CommonDto(g.getCode(), g.getName()))
+            .map(g -> new CommonDto(g.getId(),g.getCode(), g.getName()))
             .collect(Collectors.toList());
     }
 }

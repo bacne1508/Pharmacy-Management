@@ -13,7 +13,8 @@ public class CommonDto {
     private String customField1;
     private String customField2;
     
-    public CommonDto(String code, String name) {
+    public CommonDto(String id, String code, String name) {
+        this.id = id;
         this.code = code;
         this.name = name;
     }

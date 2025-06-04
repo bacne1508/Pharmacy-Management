@@ -61,6 +61,10 @@ public class AppCoreConstant {
     public static final String TABLE_MEDICINE_UNIT = "MedicineUnits";
     public static final String TABLE_MEDICINE_SUPPLIER = "Suppliers";
     public static final String TABLE_MEDICINE_BRANCH = "Branches";
+    public static final String TABLE_MEDICINE_STORAGE = "Warehouses";
+    public static final String TABLE_PURCHASE_ORDER_REQUEST = "PurchaseOrderRequest";
+    public static final String TABLE_PURCHASE_ORDER_DETAILS = "PurchaseOrderDetails";
+    public static final String TABLE_PURCHASE_ORDER = "PurchaseOrders";
 	public static final String TABLE_AUDIT_LOGS = "AuditLogs";
 	//public static final String TABLE_TICKET_DETAIL_SEAT = "ticket_detail_seat";
 //	public static final String TABLE_ROW_OF_SEAT = "row_of_seat";
@@ -85,4 +89,10 @@ public class AppCoreConstant {
     public static final String MSG_LIST = "messageList";
     public static final String MSG_SUCCESS_SAVE = "message.success.save.label";
     public static final String MSG_FAIL_SUBMIT = "message.submit.fail";
+    
+    public static final String PENDING = "PENDING";
+    public static final String APPROVED = "APPROVED";
+    public static final String REJECTED = "REJECTED";
+    public static final String LINKED = "LINKED";
+    public static final String DRAFT = "DRAFT";
 }

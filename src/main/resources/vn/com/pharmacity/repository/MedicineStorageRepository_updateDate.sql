@@ -1,0 +1,1 @@
+update Warehouses set  is_Active = 0  where id=/*form.id*/;

@@ -32,7 +32,7 @@ public class MedicineGroupManagementController extends BaseRestController<Object
     @GetMapping("/medicine-groups")
     public List<CommonDto> getMedicineGroups() {
         return medicineGroupService.findAll().stream()
-            .map(g -> new CommonDto(g.getCode(), g.getName()))
+            .map(g -> new CommonDto(g.getId(),g.getCode(), g.getName()))
             .collect(Collectors.toList());
     }
 }
