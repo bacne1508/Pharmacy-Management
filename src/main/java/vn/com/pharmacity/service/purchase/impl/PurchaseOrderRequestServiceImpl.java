@@ -1,10 +1,13 @@
 package vn.com.pharmacity.service.purchase.impl;
 
+import java.time.LocalDate;
+import java.time.ZoneId;
 import java.util.Date;
 import java.util.List;
 import java.util.Objects;
 import java.util.stream.Collectors;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
@@ -16,17 +19,24 @@ import vn.com.pharmacity.annotation.AuditAction;
 import vn.com.pharmacity.annotation.CoreReadOnlyTx;
 import vn.com.pharmacity.constant.AppCoreConstant;
 import vn.com.pharmacity.dto.PurchaseOrderRequestDto;
+import vn.com.pharmacity.entity.Medicine;
+import vn.com.pharmacity.entity.PurchaseOrder;
+import vn.com.pharmacity.entity.PurchaseOrderDetail;
 import vn.com.pharmacity.entity.PurchaseOrderRequest;
+import vn.com.pharmacity.repository.MedicineRepository;
+import vn.com.pharmacity.repository.PurchaseOrderDetailsRepository;
+import vn.com.pharmacity.repository.PurchaseOrderRepository;
 import vn.com.pharmacity.repository.PurchaseOrderRequestRepository;
-import vn.com.pharmacity.req.BulkActionRequest;
 import vn.com.pharmacity.response.ObjectDataRes;
 import vn.com.pharmacity.service.impl.BaseRestServiceImpl;
 import vn.com.pharmacity.service.purchase.PurchaseOrderRequestService;
+import vn.com.pharmacity.service.purchase.PurchaseOrderService;
 
 /**
  * Define user identity as a constant
  * 
  * author Bac
+ * 
  * @date 2025/5/20
  */
 @CoreReadOnlyTx
@@ -34,16 +44,29 @@ import vn.com.pharmacity.service.purchase.PurchaseOrderRequestService;
 @RequiredArgsConstructor
 @Log4j
 public class PurchaseOrderRequestServiceImpl
-extends BaseRestServiceImpl<ObjectDataRes<PurchaseOrderRequestDto>, PurchaseOrderRequestDto, Long>
-implements PurchaseOrderRequestService {
-    
+        extends BaseRestServiceImpl<ObjectDataRes<PurchaseOrderRequestDto>, PurchaseOrderRequestDto, Long>
+        implements PurchaseOrderRequestService {
+
+    @Autowired
+    private PurchaseOrderService purchaseOrderService;
+
     // Add any necessary repository or service dependencies here
-    private final PurchaseOrderRequestRepository purchaseOrderRequestRepository;
-    
+    @Autowired
+    PurchaseOrderRequestRepository purchaseOrderRequestRepository;
+
+    @Autowired
+    MedicineRepository medicineRepository;
+
+    @Autowired
+    PurchaseOrderRepository purchaseOrderRepository;
+
+    @Autowired
+    PurchaseOrderDetailsRepository purchaseOrderDetailsRepository;
+
     private static final String MEDICINE_NOT_EXIST = "Request not exists!";
-    
+
     private static final String STORAGE_CREATE_ERROR = "Purchase order request create error!";
-    
+
     @Override
     protected List<PurchaseOrderRequestDto> findAllByCondition(MultiValueMap<String, String> params) {
         String username = params.getFirst("username");
@@ -76,7 +99,7 @@ implements PurchaseOrderRequestService {
             }
             dto.setUpdatedBy(SecurityContextHolder.getContext().getAuthentication().getName());
             dto.setUpdatedDate(new Date());
-            
+
             purchaseOrderRequestRepository.updateData(dto);
         }
 
@@ -102,7 +125,7 @@ implements PurchaseOrderRequestService {
     }
 
     @Override
-    @AuditAction(actionType = "APPROVED")//ghi log
+    @AuditAction(actionType = "APPROVED") // ghi log
     public void approveRequestsByIds(List<Long> ids, String reason) {
         List<PurchaseOrderRequestDto> requests = purchaseOrderRequestRepository.findAllById(ids);
         for (PurchaseOrderRequestDto reqDto : requests) {
@@ -114,7 +137,49 @@ implements PurchaseOrderRequestService {
 //                notificationService.sendApprovedNotification(reqDto.getCreatedBy(), reqDto.getId());
             }
             purchaseOrderRequestRepository.updateData(reqDto);
+            // Tạp đơn hàng từ yêu cầu sau khi duyệt
+            this.createPOFromRequest(reqDto);
+            purchaseOrderRequestRepository.updatePoIdById(reqDto);
         }
+    }
+
+    @AuditAction(actionType = "DRAFT")
+    private void createPOFromRequest(PurchaseOrderRequestDto reqDto) {
+        Medicine medicine = medicineRepository.findOne(reqDto.getMedicineId());
+        if (Objects.isNull(medicine)) {
+            throw new RuntimeException(MEDICINE_NOT_EXIST);
+        }
+        String currentUser = SecurityContextHolder.getContext().getAuthentication().getName();
+        PurchaseOrder po = new PurchaseOrder();
+        LocalDate localDate = LocalDate.now().plusDays(3);
+        Date expectedDeliveryDate = Date.from(localDate.atStartOfDay(ZoneId.systemDefault()).toInstant());
+        // set thông tin đơn hàng
+        PurchaseOrder existingDraftOrder = purchaseOrderRepository.findDraftByUserId(currentUser);
+        if (Objects.isNull(existingDraftOrder)) {
+            // Tạo mới đơn hàng
+            po.setPoCode(purchaseOrderService.generatePoCode("PurchaseOrders", "po_code", "PO_", 5)); // Gen mã đơn hàng
+                                                                                                      // mới
+            po.setSupplierId(medicine.getSupplierId());
+            po.setStatus("DRAFT");
+            po.setExpectedDeliveryDate(expectedDeliveryDate); // Ngày giao hàng dự kiến
+            po.setCreatedFrom(currentUser);
+            po.setCreatedDate(new Date());
+            po.setCreatedBy(currentUser);
+            po = purchaseOrderRepository.savePOFromRequest(po);
+        }
+        // set thông tin chi tiết đơn hàng
+        PurchaseOrderDetail detail = new PurchaseOrderDetail();
+        detail.setPurchaseOrderId(po.getId() == null ? existingDraftOrder.getId() : po.getId());
+        detail.setMedicineId(reqDto.getMedicineId());
+        detail.setQuantity(reqDto.getQuantity());
+        detail.setUnitPrice(medicine.getSalePrice());
+        detail.setExpiryDate(expectedDeliveryDate);
+        detail.setCreatedDate(new Date());
+        detail.setCreatedBy(currentUser);
+        purchaseOrderDetailsRepository.saveDataRequestPO(detail);
+        
+        // Cập nhật trạng thái yêu cầu
+        reqDto.setLinkedPoId(detail.getPurchaseOrderId());
     }
 
     @Override

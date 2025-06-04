@@ -1,0 +1,1 @@
+SELECT * FROM PurchaseOrders WHERE status = 'DRAFT' AND created_from = /*currentUser*/''

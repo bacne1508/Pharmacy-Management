@@ -1,0 +1,211 @@
+<!DOCTYPE html>
+<html layout:decorate="~{layouts/layout}" xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org"
+	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" lang="en">
+
+<head>
+	<meta charset="UTF-8">
+	<title>Purchase Order Request Management</title>
+	<!-- Introduce the CSS style file -->
+	<script th:src="@{/js/components/PharmacityItem/PharmacityItem.js}"></script>
+	<script th:src="@{/js/purchase/purchaseOrderManage.js}"></script>
+	<!-- Bootstrap JS -->
+	<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.6.0/js/bootstrap.bundle.min.js"></script>
+</head>
+
+<body>
+	<div layout:fragment="body">
+		<div th:replace="~{adminHeader :: mainHeader}"></div>
+		<div class="main-container">
+			<div class="nav-left-container"></div>
+			<div class="content-container">
+				<div class="page-content">
+					<span class="title gray-text">Purchase Order Request Management</span>
+					<!--<button type="button" class="btn btn-primary" data-backdrop="static" data-toggle="modal"
+						data-target="#addRoleModal"><i class="icon-plus-sign"></i> Add new order request</button>-->
+				</div>
+				<div class="bg-content clearfix">
+					<div data-toggle="collapse" data-target="#search-box" class="header-box">
+						<h2 class="title-box">Search area</h2>
+						<i class="fa fa-minus pull-right" aria-hidden="true"></i>
+					</div>
+					<div class="collapse show" id="search-box">
+						<div class="content-box">
+							<div class="user-search-list"></div>
+						</div>
+						<!-- button footer -->
+						<div class="col-12 center">
+							<div class="box-btn-footer">
+								<a class="u-btn-grey u-btn-effect" id="btnClear"> <i class="fa fa-eraser"
+										aria-hidden="true"></i>
+									<span> Cancel</span>
+								</a> <a class="u-btn-common u-btn-effect" id="btnSearch"> <i class="fa fa-search"
+										aria-hidden="true"></i> <span>Search</span>
+								</a> <!--<a><button id="btnApproveSelected" class="u-btn-effect btn btn-success"
+										disabled>Duyệt các yêu cầu đã chọn</button>
+								</a>-->
+							</div>
+						</div>
+					</div>
+				</div>
+				<div class="bg-content clearfix" id="role-card">
+					<div class="table-wrapper" style="overflow-x: auto;">
+						<table class="table table-bordered table-striped">
+							<thead>
+								<tr>
+									<th><input type="checkbox" id="selectAllCheckbox" /></th>
+									<th>User Name</th>
+									<th>Medicine Code</th>
+									<th>Quantity</th>
+									<th>Status</th>
+									<th>Created By</th>
+									<th>Created Date</th>
+									<th>Updated By</th>
+									<th>Updated Date</th>
+									<th>Action</th>
+								</tr>
+							</thead>
+							<tbody id="user-table"></tbody>
+						</table>
+					</div>
+					<!-- Dropdown chọn hành động + nút Thực hiện -->
+					<div class="form-inline justify-content-center mt-2">
+						<select class="form-control mr-2" id="bulkActionSelect">
+							<option value="">-- Chọn hành động --</option>
+							<option value="APPROVED">✅ Duyệt</option>
+							<option value="REJECTED">❌ Từ chối</option>
+						</select>
+						<button class="btn btn-warning" id="btnPerformBulkAction" disabled>Thực hiện</button>
+					</div>
+				</div>
+				<div id="userTableContainer"></div>
+				<ul class="pagination" id="pagination"></ul>
+			</div>
+		</div>
+		<!-- Modal: Edit or Approve Medicine Order Request -->
+		<div class="modal fade" id="editUserModal" tabindex="-1" role="dialog" aria-labelledby="editRoleModalLabel">
+			<div class="modal-dialog" role="document">
+				<div class="modal-content">
+					<div class="modal-header">
+						<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
+								aria-hidden="true">&times;</span></button>
+						<h4 class="modal-title" id="editRoleModalLabel">Medicine Request</h4>
+					</div>
+					<div class="modal-body">
+						<form class="form-horizontal" role="form">
+							<!-- Người yêu cầu -->
+							<div class="form-group row">
+								<label for="requester" class="col-sm-4 col-form-label">Username</label>
+								<div class="col-sm-8">
+									<input type="text" id="edit-username-input" class="form-control" readonly>
+								</div>
+							</div>
+
+							<!-- Mã thuốc -->
+							<div class="form-group row">
+								<label for="medicineCode" class="col-sm-4 col-form-label">Medicine Code</label>
+								<div class="col-sm-8">
+									<input type="text" id="edit-medicine-code-input" class="form-control" readonly>
+								</div>
+							</div>
+
+							<!-- Số lượng -->
+							<div class="form-group row">
+								<label for="quantity" class="col-sm-4 col-form-label">Quantity</label>
+								<div class="col-sm-8">
+									<input type="number" id="edit-quantity-input" class="form-control" min="1"
+										placeholder="Nhập số lượng" readonly>
+								</div>
+							</div>
+
+							<!-- Trạng thái -->
+							<div class="form-group row">
+								<label for="status" class="col-sm-4 col-form-label">Status</label>
+								<div class="col-sm-8">
+									<input type="text" id="edit-status-input" class="form-control"readonly>
+								</div>
+							</div>
+
+							<!-- Lý do từ chối (chỉ hiện khi chọn trạng thái = REJECTED) -->
+							<!--<div class="form-group row" id="rejectionReasonGroup" style="display: none;">
+								<label for="rejectionReason" class="col-sm-4 col-form-label">Reason Rejected</label>
+								<div class="col-sm-8">
+									<textarea id="rejectionReason" class="form-control" rows="2"
+										placeholder="Please enter reason reject"></textarea>
+								</div>
+							</div>-->
+						</form>
+					</div>
+
+					<div class="modal-footer">
+						<button type="button" class="btn btn-secondary" data-dismiss="modal">Đóng</button>
+						<!--<button type="button" class="btn btn-primary" id="saveMedicineOrderBtn">Lưu</button>-->
+					</div>
+				</div>
+			</div>
+		</div>
+		<!-- Modal xác nhận từ chối hàng loạt -->
+		<div class="modal fade" id="bulkRejectModal" tabindex="-1" role="dialog" aria-labelledby="bulkRejectModalLabel">
+			<div class="modal-dialog" role="document">
+				<div class="modal-content">
+					<div class="modal-header">
+						<h4 class="modal-title">Từ chối các yêu cầu đã chọn</h4>
+						<button type="button" class="close" data-dismiss="modal">&times;</button>
+					</div>
+					<div class="modal-body">
+						<p>Bạn có chắc chắn muốn <strong>từ chối</strong> các yêu cầu đã chọn không?</p>
+						<div class="form-group">
+							<label for="bulkRejectionReason">Lý do từ chối</label>
+							<textarea id="bulkRejectionReason" class="form-control" rows="3"
+								placeholder="Vui lòng nhập lý do từ chối"></textarea>
+						</div>
+					</div>
+					<div class="modal-footer">
+						<button class="btn btn-secondary" data-dismiss="modal">Hủy</button>
+						<button class="btn btn-danger" id="confirmBulkReject">Xác nhận từ chối</button>
+					</div>
+				</div>
+			</div>
+		</div>
+		<!--New character information form-->
+		<div class="modal fade" id="addRoleModal" tabindex="-1" role="dialog" aria-labelledby="addRoleModalLabel">
+			<div class="modal-dialog" role="document">
+				<div class="modal-content">
+					<div class="modal-header">
+						<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
+								aria-hidden="true">&times;</span></button>
+						<h4 class="modal-title" id="addRoleModalLabel">New order request</h4>
+					</div>
+					<div class="modal-body">
+						<form class="form-horizontal" role="form">
+							<div class="form-group">
+								<label class="col-sm-2 control-label" for="add-username-input">Username</label>
+								<div class="col-sm-4">
+									<select class="form-control" id="add-username-input"></select>
+								</div>
+
+								<label class="col-sm-2 control-label" for="add-medicine-code-input">Medicine
+									Code</label>
+								<div class="col-sm-4">
+									<select class="form-control" id="add-medicine-code-input"></select>
+								</div>
+							</div>
+							<div class="form-group">
+								<label class="col-sm-2 control-label" for="add-quantity-input">Quantity</label>
+								<div class="col-sm-4">
+									<input type="text" class="form-control" id="add-quantity-input"
+										placeholder="Please enter the new quantity">
+								</div>
+							</div>
+						</form>
+					</div>
+					<div class="modal-footer">
+						<button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+						<button type="button" class="btn btn-primary" id="add-submit-btn">Submit</button>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</body>
+
+</html>

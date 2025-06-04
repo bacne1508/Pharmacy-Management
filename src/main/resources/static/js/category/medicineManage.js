@@ -1,6 +1,6 @@
 let currentPage = 0;
 const size = 5;
-
+var presentId = 0; // Global variable to hold the ID of the medicine being edited
 $(document).ready(function() {
 	mount(new AdminPanel({ active: 0 }), document.querySelector(".nav-left-container"));
 	const searchContainer = document.querySelector(".user-search-list");
@@ -160,7 +160,8 @@ function getEditForm(id) {
         salePrice: $('#edit-sale-price-input').val(),
         quantity: $('#edit-quantity-input').val(),
         dateOfManufacture: $('#edit-date-of-manufacture-input').val(),
-        productExpiryDate: $('#edit-product-expiry-date-input').val()
+        productExpiryDate: $('#edit-product-expiry-date-input').val(),
+        supplierId: $('#edit-supplier-input').val() // Assuming you have a supplier ID input
     };
 }
 
@@ -271,6 +272,7 @@ function renderRole(roles) {
 					'<td>' + safeValue(roleAcc.medicineGroupsCode) + '</td>' +
 					'<td>' + safeValue(roleAcc.medicineUnitsCode) + '</td>' +
 					'<td>' + safeValue(roleAcc.medicineTypesCode) + '</td>' +
+					'<td>' + safeValue(roleAcc.supplierCode) + '</td>' +
 					'<td style="width: 150px;min-width: 300px;">' + safeValue(roleAcc.ingredient) + '</td>' +
 					'<td style="width: 150px;min-width: 300px;">' + safeValue(roleAcc.strength) + '</td>' +
 					'<td>' + safeValue(roleAcc.manufacturer) + '</td>' +
@@ -287,7 +289,7 @@ function renderRole(roles) {
 					'<td>' + formatDateStr(roleAcc.updatedDate) + '</td>' +
 					'<td class="text-center min-wd-100">' + getEditBtn(roleAcc.id, roleAcc.medicineImages, roleAcc.code, roleAcc.name, roleAcc.description,
 					 roleAcc.medicineGroupsCode, roleAcc.medicineUnitsCode, roleAcc.medicineTypesCode, roleAcc.ingredient, roleAcc.strength, roleAcc.manufacturer, roleAcc.originCountry,
-					  roleAcc.purchasePrice, roleAcc.salePrice, roleAcc.quantity, roleAcc.dateOfManufacture, roleAcc.productExpiryDate ) + '</td>' +
+					  roleAcc.purchasePrice, roleAcc.salePrice, roleAcc.quantity, roleAcc.dateOfManufacture, roleAcc.productExpiryDate, roleAcc.supplierId ) + '</td>' +
 					'<td class="text-center min-wd-100">' + getDelBtn(roleAcc.id) + '</td>' +
 					'<td class="text-center min-wd-100">' + getViewBarcode(roleAcc.code, roleAcc.name, roleAcc.salePrice) + '</td>' +
 				'</tr>';
@@ -305,7 +307,8 @@ function renderRole(roles) {
  * @return
  */
 function getEditBtn(id, medicineImages, code, name, description, medicineGroupsCode, medicineUnitsCode, 
-		medicineTypesCode, ingredient, strength, manufacturer, originCountry, purchasePrice, salePrice, quantity, dateOfManufacture, productExpiryDate) {
+		medicineTypesCode, ingredient, strength, manufacturer, originCountry, purchasePrice, salePrice, quantity, dateOfManufacture, productExpiryDate,
+		supplierId) {
 	return `<button class='btn btn-primary'
                 data-id="${id}"
                 data-code="${safeValue(code)}"
@@ -324,6 +327,7 @@ function getEditBtn(id, medicineImages, code, name, description, medicineGroupsC
                 data-dateofmanufacture="${safeValue(dateOfManufacture)}"
                 data-productexpirydate="${safeValue(productExpiryDate)}"
                 data-medicineimages='${medicineImages}'
+                data-supplierId="${safeValue(supplierId)}"
                 onclick='handleEditClick(this)'>Edit</button>`;
 }
 
@@ -345,9 +349,10 @@ function handleEditClick(btn) {
     const dateOfManufacture = btn.dataset.dateofmanufacture;
     const productExpiryDate = btn.dataset.productexpirydate;
     const medicineImages = btn.dataset.medicineimages;
+    const supplierId = btn.dataset.supplierid;
 
     editRole(id, medicineImages, code, name, description, groupCode, unitCode, typeCode, ingredient,
-        strength, manufacturer, originCountry, purchasePrice, salePrice, quantity, dateOfManufacture, productExpiryDate);
+        strength, manufacturer, originCountry, purchasePrice, salePrice, quantity, dateOfManufacture, productExpiryDate, supplierId);
 }
 
 function getViewBarcode(code, name, salePrice) {
@@ -436,7 +441,7 @@ function renderSelect() {
  * @param pwd
  */
 function editRole(id, medicineImages, code, name, description, groupCode, unitCode, typeCode, ingredient, strength, 
-manufacturer, originCountry, purchasePrice, salePrice, quantity, dateOfManufacture, productExpiryDate) {
+manufacturer, originCountry, purchasePrice, salePrice, quantity, dateOfManufacture, productExpiryDate, supplierId) {
     presentId = id;
     //Rendering the original information
     $('#edit-code-input').val(code);
@@ -454,6 +459,7 @@ manufacturer, originCountry, purchasePrice, salePrice, quantity, dateOfManufactu
     $('#edit-quantity-input').val(quantity);
     $('#edit-date-of-manufacture-input').val(dateOfManufacture);
     $('#edit-product-expiry-date-input').val(productExpiryDate);
+    $('#edit-suppier-input').val(supplierId);
     
     // Hiển thị ảnh preview
     const previewDiv = document.getElementById("edit-image-preview");
@@ -466,6 +472,7 @@ manufacturer, originCountry, purchasePrice, salePrice, quantity, dateOfManufactu
 	loadSelectOptions('/api/auth/medicine/group/medicine-groups', 'edit-medicine-groups-code-input', groupCode);
     loadSelectOptions('/api/auth/medicine/unit/medicine-units', 'edit-medicine-units-code-input', unitCode);
     loadSelectOptions('/api/auth/medicine/type/medicine-types', 'edit-medicine-types-code-input', typeCode);
+    loadSelectOptions('/api/auth/medicine/supplier/supplier-groups', 'edit-supplier-input', supplierId)
     $('#editUserModal').modal("toggle");
 }
 
@@ -544,7 +551,8 @@ function getAddForm() {
         salePrice: $('#add-sale-price-input').val(),
         quantity: $('#add-quantity-input').val(),
         dateOfManufacture: $('#add-date-of-manufacture-input').val(),
-        productExpiryDate: $('#add-product-expiry-date-input').val()
+        productExpiryDate: $('#add-product-expiry-date-input').val(),
+        supplierId: $('#add-supplier-input').val() // Assuming you have a supplier ID input
     };
 }
 
@@ -597,7 +605,8 @@ async function loadMedicineSelectOptions() {
   await Promise.all([
     loadSelectOptions('/api/auth/medicine/group/medicine-groups', 'add-medicine-groups-code-input', ''),   
     loadSelectOptions('/api/auth/medicine/unit/medicine-units', 'add-medicine-units-code-input', ''),
-    loadSelectOptions('/api/auth/medicine/type/medicine-types', 'add-medicine-types-code-input', '')
+    loadSelectOptions('/api/auth/medicine/type/medicine-types', 'add-medicine-types-code-input', ''),   
+    loadSelectOptions('/api/auth/medicine/supplier/supplier-groups', 'add-supplier-input', '')
   ]);
 }
 

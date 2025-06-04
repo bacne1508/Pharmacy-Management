@@ -40,6 +40,8 @@ public class MedicineDto extends AbstractCreatedTracking {
     private String barcode; // Mã vạch của thuốc
     private int stockQuantity; // Số lượng tồn kho
     private int minStockLevel; // Mức tồn kho tối thiểu
+    private int supplierId; // ID nhà cung cấp
+    private String supplierCode; // Mã nhà cung cấp
     
     public MedicineDto() {
         // Default constructor
@@ -74,5 +76,7 @@ public class MedicineDto extends AbstractCreatedTracking {
         this.barcode = entity.getBarcode();
         this.stockQuantity = entity.getStockQuantity();
         this.minStockLevel = entity.getMinStockLevel();
+        this.supplierId = entity.getSupplierId();
+        this.supplierCode = entity.getSupplierCode();
     }
 }

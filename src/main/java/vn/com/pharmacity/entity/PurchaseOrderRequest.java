@@ -31,7 +31,7 @@ public class PurchaseOrderRequest extends AbstractCreatedTracking {
     private Long medicineId;
     
     @Column(name = "quantity")
-    private BigDecimal quantity;
+    private Integer quantity;
     
     @Column(name = "status")
     private String status; // 'PENDING', 'APPROVED', 'LINKED', 'REJECTED'

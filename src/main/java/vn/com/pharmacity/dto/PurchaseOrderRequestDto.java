@@ -13,7 +13,7 @@ public class PurchaseOrderRequestDto extends AbstractCreatedTracking {
     private Long id; // ID of the purchase order request
     private Long userId; // ID of the user who created the request
     private Long medicineId; // ID of the requested medicine
-    private BigDecimal quantity; // Quantity of the medicine requested
+    private Integer quantity; // Quantity of the medicine requested
     private String status; // Status of the request: 'PENDING', 'APPROVED', 'LINKED', 'REJECTED'
     private Long linkedPoId; // ID of the linked Purchase Order if applicable
     private String rejectReason; // Reason for rejection if applicable

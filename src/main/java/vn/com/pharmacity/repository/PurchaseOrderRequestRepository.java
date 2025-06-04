@@ -21,4 +21,7 @@ public interface PurchaseOrderRequestRepository extends DbRepository<PurchaseOrd
 
     List<PurchaseOrderRequestDto> findAllById(@Param("ids") List<Long> ids);
 
+    @Modifying
+    void updatePoIdById(@Param("form") PurchaseOrderRequestDto reqDto);
+
 }

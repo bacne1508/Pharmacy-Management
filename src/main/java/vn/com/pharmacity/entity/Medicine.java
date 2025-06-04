@@ -86,4 +86,9 @@ public class Medicine extends AbstractCreatedTracking {
     
     @Column(name="min_stock_level")
     private int minStockLevel; // Minimum stock level before reordering
+    
+    @Column(name="supplier_id")
+    private int supplierId; // ID of the supplier for this medicine
+    
+    private String supplierCode; // Supplier code for easy reference
 }

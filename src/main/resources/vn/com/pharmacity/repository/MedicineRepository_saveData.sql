@@ -17,7 +17,8 @@ INSERT INTO Medicine (
     Product_expiry_date, 
     is_active,
     created_Date,
-    created_By
+    created_By,
+    supplier_id
 ) VALUES (
 /*form.code*/
 ,
@@ -56,4 +57,6 @@ INSERT INTO Medicine (
 /*form.createdDate*/
 ,
 /*form.createdBy*/
+,
+/*form.supplierId*/
 );
