@@ -22,16 +22,6 @@ manufacturer = /*form.manufacturer*/
 ,
 origin_Country = /*form.originCountry*/
 ,
-purchase_Price = /*form.purchasePrice*/
-,
-sale_Price = /*form.salePrice*/
-,
-quantity = /*form.quantity*/
-,
-date_Of_Manufacture = /*form.dateOfManufacture*/
-,
-product_Expiry_Date = /*form.productExpiryDate*/
-,
 is_Active = 1
 ,
 updated_Date = /*form.updatedDate*/

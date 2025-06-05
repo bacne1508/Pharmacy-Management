@@ -60,13 +60,13 @@ public class MedicineUnitServiceImpl
         if (dto.getId() == 0) {
             // Create
             if (!existing.isEmpty()) {
-                throw new RuntimeException(MEDICINE_GROUP_CREATE_ERROR);
+                throw new RuntimeException(MEDICINE_GROUP_EXIST);
             }
             medicineUnitRepository.saveData(dto);
         } else {
             // Update
             if (existing == null || existing.isEmpty()) {
-                throw new RuntimeException(MEDICINE_GROUP_EXIST);
+                throw new RuntimeException(MEDICINE_GROUP_CREATE_ERROR);
             }
             if (existing.size() > 1) {
                 throw new RuntimeException(MEDICINE_GROUP_EXIST);

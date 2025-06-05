@@ -71,7 +71,7 @@ public abstract class BaseRestServiceImpl<T extends ObjectDataRes<E>, E, ID> imp
             return ResponseVO.buildSuccess(saveEntity(objectDto));
         } catch (Exception e) {
             log.error("Error saving entity", e);
-            return ResponseVO.buildFailure("Error saving entity");
+            return ResponseVO.buildFailure(e.getMessage());
         }
     }
 
@@ -83,7 +83,7 @@ public abstract class BaseRestServiceImpl<T extends ObjectDataRes<E>, E, ID> imp
             return ResponseVO.buildSuccess();
         } catch (Exception e) {
             log.error("Error deleting entity", e);
-            return ResponseVO.buildFailure("Error deleting entity");
+            return ResponseVO.buildFailure(e.getMessage());
         }
     }
 
@@ -98,7 +98,7 @@ public abstract class BaseRestServiceImpl<T extends ObjectDataRes<E>, E, ID> imp
             return ResponseVO.buildSuccess(dto);
         } catch (Exception e) {
             log.error("Error retrieving detail", e);
-            return ResponseVO.buildFailure("Error retrieving detail");
+            return ResponseVO.buildFailure(e.getMessage());
         }
     }
 }

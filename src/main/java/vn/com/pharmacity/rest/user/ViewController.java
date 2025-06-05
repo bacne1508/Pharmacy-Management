@@ -76,6 +76,11 @@ public class ViewController {
         return "category/medicineStorageManage";
     }
 
+    @GetMapping("/admin/medicine/stock/manage")
+    public String getMedicineStockManage() {
+        return "category/medicineStockManage";
+    }
+
     @GetMapping("/admin/purchase/order/request/manage")
     public String getPurchaseOrderRequestManage() {
         return "Purchase/purchaseOrderRequestManage";

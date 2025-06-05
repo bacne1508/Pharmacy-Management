@@ -1,0 +1,2 @@
+INSERT Stock (medicine_id, batch_no, expiry_date, quantity, unit_price, warehouse_id, CREATED_DATE, CREATED_BY)
+VALUES (/*form.medicineId*/, /*form.batchNo*/, /*form.expiryDate*/, /*form.quantity*/, /*form.unitPrice*/, /*form.warehouseId*/, /*form.createdDate*/, /*form.createdBy*/)

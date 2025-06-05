@@ -1,6 +1,6 @@
-SELECT *, s.Full_Name AS supplier_code FROM Medicine
+SELECT m.*, s.Full_Name AS supplier_code FROM Medicine m
 LEFT JOIN Suppliers s ON
-	Medicine.supplier_id = s.id
+	m.supplier_id = s.id
 WHERE Is_Active = 1
 /*IF name != NULL && name != ''*/
 	AND name LIKE CONCAT('%', /*name*/'', '%')

@@ -156,11 +156,11 @@ function getEditForm(id) {
         strength: $('#edit-strength-input').val(),
         manufacturer: $('#edit-manufacturer-input').val(),
         originCountry: $('#edit-origin-country-input').val(),
-        purchasePrice: $('#edit-purchase-price-input').val(),
+        /*purchasePrice: $('#edit-purchase-price-input').val(),
         salePrice: $('#edit-sale-price-input').val(),
         quantity: $('#edit-quantity-input').val(),
         dateOfManufacture: $('#edit-date-of-manufacture-input').val(),
-        productExpiryDate: $('#edit-product-expiry-date-input').val(),
+        productExpiryDate: $('#edit-product-expiry-date-input').val(),*/
         supplierId: $('#edit-supplier-input').val() // Assuming you have a supplier ID input
     };
 }
@@ -277,11 +277,11 @@ function renderRole(roles) {
 					'<td style="width: 150px;min-width: 300px;">' + safeValue(roleAcc.strength) + '</td>' +
 					'<td>' + safeValue(roleAcc.manufacturer) + '</td>' +
 					'<td>' + safeValue(roleAcc.originCountry) + '</td>' +
-					'<td>' + safeValue(roleAcc.purchasePrice) + '</td>' +
+					/*'<td>' + safeValue(roleAcc.purchasePrice) + '</td>' +
 					'<td>' + safeValue(roleAcc.salePrice) + '</td>' +
 					'<td>' + safeValue(roleAcc.quantity) + '</td>' +
 					'<td>' + safeValue(roleAcc.dateOfManufacture) + '</td>' +
-					'<td>' + safeValue(roleAcc.productExpiryDate) + '</td>' +
+					'<td>' + safeValue(roleAcc.productExpiryDate) + '</td>' +*/
 					'<td>' + safeValue(roleAcc.isActive) + '</td>' +
 					'<td>' + safeValue(roleAcc.createdBy) + '</td>' +
 					'<td>' + formatDateStr(roleAcc.createdDate) + '</td>' +
@@ -510,18 +510,6 @@ function validateEditForm(form) {
     }
     if (!form.manufacturer) {
         alert("Please enter the manufacturer!");
-        return false;
-    }
-    if (!form.purchasePrice) {
-        alert("Please enter the purchase price!");
-        return false;
-    }
-    if (!form.salePrice) {
-        alert("Please enter the sale price!");
-        return false;
-    }
-    if (!form.quantity) {
-        alert("Please enter the quantity!");
         return false;
     }
     return true;

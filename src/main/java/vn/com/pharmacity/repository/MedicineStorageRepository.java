@@ -1,10 +1,12 @@
 package vn.com.pharmacity.repository;
 
+import java.util.Collection;
 import java.util.List;
 
 import org.springframework.data.repository.query.Param;
 
 import jp.xet.springframework.data.mirage.repository.query.Modifying;
+import vn.com.pharmacity.dto.CommonDto;
 import vn.com.pharmacity.dto.MedicineStorageDto;
 import vn.com.pharmacity.entity.MedicineStorage;
 
@@ -23,4 +25,6 @@ public interface MedicineStorageRepository extends DbRepository<MedicineStorage,
     MedicineStorageDto updateDate(@Param("form") MedicineStorage entity);
 
     List<MedicineStorage> getDataByCondition(@Param("code") String warehouseCode);
+
+    Collection<CommonDto> getAllStorage();
 }

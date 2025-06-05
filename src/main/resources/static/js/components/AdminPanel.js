@@ -49,6 +49,7 @@ class AdminPanel extends Component {
 		                        <li role="presentation" data-menu-id="medicine-type-manage"><a href="/admin/medicine/type/manage"><i class="fa fa-plus-square sub-icon"></i> Medicine Type Management</a></li>
 		                        <li role="presentation" data-menu-id="medicine-unit-manage"><a href="/admin/medicine/unit/manage"><i class="fa fa-ticket sub-icon"></i> Medicine Unit Management</a></li>
 		                        <li role="presentation" data-menu-id="storage-manage"><a href="/admin/medicine/storage/manage"><i class="fa fa-recycle sub-icon"></i> Storage Management</a></li>
+		                        <li role="presentation" data-menu-id="stock-manage"><a href="/admin/medicine/stock/manage"><i class="fa fa-recycle sub-icon"></i> Stock Management</a></li>
 		                        <li role="presentation" data-menu-id="branch-manage"><a href="/admin/medicine/branch/manage"><i class="fa fa-building sub-icon"></i> Branch Management</a></li>
 		                        <li role="presentation" data-menu-id="supplier-manage"><a href="/admin/medicine/supplier/manage"><i class="fa fa-id-badge sub-icon"></i> Supplier</a></li>
 		                    </ul>

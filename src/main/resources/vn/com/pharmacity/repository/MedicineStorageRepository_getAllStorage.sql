@@ -1,0 +1,1 @@
+SELECT ID as ID, Warehouse_code as code, Warehouse_Name as name FROM Warehouses

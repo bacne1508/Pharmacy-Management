@@ -13,6 +13,7 @@ import vn.com.pharmacity.req.BulkActionRequest;
 import vn.com.pharmacity.response.ObjectDataRes;
 import vn.com.pharmacity.rest.BaseRestController;
 import vn.com.pharmacity.service.purchase.PurchaseOrderRequestService;
+import vn.com.pharmacity.webapp.ResponseVO;
 
 /**
  * @author Bac
@@ -34,7 +35,7 @@ public class PurchaseOrderRequestManagementController extends BaseRestController
             purchaseOrderRequestService.approveRequestsByIds(req.getIds(), req.getReason());
             return ResponseEntity.ok().build();
         } catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Lỗi xử lý");
+            return ResponseEntity.ok(ResponseVO.buildFailure(e.getMessage()));
         }
     }
 

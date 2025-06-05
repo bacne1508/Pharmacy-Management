@@ -460,19 +460,27 @@ function flowApproveAndReject() {
 			    ids: ids
 			  };
 			  $.ajax({
-			    url: url,
-			    method: 'POST',
-			    contentType: 'application/json',
-			    data: JSON.stringify(payload),
-			    success: function () {
-			      alert('Thao tác thành công!');
-			      $('#confirmActionModal').modal('hide');
-			      location.reload();
-			    },
-			    error: function () {
-			      alert('Có lỗi xảy ra.');
-			    }
-			  });
+				  url: url,
+				  method: 'POST',
+				  contentType: 'application/json',
+				  data: JSON.stringify(payload),
+				  success: function (data) {
+				    if (data.success) {
+				      if (data.content && data.content.success) {
+				        alert("Thao tác thành công!");
+				        $('#confirmActionModal').modal('hide');
+				        location.reload(); // hoặc fetch lại dữ liệu nếu không muốn reload toàn bộ
+				      } else {
+				        alert("Lỗi: " + (data.content?.message || "Không rõ nguyên nhân"));
+				      }
+				    } else {
+				      alert("Lỗi: " + (data.message || "Không rõ nguyên nhân"));
+				    }
+				  },
+				  error: function (xhr) {
+				    alert("Có lỗi xảy ra: " + (xhr.responseText || "Lỗi hệ thống"));
+				  }
+				});
 
 		} else if (action === "REJECTED") {
 			// Mở modal lý do từ chối
@@ -505,7 +513,7 @@ function flowApproveAndReject() {
 			    contentType: 'application/json',
 			    data: JSON.stringify(payload),
 			    success: function () {
-			      alert('Thao tác thành công!');
+			      alert('Từ chối yêu cầu đặt hàng thành công với lý do: ' + reason);
 			      $('#confirmActionModal').modal('hide');
 			      location.reload();
 			    },

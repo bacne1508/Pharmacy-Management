@@ -63,13 +63,13 @@ implements MedicineSupplierService {
         if (dto.getId() == 0) {
             // Create
             if (!existing.isEmpty()) {
-                throw new RuntimeException(SUPPLIER_GROUP_CREATE_ERROR);
+                throw new RuntimeException(SUPPLIER_EXIST);
             }
             supplierRepository.saveData(dto);
         } else {
             // Update
             if (existing == null || existing.isEmpty()) {
-                throw new RuntimeException(SUPPLIER_EXIST);
+                throw new RuntimeException(SUPPLIER_GROUP_CREATE_ERROR);
             }
             if (existing.size() > 1) {
                 throw new RuntimeException(SUPPLIER_EXIST);

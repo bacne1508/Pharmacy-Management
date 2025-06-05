@@ -5,6 +5,7 @@ import java.time.ZoneId;
 import java.util.Date;
 import java.util.List;
 import java.util.Objects;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,10 +21,12 @@ import vn.com.pharmacity.annotation.CoreReadOnlyTx;
 import vn.com.pharmacity.constant.AppCoreConstant;
 import vn.com.pharmacity.dto.PurchaseOrderRequestDto;
 import vn.com.pharmacity.entity.Medicine;
+import vn.com.pharmacity.entity.MedicineStock;
 import vn.com.pharmacity.entity.PurchaseOrder;
 import vn.com.pharmacity.entity.PurchaseOrderDetail;
 import vn.com.pharmacity.entity.PurchaseOrderRequest;
 import vn.com.pharmacity.repository.MedicineRepository;
+import vn.com.pharmacity.repository.MedicineStockRepository;
 import vn.com.pharmacity.repository.PurchaseOrderDetailsRepository;
 import vn.com.pharmacity.repository.PurchaseOrderRepository;
 import vn.com.pharmacity.repository.PurchaseOrderRequestRepository;
@@ -62,6 +65,9 @@ public class PurchaseOrderRequestServiceImpl
 
     @Autowired
     PurchaseOrderDetailsRepository purchaseOrderDetailsRepository;
+    
+    @Autowired
+    MedicineStockRepository stockRepository;
 
     private static final String MEDICINE_NOT_EXIST = "Request not exists!";
 
@@ -143,44 +149,75 @@ public class PurchaseOrderRequestServiceImpl
         }
     }
 
+    /**
+     * luồng tạo đơn hàng từ yêu cầu:
+     * 1   Kiểm tra tồn kho đủ để xử lý không
+     * 2   Khóa locked_quantity nếu đủ
+     * 3   Tạo đơn hàng nếu chưa có
+     * 4   Ghi PurchaseOrderDetail có thông tin batch
+     * 5   Gắn linkedPoId vào reqDto để phản hồi
+     * 
+     * @param reqDto
+     */
     @AuditAction(actionType = "DRAFT")
     private void createPOFromRequest(PurchaseOrderRequestDto reqDto) {
         Medicine medicine = medicineRepository.findOne(reqDto.getMedicineId());
-        if (Objects.isNull(medicine)) {
+        if (medicine == null) {
             throw new RuntimeException(MEDICINE_NOT_EXIST);
         }
+
         String currentUser = SecurityContextHolder.getContext().getAuthentication().getName();
-        PurchaseOrder po = new PurchaseOrder();
         LocalDate localDate = LocalDate.now().plusDays(3);
         Date expectedDeliveryDate = Date.from(localDate.atStartOfDay(ZoneId.systemDefault()).toInstant());
-        // set thông tin đơn hàng
-        PurchaseOrder existingDraftOrder = purchaseOrderRepository.findDraftByUserId(currentUser);
-        if (Objects.isNull(existingDraftOrder)) {
-            // Tạo mới đơn hàng
-            po.setPoCode(purchaseOrderService.generatePoCode("PurchaseOrders", "po_code", "PO_", 5)); // Gen mã đơn hàng
-                                                                                                      // mới
+
+        // 1. Kiểm tra tồn kho theo thuốc (và có thể theo batch/warehouse) 
+        Optional<MedicineStock> stockOpt = stockRepository.findAvailableStock(medicine.getId());
+        if (stockOpt.isEmpty()) {
+            throw new RuntimeException("Không tìm thấy tồn kho cho thuốc [" + medicine.getName() + "]");
+        }
+
+        MedicineStock stock = stockOpt.get();
+        int availableQty = stock.getQuantity() - stock.getLockedQuantity() - stock.getUsedQuantity();
+        if (availableQty < reqDto.getQuantity()) {
+            throw new RuntimeException("Không đủ tồn kho: cần " + reqDto.getQuantity() + ", còn " + availableQty);
+        }
+
+        // 2. Nếu đủ kho thì lock lại: nếu số lượng tồn kho không đủ thì sẽ ném exception
+        int updated = stockRepository.lockStock(medicine.getId(), stock.getWarehouseId(), stock.getBatchNo(), reqDto.getQuantity());
+        if (updated == 0) {
+            throw new RuntimeException("Không thể khóa tồn kho, có thể bị tranh chấp hoặc không đủ số lượng.");
+        }
+
+        // 3. Tạo mới hoặc lấy đơn hàng DRAFT của user
+        PurchaseOrder po = purchaseOrderRepository.findDraftByUserId(currentUser);
+        if (po == null) {
+            po = new PurchaseOrder();
+            po.setPoCode(purchaseOrderService.generatePoCode("PurchaseOrders", "po_code", "PO_", 5));
             po.setSupplierId(medicine.getSupplierId());
             po.setStatus("DRAFT");
-            po.setExpectedDeliveryDate(expectedDeliveryDate); // Ngày giao hàng dự kiến
+            po.setExpectedDeliveryDate(expectedDeliveryDate);
             po.setCreatedFrom(currentUser);
             po.setCreatedDate(new Date());
             po.setCreatedBy(currentUser);
             po = purchaseOrderRepository.savePOFromRequest(po);
         }
-        // set thông tin chi tiết đơn hàng
+
+        // 4. Tạo chi tiết đơn hàng
         PurchaseOrderDetail detail = new PurchaseOrderDetail();
-        detail.setPurchaseOrderId(po.getId() == null ? existingDraftOrder.getId() : po.getId());
+        detail.setPurchaseOrderId(po.getId());
         detail.setMedicineId(reqDto.getMedicineId());
         detail.setQuantity(reqDto.getQuantity());
         detail.setUnitPrice(medicine.getSalePrice());
         detail.setExpiryDate(expectedDeliveryDate);
         detail.setCreatedDate(new Date());
         detail.setCreatedBy(currentUser);
+        detail.setBatchNo(stock.getBatchNo()); // Ghi nhận batch đã sử dụng trong detail
         purchaseOrderDetailsRepository.saveDataRequestPO(detail);
-        
-        // Cập nhật trạng thái yêu cầu
-        reqDto.setLinkedPoId(detail.getPurchaseOrderId());
+
+        // 5. Gắn ID PO vào yêu cầu để tracking
+        reqDto.setLinkedPoId(po.getId());
     }
+
 
     @Override
     @AuditAction(actionType = "REJECTED")

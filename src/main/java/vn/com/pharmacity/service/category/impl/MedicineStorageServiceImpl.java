@@ -1,5 +1,6 @@
 package vn.com.pharmacity.service.category.impl;
 
+import java.util.Collection;
 import java.util.Date;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -13,6 +14,7 @@ import org.springframework.util.MultiValueMap;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j;
 import vn.com.pharmacity.annotation.CoreReadOnlyTx;
+import vn.com.pharmacity.dto.CommonDto;
 import vn.com.pharmacity.dto.MedicineStorageDto;
 import vn.com.pharmacity.entity.MedicineStorage;
 import vn.com.pharmacity.repository.MedicineStorageRepository;
@@ -63,7 +65,7 @@ extends BaseRestServiceImpl<ObjectDataRes<MedicineStorageDto>, MedicineStorageDt
         if (dto.getId() == 0) {
             // Create
             if (!existing.isEmpty()) {
-                throw new RuntimeException(STORAGE_CREATE_ERROR);
+                throw new RuntimeException(MEDICINE_EXIST);
             }
             dto.setCreatedBy(SecurityContextHolder.getContext().getAuthentication().getName());
             dto.setCreatedDate(new Date());
@@ -71,7 +73,7 @@ extends BaseRestServiceImpl<ObjectDataRes<MedicineStorageDto>, MedicineStorageDt
         } else {
             // Update
             if (existing == null || existing.isEmpty()) {
-                throw new RuntimeException(MEDICINE_EXIST);
+                throw new RuntimeException(STORAGE_CREATE_ERROR);
             }
             if (existing.size() > 1) {
                 throw new RuntimeException(MEDICINE_EXIST);
@@ -101,6 +103,11 @@ extends BaseRestServiceImpl<ObjectDataRes<MedicineStorageDto>, MedicineStorageDt
         response.setTotalData((int) page.getTotalElements());
         response.setDatas(page.getContent());
         return response;
+    }
+
+    @Override
+    public Collection<CommonDto> findAll() {
+        return medicineStorageRepository.getAllStorage();
     }
 
 }

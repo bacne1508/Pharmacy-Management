@@ -67,7 +67,7 @@ implements MedicineBranchService {
         if (dto.getId() == 0) {
             // Create
             if (!existing.isEmpty()) {
-                throw new RuntimeException(BRANCH_CREATE_ERROR);
+                throw new RuntimeException(BRANCH_EXIST);
             }
             dto.setCreatedBy(SecurityContextHolder.getContext().getAuthentication().getName());
             dto.setCreatedDate(new Date());
@@ -75,7 +75,7 @@ implements MedicineBranchService {
         } else {
             // Update
             if (existing == null || existing.isEmpty()) {
-                throw new RuntimeException(BRANCH_EXIST);
+                throw new RuntimeException(BRANCH_CREATE_ERROR);
             }
             if (existing.size() > 1) {
                 throw new RuntimeException(BRANCH_EXIST);

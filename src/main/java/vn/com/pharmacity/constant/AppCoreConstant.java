@@ -62,6 +62,7 @@ public class AppCoreConstant {
     public static final String TABLE_MEDICINE_SUPPLIER = "Suppliers";
     public static final String TABLE_MEDICINE_BRANCH = "Branches";
     public static final String TABLE_MEDICINE_STORAGE = "Warehouses";
+    public static final String TABLE_MEDICINE_STOCK = "Stock";
     public static final String TABLE_PURCHASE_ORDER_REQUEST = "PurchaseOrderRequest";
     public static final String TABLE_PURCHASE_ORDER_DETAILS = "PurchaseOrderDetails";
     public static final String TABLE_PURCHASE_ORDER = "PurchaseOrders";
