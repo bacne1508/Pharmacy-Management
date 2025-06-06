@@ -265,28 +265,28 @@ function renderRole(roles) {
 		for (let roleAcc of roles) {
 			roleTableContent +=
 				'<tr>' +
-					'<td>' + renderImage(roleAcc.medicineImages) + '</td>' +
-					'<td>' + safeValue(roleAcc.code) + '</td>' +
-					'<td>' + safeValue(roleAcc.name) + '</td>' +
+					'<td class="text-center">' + renderImage(roleAcc.medicineImages) + '</td>' +
+					'<td class="text-center">' + safeValue(roleAcc.code) + '</td>' +
+					'<td class="text-center">' + safeValue(roleAcc.name) + '</td>' +
 					'<td style="width: 150px;min-width: 400px;">' + safeValue(roleAcc.description) + '</td>' +
-					'<td>' + safeValue(roleAcc.medicineGroupsCode) + '</td>' +
-					'<td>' + safeValue(roleAcc.medicineUnitsCode) + '</td>' +
-					'<td>' + safeValue(roleAcc.medicineTypesCode) + '</td>' +
-					'<td>' + safeValue(roleAcc.supplierCode) + '</td>' +
-					'<td style="width: 150px;min-width: 300px;">' + safeValue(roleAcc.ingredient) + '</td>' +
-					'<td style="width: 150px;min-width: 300px;">' + safeValue(roleAcc.strength) + '</td>' +
-					'<td>' + safeValue(roleAcc.manufacturer) + '</td>' +
-					'<td>' + safeValue(roleAcc.originCountry) + '</td>' +
+					'<td class="text-center">' + safeValue(roleAcc.medicineGroupsCode) + '</td>' +
+					'<td class="text-center">' + safeValue(roleAcc.medicineUnitsCode) + '</td>' +
+					'<td class="text-center">' + safeValue(roleAcc.medicineTypesCode) + '</td>' +
+					'<td class="text-center">' + safeValue(roleAcc.supplierCode) + '</td>' +
+					'<td class="text-center" style="width: 150px;min-width: 300px;">' + safeValue(roleAcc.ingredient) + '</td>' +
+					'<td class="text-center" style="width: 150px;min-width: 300px;">' + safeValue(roleAcc.strength) + '</td>' +
+					'<td class="text-center">' + safeValue(roleAcc.manufacturer) + '</td>' +
+					'<td class="text-center">' + safeValue(roleAcc.originCountry) + '</td>' +
 					/*'<td>' + safeValue(roleAcc.purchasePrice) + '</td>' +
 					'<td>' + safeValue(roleAcc.salePrice) + '</td>' +
 					'<td>' + safeValue(roleAcc.quantity) + '</td>' +
 					'<td>' + safeValue(roleAcc.dateOfManufacture) + '</td>' +
 					'<td>' + safeValue(roleAcc.productExpiryDate) + '</td>' +*/
-					'<td>' + safeValue(roleAcc.isActive) + '</td>' +
-					'<td>' + safeValue(roleAcc.createdBy) + '</td>' +
-					'<td>' + formatDateStr(roleAcc.createdDate) + '</td>' +
-					'<td>' + safeValue(roleAcc.updatedBy) + '</td>' +
-					'<td>' + formatDateStr(roleAcc.updatedDate) + '</td>' +
+					'<td class="text-center">' + safeValue(roleAcc.isActive) + '</td>' +
+					'<td class="text-center">' + safeValue(roleAcc.createdBy) + '</td>' +
+					'<td class="text-center">' + formatDateStr(roleAcc.createdDate) + '</td>' +
+					'<td class="text-center">' + safeValue(roleAcc.updatedBy) + '</td>' +
+					'<td class="text-center">' + formatDateStr(roleAcc.updatedDate) + '</td>' +
 					'<td class="text-center min-wd-100">' + getEditBtn(roleAcc.id, roleAcc.medicineImages, roleAcc.code, roleAcc.name, roleAcc.description,
 					 roleAcc.medicineGroupsCode, roleAcc.medicineUnitsCode, roleAcc.medicineTypesCode, roleAcc.ingredient, roleAcc.strength, roleAcc.manufacturer, roleAcc.originCountry,
 					  roleAcc.purchasePrice, roleAcc.salePrice, roleAcc.quantity, roleAcc.dateOfManufacture, roleAcc.productExpiryDate, roleAcc.supplierId ) + '</td>' +

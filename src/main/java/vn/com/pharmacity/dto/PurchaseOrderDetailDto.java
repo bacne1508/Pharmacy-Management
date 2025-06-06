@@ -35,6 +35,9 @@ public class PurchaseOrderDetailDto extends AbstractCreatedTracking {
 
     private String description;
     
+    private Long poRequestId; // This field is not present in the entity but is used for request purposes
+    private String poRequestGroup; // This field is not present in the entity but is used for request purposes
+    
     public PurchaseOrderDetailDto() {
         // Default constructor
     }
@@ -54,5 +57,7 @@ public class PurchaseOrderDetailDto extends AbstractCreatedTracking {
         this.updatedDate = purchaseOrderDetail.getUpdatedDate();
         this.deletedBy = purchaseOrderDetail.getDeletedBy();
         this.deletedDate = purchaseOrderDetail.getDeletedDate();
+        this.poRequestId = purchaseOrderDetail.getPoRequestId(); // Assuming this field exists in the entity
+        this.poRequestGroup = purchaseOrderDetail.getPoRequestGroup(); // Assuming this field exists in the entity
     }
 }

@@ -35,8 +35,8 @@ $(document).ready(function() {
 	});
 
 	$("#btnClear").on('click', function(event) {
-		document.getElementById('nameInput').value = '';
-		document.getElementById('codeInput').value = '';
+		document.getElementById('usernameInput').value = '';
+		document.getElementById('statusInput').value = '';
 		currentPage = 0;
 		fetchUsersSearch(currentPage, size);
 	});
@@ -210,7 +210,25 @@ function renderPagination(totalPages, current) {
 	}
 }
 
+function renderStatusBadge(status) {
+	let colorClass = '';
+	switch (status) {
+		case 'DRAFT':
+			colorClass = 'badge-secondary'; break; // màu xám nhạt
+		case 'APPROVED':
+			colorClass = 'badge-success'; break;
+		case 'REJECTED':
+			colorClass = 'badge-danger'; break;
+		case 'PENDING':
+			colorClass = 'badge-warning'; break;
+		case 'RECEIVED':
+			colorClass = 'badge-dark'; break;
+		default:
+			colorClass = 'badge-light'; break;
+	}
 
+	return `<span class="badge badge-pill ${colorClass}">${status}</span>`;
+}
 
 /**
  * Rendering the Cinema Character Table
@@ -229,15 +247,15 @@ function renderRole(roles) {
 
 			roleTableContent +=
 				'<tr>' +
-					'<td>' + checkbox + '</td>' +
-					'<td>' + safeValue(order.username) + '</td>' +
-					'<td>' + safeValue(order.medicineCode) + '</td>' +
-					'<td>' + safeValue(order.quantity) + '</td>' +
-					'<td>' + safeValue(order.status) + '</td>' +
-					'<td>' + safeValue(order.createdBy) + '</td>' +
-					'<td>' + formatDateStr(order.createdDate) + '</td>' +
-					'<td>' + safeValue(order.updatedBy) + '</td>' +
-					'<td>' + formatDateStr(order.updatedDate) + '</td>' +
+					'<td class="text-center">' + checkbox + '</td>' +
+					'<td class="text-center">' + safeValue(order.username) + '</td>' +
+					'<td class="text-center">' + safeValue(order.medicineCode) + '</td>' +
+					'<td class="text-center">' + safeValue(order.quantity) + '</td>' +
+					'<td class="text-center">' + renderStatusBadge(order.status) + '</td>' +
+					'<td class="text-center">' + safeValue(order.createdBy) + '</td>' +
+					'<td class="text-center">' + formatDateStr(order.createdDate) + '</td>' +
+					'<td class="text-center">' + safeValue(order.updatedBy) + '</td>' +
+					'<td class="text-center">' + formatDateStr(order.updatedDate) + '</td>' +
 					'<td class="text-center min-wd-100">' + getEditBtn(order.id, order.username, order.medicineCode, order.quantity, 
 					 order.status) + '</td>' +
 				'</tr>';
@@ -465,9 +483,9 @@ function flowApproveAndReject() {
 				  contentType: 'application/json',
 				  data: JSON.stringify(payload),
 				  success: function (data) {
-				    if (data.success) {
-				      if (data.content && data.content.success) {
-				        alert("Thao tác thành công!");
+				    if (data.success || data == '') {
+				      if (data.content || data.content.success || data == '') {
+				        alert("Duyệt đơn thành công!");
 				        $('#confirmActionModal').modal('hide');
 				        location.reload(); // hoặc fetch lại dữ liệu nếu không muốn reload toàn bộ
 				      } else {

@@ -1,6 +1,6 @@
 package vn.com.pharmacity.dto;
 
-import java.math.BigDecimal;
+import java.util.List;
 
 import lombok.Getter;
 import lombok.Setter;
@@ -23,6 +23,8 @@ public class PurchaseOrderRequestDto extends AbstractCreatedTracking {
     private String medicineName; // Name of the requested medicine
     private String medicineCode; // Code of the requested medicine
     
+    private String requestGroup; // automatically generated group for the request
+    
     public PurchaseOrderRequestDto() {
         // Default constructor
     }
@@ -44,5 +46,6 @@ public class PurchaseOrderRequestDto extends AbstractCreatedTracking {
         this.medicineName = purchaseOrderRequest.getMedicineName();
         this.medicineCode = purchaseOrderRequest.getMedicineCode();
         this.rejectReason = purchaseOrderRequest.getRejectReason();
+        this.requestGroup = purchaseOrderRequest.getRequestGroup();
     }
 }

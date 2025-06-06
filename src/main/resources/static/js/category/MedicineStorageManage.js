@@ -213,17 +213,17 @@ function renderRole(roles) {
 		for (let roleAcc of roles) {
 			roleTableContent +=
 				'<tr>' +
-					'<td>' + safeValue(roleAcc.warehouseCode) + '</td>' +
-					'<td>' + safeValue(roleAcc.warehouseName) + '</td>' +
-					'<td>' + safeValue(roleAcc.warehouseType) + '</td>' +
-					'<td>' + safeValue(roleAcc.branchesCode) + '</td>' +
-					'<td>' + safeValue(roleAcc.managerName) + '</td>' +
-					'<td>' + safeValue(roleAcc.phone) + '</td>' +
-					'<td>' + safeValue(roleAcc.isActive) + '</td>' +
-					'<td>' + safeValue(roleAcc.createdBy) + '</td>' +
-					'<td>' + formatDateStr(roleAcc.createdDate) + '</td>' +
-					'<td>' + safeValue(roleAcc.updatedBy) + '</td>' +
-					'<td>' + formatDateStr(roleAcc.updatedDate) + '</td>' +
+					'<td class="text-center">' + safeValue(roleAcc.warehouseCode) + '</td>' +
+					'<td class="text-center">' + safeValue(roleAcc.warehouseName) + '</td>' +
+					'<td class="text-center">' + safeValue(roleAcc.warehouseType) + '</td>' +
+					'<td class="text-center">' + safeValue(roleAcc.branchesCode) + '</td>' +
+					'<td class="text-center">' + safeValue(roleAcc.managerName) + '</td>' +
+					'<td class="text-center">' + safeValue(roleAcc.phone) + '</td>' +
+					'<td class="text-center">' + safeValue(roleAcc.isActive) + '</td>' +
+					'<td class="text-center">' + safeValue(roleAcc.createdBy) + '</td>' +
+					'<td class="text-center">' + formatDateStr(roleAcc.createdDate) + '</td>' +
+					'<td class="text-center">' + safeValue(roleAcc.updatedBy) + '</td>' +
+					'<td class="text-center">' + formatDateStr(roleAcc.updatedDate) + '</td>' +
 					'<td class="text-center min-wd-100">' + getEditBtn(roleAcc.id, roleAcc.warehouseCode, roleAcc.warehouseName, 
 					 roleAcc.warehouseType, roleAcc.branchesCode, roleAcc.managerName, roleAcc.phone ) + '</td>' +
 					'<td class="text-center min-wd-100">' + getDelBtn(roleAcc.id) + '</td>' +

@@ -6,6 +6,7 @@ import java.util.Date;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
+import java.util.UUID;
 import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -93,9 +94,11 @@ public class PurchaseOrderRequestServiceImpl
 //        List<PurchaseOrderRequest> existing = purchaseOrderRequestRepository.getDataByCondition(dto.getId());
 
         if (dto.getId() == 0) {
+            String requestGroup = UUID.randomUUID().toString();
             // Create
             dto.setCreatedBy(SecurityContextHolder.getContext().getAuthentication().getName());
             dto.setCreatedDate(new Date());
+            dto.setRequestGroup(requestGroup);
             purchaseOrderRequestRepository.saveData(dto);
         } else {
             PurchaseOrderRequest entity = purchaseOrderRequestRepository.findOne(dto.getId());
@@ -212,6 +215,8 @@ public class PurchaseOrderRequestServiceImpl
         detail.setCreatedDate(new Date());
         detail.setCreatedBy(currentUser);
         detail.setBatchNo(stock.getBatchNo()); // Ghi nhận batch đã sử dụng trong detail
+        detail.setPoRequestId(reqDto.getId()); // Gắn ID yêu cầu vào chi tiết đơn hàng
+        detail.setPoRequestGroup(reqDto.getRequestGroup()); // Gắn nhóm yêu cầu để tracking
         purchaseOrderDetailsRepository.saveDataRequestPO(detail);
 
         // 5. Gắn ID PO vào yêu cầu để tracking

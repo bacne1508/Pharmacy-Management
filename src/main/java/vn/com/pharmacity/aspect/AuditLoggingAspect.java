@@ -1,7 +1,9 @@
 package vn.com.pharmacity.aspect;
 
+import java.lang.reflect.Field;
 import java.util.Date;
 import java.util.List;
+import java.util.Map;
 
 import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.annotation.Around;
@@ -41,38 +43,54 @@ public class AuditLoggingAspect {
             error = ex;
             throw ex;
         } finally {
-            saveAuditLog(joinPoint, auditAction, error == null);
+            saveAuditLog(joinPoint, auditAction, error == null, error);
         }
     }
 
-    private void saveAuditLog(ProceedingJoinPoint joinPoint, AuditAction auditAction, boolean success) {
+    private void saveAuditLog(ProceedingJoinPoint joinPoint, AuditAction auditAction, boolean success, Throwable error) {
         Object[] args = joinPoint.getArgs();
-
         Long requestId = null;
-        String username = SecurityContextHolder.getContext().getAuthentication().getName(); 
+        String username = SecurityContextHolder.getContext().getAuthentication().getName();
 
         for (Object arg : args) {
             if (arg instanceof List) {
                 List<?> list = (List<?>) arg;
                 if (!list.isEmpty() && list.get(0) instanceof Long) {
                     requestId = (Long) list.get(0);
+                    break;
                 }
             } else if (arg instanceof Long) {
-                requestId = (Long) arg; 
+                requestId = (Long) arg;
+                break;
+            } else if (arg instanceof Map) {
+                Object id = ((Map<?, ?>) arg).get("id");
+                if (id instanceof Long) {
+                    requestId = (Long) id;
+                    break;
+                }
+            } else if (arg != null) {
+                try {
+                    Field idField = arg.getClass().getDeclaredField("id");
+                    idField.setAccessible(true);
+                    Object idValue = idField.get(arg);
+                    if (idValue instanceof Long) {
+                        requestId = (Long) idValue;
+                        break;
+                    }
+                } catch (NoSuchFieldException | IllegalAccessException ignored) {
+                }
             }
         }
 
+        AuditLog log = new AuditLog();
+        log.setRequestId(requestId);
+        log.setActionType(auditAction.actionType());
+        log.setActionBy(username);
+        log.setActionTime(new Date());
+        log.setRemarks(success ? "Success" : ("Failed: " + (error != null ? error.getMessage() : "Unknown")));
 
-        if (requestId != null) {
-            AuditLog log = new AuditLog();
-            log.setRequestId(requestId);
-            log.setActionType(auditAction.actionType());
-            log.setActionBy(username);
-            log.setActionTime(new Date());
-            log.setRemarks(success ? "Success" : "Failed");
-
-            auditLogRepository.saveLog(log);
-        }
+        auditLogRepository.saveLog(log);
     }
 }
+
 

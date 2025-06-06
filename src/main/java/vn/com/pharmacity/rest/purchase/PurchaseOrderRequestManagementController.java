@@ -33,7 +33,7 @@ public class PurchaseOrderRequestManagementController extends BaseRestController
     public ResponseEntity<?> approveMultipleRequests(@RequestBody BulkActionRequest req) {
         try {
             purchaseOrderRequestService.approveRequestsByIds(req.getIds(), req.getReason());
-            return ResponseEntity.ok().build();
+            return ResponseEntity.ok(ResponseVO.buildSuccess());
         } catch (Exception e) {
             return ResponseEntity.ok(ResponseVO.buildFailure(e.getMessage()));
         }

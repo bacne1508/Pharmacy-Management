@@ -17,6 +17,7 @@ public class PurchaseOrderDto extends AbstractCreatedTracking {
     private Date expectedDeliveryDate;
     private String status;
     private String createdFrom;
+    private String supplierCode;
 
     public PurchaseOrderDto() {
         // Default constructor
@@ -29,5 +30,6 @@ public class PurchaseOrderDto extends AbstractCreatedTracking {
         this.expectedDeliveryDate = purchaseOrder.getExpectedDeliveryDate();
         this.status = purchaseOrder.getStatus();
         this.createdFrom = purchaseOrder.getCreatedFrom();
+        this.supplierCode = purchaseOrder.getSupplierCode();
     }
 }

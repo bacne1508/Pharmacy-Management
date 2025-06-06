@@ -38,4 +38,5 @@ public class PurchaseOrder extends AbstractCreatedTracking {
     @Column(name = "created_from")
     private String createdFrom;
 
+    private String supplierCode;
 }

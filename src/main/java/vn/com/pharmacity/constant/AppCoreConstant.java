@@ -96,4 +96,11 @@ public class AppCoreConstant {
     public static final String REJECTED = "REJECTED";
     public static final String LINKED = "LINKED";
     public static final String DRAFT = "DRAFT";
+    public static final String CANCELLED = "CANCELLED";
+    public static final String SENT = "SENT";
+    public static final String RECEIVED = "RECEIVED";
+    public static final String APPROVED_ORDER = "APPROVED_ORDER";
+    public static final String SENT_ORDER = "SENT_ORDER";
+    public static final String CANCELLED_ORDER = "CANCELLED_ORDER";
+    public static final String RECEIVED_ORDER = "RECEIVED_ORDER";
 }

@@ -199,10 +199,10 @@ function renderRole(roles) {
 	if(roles.message !== "No data"){
 		for (let roleAcc of roles) {
 			roleTableContent +=
-				'<tr>' +
-				'<td>' + safeValue(roleAcc.code) + '</td>' +
-				'<td>' + safeValue(roleAcc.name) + '</td>' +
-				'<td>' + safeValue(roleAcc.description) + '</td>' +
+				'<tr class="text-center">' +
+				'<td class="text-center">' + safeValue(roleAcc.code) + '</td>' +
+				'<td class="text-center">' + safeValue(roleAcc.name) + '</td>' +
+				'<td class="text-center">' + safeValue(roleAcc.description) + '</td>' +
 				'<td class="text-center min-wd-100">' + getEditBtn(roleAcc.id, roleAcc.code, roleAcc.name, roleAcc.description) + '</td>' +
 				'<td class="text-center min-wd-100">' + getDelBtn(roleAcc.id) + '</td>' +
 				'</tr>';

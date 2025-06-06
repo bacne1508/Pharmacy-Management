@@ -5,11 +5,38 @@
 <head>
 	<meta charset="UTF-8">
 	<title>Purchase Order Request Management</title>
-	<!-- Introduce the CSS style file -->
+	<!-- Introduce the CSS style file -->	
 	<script th:src="@{/js/components/PharmacityItem/PharmacityItem.js}"></script>
 	<script th:src="@{/js/purchase/purchaseOrderRequestManage.js}"></script>
 	<!-- Bootstrap JS -->
-	<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.6.0/js/bootstrap.bundle.min.js"></script>
+	<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.6.0/js/bootstrap.bundle.min.js"></script>	
+	<style>
+		/* Kiểu base cho badge */
+		.badge {
+		  display: inline-block;
+		  padding: 0.4em 0.75em;       /* tăng padding */
+		  font-size: 1rem;             /* tăng font size */
+		  font-weight: 600;
+		  line-height: 1;
+		  text-align: center;
+		  white-space: nowrap;
+		  vertical-align: baseline;
+		  border-radius: 0.25rem;
+		  color: #fff;
+		}
+		
+		.badge-pill {
+		  border-radius: 10rem;
+		}
+		
+		/* Màu badge */
+		.badge-secondary { background-color: #6c757d; } /* DRAFT */
+		.badge-success   { background-color: #28a745; } /* APPROVED */
+		.badge-danger    { background-color: #dc3545; } /* REJECTED */
+		.badge-warning   { background-color: #ffc107; color: #212529; } /* PENDING */
+		.badge-dark      { background-color: #343a40; } /* RECEIVED */
+		.badge-light     { background-color: #f8f9fa; color: #212529; } /* default */
+	</style>
 </head>
 
 <body>

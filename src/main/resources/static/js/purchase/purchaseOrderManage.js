@@ -1,5 +1,7 @@
 let currentPage = 0;
 const size = 5;
+let currentAction = null;
+let currentId = null;
 
 $(document).ready(function() {
 	mount(new AdminPanel({ active: 0 }), document.querySelector(".nav-left-container"));
@@ -7,19 +9,19 @@ $(document).ready(function() {
 	const searchContainer = document.querySelector(".user-search-list");
 	const searchHtml = `
 	    <div class="row form-group align-item-center">
-	        <label class="col-sm-2 col-form-label">User Name</label>
+	        <label class="col-sm-2 col-form-label">PO Code</label>
 	        <div class="col-sm-3">
-	            <input type="text" class="form-control" id="usernameInput"  name="username" />
+	            <input type="text" class="form-control" id="poCodeInput"  name="poCode" />
 	        </div>
 	        
 	        <label class="col-sm-2 col-form-label">Status</label>
 	        <div class="col-sm-3">
 	            <select id="statusInput" class="form-control select2">
 										<option value="">all</option>
-										<option value="PENDING">PENDING - Chờ duyệt</option>
 										<option value="APPROVED">APPROVED - Đã duyệt</option>
-										<option value="REJECTED">REJECTED - Từ chối</option>
-										<option value="LINKED">LINKED - Đã liên kết</option>
+										<option value="CANCELLED">CANCELLED - Đã hủy</option>
+										<option value="SENT">SENT - Đã gửi</option>
+										<option value="RECEIVED">RECEIVED - Đã nhận hàng</option>
 									</select>
 	        </div>
 	    </div>
@@ -35,8 +37,8 @@ $(document).ready(function() {
 	});
 
 	$("#btnClear").on('click', function(event) {
-		document.getElementById('nameInput').value = '';
-		document.getElementById('codeInput').value = '';
+		document.getElementById('poCodeInput').value = '';
+		document.getElementById('statusInput').value = '';
 		currentPage = 0;
 		fetchUsersSearch(currentPage, size);
 	});
@@ -46,7 +48,7 @@ $(document).ready(function() {
         /*if (!validateEditForm(editForm)) {
             return;
         }*/
-        fetch('/api/auth/purchase/order/request/edit', {
+        fetch('/api/auth/purchase/order/edit', {
 	        method: 'POST',
 	        headers: {
 	            'Content-Type': 'application/json'
@@ -76,7 +78,7 @@ $(document).ready(function() {
         /*if (!validateEditForm(form)) {
             return;
         }*/
-        fetch('/api/auth/purchase/order/request/add', {
+        fetch('/api/auth/purchase/order/add', {
 	        method: 'POST',
 	        headers: {
 	            'Content-Type': 'application/json'
@@ -110,6 +112,30 @@ $(document).ready(function() {
 			reasonGroup.style.display = 'none';
 		}
 	});*/
+	
+	
+
+	$('#confirmActionBtn').off('click').on('click', function () {
+	  if (!currentAction || !currentId) return;
+	
+	  let url = `/api/auth/purchase/order/${currentId}/${currentAction}`;
+	  $.ajax({
+	    url: url,
+	    method: 'POST',
+	    success: function (data) {
+	      if (data.success) {
+	         alert(data.content);
+	         $('#confirmActionModal').modal('hide');
+	         location.reload(); 
+	      } else {
+	        alert("Lỗi: " + data.message);
+	      }
+	    },
+	    error: function () {
+	      alert("Có lỗi xảy ra khi thực hiện thao tác.");
+	    }
+	  });
+	});
 });
 
 /**
@@ -127,12 +153,12 @@ function getEditForm(id) {
 
 // Hàm fetch data search
 function fetchUsersSearch(page, size) {
-	const username = document.getElementById('usernameInput').value.trim();
+	const poCode = document.getElementById('poCodeInput').value.trim();
 	const status = document.getElementById('statusInput').value.trim();
 
-	let url = `/api/auth/purchase/order/request/all?page=${page}&size=${size}`;
-	if (username) {
-		url += `&username=${encodeURIComponent(username)}`;
+	let url = `/api/auth/purchase/order/all?page=${page}&size=${size}`;
+	if (poCode) {
+		url += `&poCode=${encodeURIComponent(poCode)}`;
 	}
 	if (status) {
 		url += `&status=${encodeURIComponent(status)}`;
@@ -155,7 +181,7 @@ function fetchUsersSearch(page, size) {
 }
 
 function fetchUsers(page) {
-	fetch(`/api/auth/purchase/order/request/all?page=${page}&size=${size}`)
+	fetch(`/api/auth/purchase/order/all?page=${page}&size=${size}`)
 		.then(res => res.json())
 		.then(data => {
 			if (data.success) {
@@ -210,6 +236,76 @@ function renderPagination(totalPages, current) {
 	}
 }
 
+function renderStatusBadge(status) {
+	let colorClass = '';
+	switch (status) {
+		case 'DRAFT':
+			colorClass = 'badge-secondary'; break; // màu xám nhạt
+		case 'APPROVED':
+			colorClass = 'badge-success'; break;
+		case 'CANCELLED':
+			colorClass = 'badge-danger'; break;
+		case 'SENT':
+			colorClass = 'badge-warning'; break;
+		case 'RECEIVED':
+			colorClass = 'badge-dark'; break;
+		default:
+			colorClass = 'badge-light'; break;
+	}
+
+	return `<span class="badge badge-pill ${colorClass}">${status}</span>`;
+}
+
+function confirmAction(action, id) {
+  currentAction = action;
+  currentId = id;
+
+  // Gán nội dung cho modal
+  let message = '';
+  if (action === 'APPROVED') message = 'Bạn có chắc chắn muốn <b>phê duyệt</b> đơn hàng này?';
+  else if (action === 'CANCELLED') message = 'Bạn có chắc chắn muốn <b>hủy</b> đơn hàng này?';
+  else if (action === 'SENT') message = 'Bạn có chắc chắn muốn <b>gửi hàng</b>?';
+  else if (action === 'RECEIVED') message = 'Xác nhận đã <b>nhận hàng</b>?';
+
+  $('#confirmActionMessage').html(message);
+  $('#confirmActionModal').modal('show');
+}
+
+function editRole(id, status) {
+	presentId = id;
+	let btnHtml = '';
+
+	switch (status) {
+		case 'DRAFT':
+			btnHtml += `
+				<button class="btn btn-sm btn-primary" onclick="confirmAction('APPROVED','${id}')">Approve</button>
+				<button class="btn btn-sm btn-danger" onclick="confirmAction('CANCELLED','${id}')">Cancel</button>
+			`;
+			break;
+
+		case 'APPROVED':
+			btnHtml += `
+				<button class="btn btn-sm btn-success" onclick="confirmAction('SENT','${id}')">Send</button>
+			`;
+			break;
+
+		case 'SENT':
+			btnHtml += `
+				<button class="btn btn-sm btn-warning" onclick="confirmAction('RECEIVED','${id}')">Receive</button>
+			`;
+			break;
+
+		case 'RECEIVED':
+		case 'CANCELLED':
+			btnHtml += `<span class="text-muted"></span>`;
+			break;
+
+		default:
+			btnHtml += `<span class="text-muted"></span>`;
+	}
+
+	return btnHtml;
+}
 
 
 /**
@@ -222,24 +318,15 @@ function renderRole(roles) {
 	var roleTableContent = '';
 	if(roles.message !== "No data"){
 		for (let order of roles) {
-			// Bên trong vòng lặp for
-			let isPending = order.status === 'PENDING';
-			let checkbox = '<input type="checkbox" class="row-checkbox" data-id="' + order.id + '" ' + 
-			               (isPending ? '' : 'disabled title="Chỉ được chọn khi trạng thái là PENDING"') + ' />';
-
 			roleTableContent +=
 				'<tr>' +
-					'<td>' + checkbox + '</td>' +
-					'<td>' + safeValue(order.username) + '</td>' +
-					'<td>' + safeValue(order.medicineCode) + '</td>' +
-					'<td>' + safeValue(order.quantity) + '</td>' +
-					'<td>' + safeValue(order.status) + '</td>' +
-					'<td>' + safeValue(order.createdBy) + '</td>' +
-					'<td>' + formatDateStr(order.createdDate) + '</td>' +
-					'<td>' + safeValue(order.updatedBy) + '</td>' +
-					'<td>' + formatDateStr(order.updatedDate) + '</td>' +
-					'<td class="text-center min-wd-100">' + getEditBtn(order.id, order.username, order.medicineCode, order.quantity, 
-					 order.status) + '</td>' +
+					'<td class="text-center">' + safeValue(order.poCode) + '</td>' +
+					'<td class="text-center">' + safeValue(order.supplierCode) + '</td>' +
+					'<td class="text-center">' + formatDateStr(order.expectedDeliveryDate) + '</td>' +
+					'<td class="text-center">' + renderStatusBadge(order.status) + '</td>' +
+					'<td class="text-center">' + safeValue(order.createdBy) + '</td>' +
+					'<td class="text-center">' + formatDateStr(order.createdDate) + '</td>' +
+					'<td class="text-center min-wd-100">' + editRole(order.id, order.status) + '</td>' +
 				'</tr>';
 		}
 	}
@@ -254,24 +341,18 @@ function renderRole(roles) {
  * @param id
  * @return
  */
-function getEditBtn(id, username, medicineCode, quantity, status) {
+function getEditBtn(id, status) {
 	return `<button class='btn btn-sm btn-info btn-view'
                 data-id="${id}"
-                data-username="${safeValue(username)}"
-                data-medicinecode="${safeValue(medicineCode)}"
-                data-quantity="${safeValue(quantity)}"
                 data-status="${safeValue(status)}"
                 onclick='handleEditClick(this)'> <i class="fa fa-eye"></i></button>`;
 }
 
 function handleEditClick(btn) {
     const id = btn.dataset.id;
-    const username = btn.dataset.username;
-    const medicineCode = btn.dataset.medicinecode;
-    const quantity = btn.dataset.quantity;
     const status = btn.dataset.status;
 
-    editRole(id, username, medicineCode, quantity, status);
+    editRole(id, status);
 }
 
 /**
@@ -295,7 +376,7 @@ function delRole(id) {
     $('#roleDelModal').modal("toggle");
          // Confirm delete
     $('#commitRoleDel').off('click').on('click', function () {
-		fetch(`/api/auth/purchase/order/request/delete?id=${id}`)
+		fetch(`/api/auth/purchase/order/delete?id=${id}`)
 		.then(res => res.json())
 		.then(data => {
 			if (data.success) {
@@ -315,7 +396,7 @@ function delRole(id) {
  * @param usn
  * @param pwd
  */
-function editRole(id, username, medicineCode, quantity, status) {
+/*function editRole(id, username, medicineCode, quantity, status) {
     presentId = id;
     //Rendering the original information
     $('#edit-username-input').val(username);
@@ -324,7 +405,7 @@ function editRole(id, username, medicineCode, quantity, status) {
     $('#edit-status-input').val(status);
     
     $('#editUserModal').modal("toggle");
-}
+}*/
 
 /**
  * Inspection and editing information form
@@ -452,7 +533,7 @@ function flowApproveAndReject() {
 				return $(this).data("id");
 			}).get();
 
-            const url = '/api/auth/purchase/order/request/approve-multiple'; // URL API duyệt
+            const url = '/api/auth/purchase/order/approve-multiple'; // URL API duyệt
 			// Gửi request duyệt ở đây
 			console.log("Duyệt các ID:", ids);
 			// TODO: Gọi API duyệt
@@ -491,7 +572,7 @@ function flowApproveAndReject() {
 			alert("Vui lòng nhập lý do từ chối.");
 			return;
 		}
-		const url = '/api/auth/purchase/order/request/reject-multiple'; // URL API từ chối
+		const url = '/api/auth/purchase/order/reject-multiple'; // URL API từ chối
 		// Gửi request từ chối ở đây
 		console.log("Từ chối các ID:", ids, "với lý do:", reason);
 		// TODO: Gọi API từ chối

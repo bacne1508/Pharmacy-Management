@@ -1,14 +1,13 @@
 package vn.com.pharmacity.entity;
 
-import java.math.BigDecimal;
-import java.util.Date;
+import java.util.List;
 
 import org.springframework.data.annotation.Id;
 
 import com.miragesql.miragesql.annotation.Column;
 import com.miragesql.miragesql.annotation.PrimaryKey;
-import com.miragesql.miragesql.annotation.Table;
 import com.miragesql.miragesql.annotation.PrimaryKey.GenerationType;
+import com.miragesql.miragesql.annotation.Table;
 
 import lombok.Getter;
 import lombok.Setter;
@@ -41,6 +40,9 @@ public class PurchaseOrderRequest extends AbstractCreatedTracking {
     
     @Column(name = "reject_reason")
     private String rejectReason; // Reason for rejection if applicable
+    
+    @Column(name = "request_group")
+    private String requestGroup; // Automatically generated group for the request
     
     private String username; // Username of the user who created the request
     private String medicineName; // Name of the requested medicine

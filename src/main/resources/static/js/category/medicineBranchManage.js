@@ -233,20 +233,20 @@ function renderRole(roles) {
 		for (let roleAcc of roles) {
 			roleTableContent +=
 				'<tr>' +
-				'<td>' + safeValue(roleAcc.branchesCode) + '</td>' +
-				'<td>' + safeValue(roleAcc.branchesName) + '</td>' +
-				'<td>' + safeValue(roleAcc.province) + '</td>' +
-				'<td>' + safeValue(roleAcc.district) + '</td>' +
-				'<td>' + safeValue(roleAcc.ward) + '</td>' +
+				'<td class="text-center">' + safeValue(roleAcc.branchesCode) + '</td>' +
+				'<td class="text-center">' + safeValue(roleAcc.branchesName) + '</td>' +
+				'<td class="text-center">' + safeValue(roleAcc.province) + '</td>' +
+				'<td class="text-center">' + safeValue(roleAcc.district) + '</td>' +
+				'<td class="text-center">' + safeValue(roleAcc.ward) + '</td>' +
 				'<td>' + safeValue(roleAcc.address) + '</td>' +
-				'<td>' + safeValue(roleAcc.phone) + '</td>' +
-				'<td>' + safeValue(roleAcc.manager) + '</td>' +
-				'<td>' + safeValue(roleAcc.email) + '</td>' +
-				'<td>' + safeValue(roleAcc.isActive) + '</td>' +
-				'<td>' + safeValue(roleAcc.createdBy) + '</td>' +
-				'<td>' + formatDateStr(roleAcc.createdDate) + '</td>' +
-				'<td>' + safeValue(roleAcc.updatedBy) + '</td>' +
-				'<td>' + formatDateStr(roleAcc.updatedDate) + '</td>' +
+				'<td class="text-center">' + safeValue(roleAcc.phone) + '</td>' +
+				'<td class="text-center">' + safeValue(roleAcc.manager) + '</td>' +
+				'<td class="text-center">' + safeValue(roleAcc.email) + '</td>' +
+				'<td class="text-center">' + safeValue(roleAcc.isActive) + '</td>' +
+				'<td class="text-center">' + safeValue(roleAcc.createdBy) + '</td>' +
+				'<td class="text-center">' + formatDateStr(roleAcc.createdDate) + '</td>' +
+				'<td class="text-center">' + safeValue(roleAcc.updatedBy) + '</td>' +
+				'<td class="text-center">' + formatDateStr(roleAcc.updatedDate) + '</td>' +
 				'<td class="text-center min-wd-100">' + getEditBtn(roleAcc.branchesCode, roleAcc.id, roleAcc.branchesName, 
 				roleAcc.provinceCode, roleAcc.districtCode, roleAcc.wardCode, roleAcc.address, roleAcc.phone, roleAcc.manager, roleAcc.email) + '</td>' +
 				'<td class="text-center min-wd-100">' + getDelBtn(roleAcc.id) + '</td>' +

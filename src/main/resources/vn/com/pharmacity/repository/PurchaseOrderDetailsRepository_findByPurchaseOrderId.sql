@@ -1,0 +1,1 @@
+SELECT * FROM PurchaseOrderDetails pod WHERE pod.purchase_order_id = /*poId*/;

@@ -8,4 +8,6 @@ public interface PurchaseOrderService extends BaseRestService<ObjectDataRes<Purc
 
     String generatePoCode(String tableName, String columnName, String perfix, Integer length);
 
+    void handleAction(Long id, String action);
+
 }

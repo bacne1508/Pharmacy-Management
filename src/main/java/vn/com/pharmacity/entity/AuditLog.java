@@ -37,4 +37,7 @@ public class AuditLog {
 
     @Column(name = "remarks")
     private String remarks;
+
+    @Column(name = "entity_type")
+    private String entityType;
 }

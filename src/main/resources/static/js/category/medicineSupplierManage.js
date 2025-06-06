@@ -213,14 +213,14 @@ function renderRole(roles) {
 		for (let roleAcc of roles) {
 			roleTableContent +=
 				'<tr>' +
-				'<td>' + safeValue(roleAcc.fullName) + '</td>' +
-				'<td>' + safeValue(roleAcc.email) + '</td>' +
-				'<td>' + safeValue(roleAcc.phone) + '</td>' +
+				'<td class="text-center">' + safeValue(roleAcc.fullName) + '</td>' +
+				'<td class="text-center">' + safeValue(roleAcc.email) + '</td>' +
+				'<td class="text-center">' + safeValue(roleAcc.phone) + '</td>' +
 				'<td>' + safeValue(roleAcc.address) + '</td>' +
-				'<td>' + safeValue(roleAcc.createdBy) + '</td>' +
-				'<td>' + formatDateStr(roleAcc.createdDate) + '</td>' +
-				'<td>' + safeValue(roleAcc.updatedBy) + '</td>' +
-				'<td>' + formatDateStr(roleAcc.updatedDate) + '</td>' +
+				'<td class="text-center">' + safeValue(roleAcc.createdBy) + '</td>' +
+				'<td class="text-center">' + formatDateStr(roleAcc.createdDate) + '</td>' +
+				'<td class="text-center">' + safeValue(roleAcc.updatedBy) + '</td>' +
+				'<td class="text-center">' + formatDateStr(roleAcc.updatedDate) + '</td>' +
 				'<td class="text-center min-wd-100">' + getEditBtn(roleAcc.fullName, roleAcc.id, roleAcc.email, roleAcc.phone, roleAcc.address) + '</td>' +
 				'<td class="text-center min-wd-100">' + getDelBtn(roleAcc.id) + '</td>' +
 				'</tr>';

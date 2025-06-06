@@ -1,5 +1,7 @@
 package vn.com.pharmacity.repository;
 
+import java.util.List;
+
 import org.springframework.data.repository.query.Param;
 
 import jp.xet.springframework.data.mirage.repository.query.Modifying;
@@ -9,5 +11,7 @@ public interface PurchaseOrderDetailsRepository extends DbRepository<PurchaseOrd
 
     @Modifying
     void saveDataRequestPO(@Param("po") PurchaseOrderDetail detail);
+
+    List<PurchaseOrderDetail> findByPurchaseOrderId(@Param("poId") Long id);
 
 }

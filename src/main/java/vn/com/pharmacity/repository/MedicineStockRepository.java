@@ -11,7 +11,7 @@ import vn.com.pharmacity.entity.MedicineStock;
 
 public interface MedicineStockRepository extends DbRepository<MedicineStock, Long> {
 
-    List<MedicineStock> searchAllByCondition(@Param("batchNo") String batchNo, @Param("medicineId") String medicineId);
+    List<MedicineStock> searchAllByCondition(@Param("batchNo") String batchNo, @Param("medicineId") Long medicineId);
 
     List<MedicineStock> getDataByCondition(@Param("medicineId") int medicineId, @Param("batchNo") String batchNo, @Param("warehouseId") int warehouseId);
 
@@ -28,6 +28,17 @@ public interface MedicineStockRepository extends DbRepository<MedicineStock, Lon
 
     @Modifying
     int lockStock(@Param("medicineId") Long medicineId, @Param("warehouseId") int warehouseId, @Param("batchNo") String batchNo, @Param("quantity") Integer quantity);
-    
+
+    @Modifying
+    void setLockedQuantity(@Param("form") MedicineStock stock);
+
+    @Modifying
+    void confirmReceivedStock(@Param("medicineId") Long medicineId, @Param("quantity") Integer quantity);
+
+    @Modifying
+    void updateLockedAndUsed(@Param("form") MedicineStock stock);
+
+    @Modifying
+    int unlockQuantity(@Param("medicineId") Long medicineId, @Param("quantity") Integer quantity);
 
 }

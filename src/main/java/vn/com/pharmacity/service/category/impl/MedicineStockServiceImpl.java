@@ -10,6 +10,8 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import org.springframework.util.MultiValueMap;
 
+import com.miragesql.miragesql.util.StringUtil;
+
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j;
 import vn.com.pharmacity.annotation.CoreReadOnlyTx;
@@ -45,8 +47,10 @@ implements MedicineStockService {
     protected List<MedicineStockDto> findAllByCondition(MultiValueMap<String, String> params) {
         String batchNo = params.getFirst("batchNo");
         String medicineId = params.getFirst("medicineId");
-
-        List<MedicineStock> entities = medicineStockRepository.searchAllByCondition(batchNo, medicineId);
+        if(StringUtil.isBlank(medicineId)) {
+            medicineId = "0";
+        }
+        List<MedicineStock> entities = medicineStockRepository.searchAllByCondition(batchNo, Long.parseLong(medicineId));
         return entities.stream().map(MedicineStockDto::new).collect(Collectors.toList());
     }
 

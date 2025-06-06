@@ -52,5 +52,11 @@ public class PurchaseOrderDetail extends AbstractCreatedTracking {
     
     @Column(name = "description")
     private String description;
+    
+    @Column(name = "po_request_id")
+    private Long poRequestId; // This field is not present in the entity but is used for request purposes
+    
+    @Column(name = "po_request_group")
+    private String poRequestGroup; // This field is not present in the entity but is used for request purposes
 
 }

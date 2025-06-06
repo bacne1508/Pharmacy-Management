@@ -236,16 +236,16 @@ function renderRole(roles) {
 		for (let roleAcc of roles) {
 			roleTableContent +=
 				'<tr>' +
-					'<td>' + safeValue(roleAcc.medicineCode) + '</td>' +
-					'<td>' + safeValue(roleAcc.batchNo) + '</td>' +
-					'<td>' + safeValue(roleAcc.expiryDate) + '</td>' +
-					'<td>' + safeValue(roleAcc.quantity) + '</td>' +
-					'<td>' + safeValue(roleAcc.unitPrice) + '</td>' +
-					'<td>' + safeValue(roleAcc.lockedQuantity) + '</td>' +
-					'<td>' + safeValue(roleAcc.usedQuantity) + '</td>' +
-					'<td>' + safeValue(roleAcc.warehouseCode) + '</td>' +
-					'<td>' + safeValue(roleAcc.createdBy) + '</td>' +
-					'<td>' + formatDateStr(roleAcc.createdDate) + '</td>' +
+					'<td class="text-center">' + safeValue(roleAcc.medicineCode) + '</td>' +
+					'<td class="text-center">' + safeValue(roleAcc.batchNo) + '</td>' +
+					'<td class="text-center">' + safeValue(roleAcc.expiryDate) + '</td>' +
+					'<td class="text-center">' + safeValue(roleAcc.quantity) + '</td>' +
+					'<td class="text-center">' + safeValue(roleAcc.unitPrice) + '</td>' +
+					'<td class="text-center">' + safeValue(roleAcc.lockedQuantity) + '</td>' +
+					'<td class="text-center">' + safeValue(roleAcc.usedQuantity) + '</td>' +
+					'<td class="text-center">' + safeValue(roleAcc.warehouseCode) + '</td>' +
+					'<td class="text-center">' + safeValue(roleAcc.createdBy) + '</td>' +
+					'<td class="text-center">' + formatDateStr(roleAcc.createdDate) + '</td>' +
 					'<td class="text-center min-wd-100">' + getEditBtn(roleAcc.id, roleAcc.medicineCode, roleAcc.batchNo, 
 					 roleAcc.expiryDate, roleAcc.quantity, roleAcc.unitPrice, roleAcc.lockedQuantity, roleAcc.usedQuantity, roleAcc.warehouseCode
 					  ) + '</td>' +
