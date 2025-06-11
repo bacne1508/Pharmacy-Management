@@ -7,4 +7,4 @@
 - spring security
 - html, css
 - AOP
-- dùng RSA key + SHA256 để ký và xác minh chữ ký số
+- Use RSA key + SHA256 for digital signature
