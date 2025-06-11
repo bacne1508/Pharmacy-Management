@@ -31,5 +31,7 @@ public class PurchaseOrderDto extends AbstractCreatedTracking {
         this.status = purchaseOrder.getStatus();
         this.createdFrom = purchaseOrder.getCreatedFrom();
         this.supplierCode = purchaseOrder.getSupplierCode();
+        this.createdBy = purchaseOrder.getCreatedBy();
+        this.createdDate = purchaseOrder.getCreatedDate();
     }
 }

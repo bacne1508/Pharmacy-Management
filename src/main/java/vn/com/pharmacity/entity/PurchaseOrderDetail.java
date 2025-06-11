@@ -47,6 +47,9 @@ public class PurchaseOrderDetail extends AbstractCreatedTracking {
     @Column(name = "batch_no")
     private String batchNo;
     
+    @Column(name = "status")
+    private String status;
+    
     @Column(name = "expiry_date")
     private Date expiryDate;
     
@@ -58,5 +61,8 @@ public class PurchaseOrderDetail extends AbstractCreatedTracking {
     
     @Column(name = "po_request_group")
     private String poRequestGroup; // This field is not present in the entity but is used for request purposes
+    
+    private String medicineCode;
+    private String poCode;
 
 }

@@ -3,6 +3,8 @@ package vn.com.pharmacity.dto;
 import java.math.BigDecimal;
 import java.util.Date;
 
+import com.miragesql.miragesql.annotation.Column;
+
 import lombok.Getter;
 import lombok.Setter;
 import vn.com.pharmacity.entity.AbstractCreatedTracking;
@@ -38,6 +40,11 @@ public class PurchaseOrderDetailDto extends AbstractCreatedTracking {
     private Long poRequestId; // This field is not present in the entity but is used for request purposes
     private String poRequestGroup; // This field is not present in the entity but is used for request purposes
     
+    private String medicineCode;
+    
+    private String status;
+    private String poCode;
+    
     public PurchaseOrderDetailDto() {
         // Default constructor
     }
@@ -59,5 +66,8 @@ public class PurchaseOrderDetailDto extends AbstractCreatedTracking {
         this.deletedDate = purchaseOrderDetail.getDeletedDate();
         this.poRequestId = purchaseOrderDetail.getPoRequestId(); // Assuming this field exists in the entity
         this.poRequestGroup = purchaseOrderDetail.getPoRequestGroup(); // Assuming this field exists in the entity
+        this.medicineCode = purchaseOrderDetail.getMedicineCode(); // Assuming this field exists in the entity
+        this.status = purchaseOrderDetail.getStatus(); // Assuming this field exists in the entity
+        this.poCode = purchaseOrderDetail.getPoCode();
     }
 }

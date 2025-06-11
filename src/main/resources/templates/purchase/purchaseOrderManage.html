@@ -5,38 +5,66 @@
 <head>
 	<meta charset="UTF-8">
 	<title>Purchase Order Management</title>
-	<!-- Introduce the CSS style file -->	
+	<!-- Introduce the CSS style file -->
 	<script th:src="@{/js/components/PharmacityItem/PharmacityItem.js}"></script>
 	<script th:src="@{/js/purchase/purchaseOrderManage.js}"></script>
 	<!-- Bootstrap JS -->
 	<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.6.0/js/bootstrap.bundle.min.js"></script>
 	<style>
-			/* Kiểu base cho badge */
-			.badge {
-			  display: inline-block;
-			  padding: 0.4em 0.75em;       /* tăng padding */
-			  font-size: 1rem;             /* tăng font size */
-			  font-weight: 600;
-			  line-height: 1;
-			  text-align: center;
-			  white-space: nowrap;
-			  vertical-align: baseline;
-			  border-radius: 0.25rem;
-			  color: #fff;
-			}
-			
-			.badge-pill {
-			  border-radius: 10rem;
-			}
-			
-			/* Màu badge */
-			.badge-secondary { background-color: #6c757d; } /* DRAFT */
-			.badge-success   { background-color: #28a745; } /* APPROVED */
-			.badge-danger    { background-color: #dc3545; } /* REJECTED */
-			.badge-warning   { background-color: #ffc107; color: #212529; } /* PENDING */
-			.badge-dark      { background-color: #343a40; } /* RECEIVED */
-			.badge-light     { background-color: #f8f9fa; color: #212529; } /* default */
-		</style>
+		/* Kiểu base cho badge */
+		.badge {
+			display: inline-block;
+			padding: 0.4em 0.75em;
+			/* tăng padding */
+			font-size: 1rem;
+			/* tăng font size */
+			font-weight: 600;
+			line-height: 1;
+			text-align: center;
+			white-space: nowrap;
+			vertical-align: baseline;
+			border-radius: 0.25rem;
+			color: #fff;
+		}
+
+		.badge-pill {
+			border-radius: 10rem;
+		}
+
+		/* Màu badge */
+		.badge-secondary {
+			background-color: #6c757d;
+		}
+
+		/* DRAFT */
+		.badge-success {
+			background-color: #28a745;
+		}
+
+		/* APPROVED */
+		.badge-danger {
+			background-color: #dc3545;
+		}
+
+		/* REJECTED */
+		.badge-warning {
+			background-color: #ffc107;
+			color: #212529;
+		}
+
+		/* PENDING */
+		.badge-dark {
+			background-color: #343a40;
+		}
+
+		/* RECEIVED */
+		.badge-light {
+			background-color: #f8f9fa;
+			color: #212529;
+		}
+
+		/* default */
+	</style>
 </head>
 
 <body>
@@ -83,6 +111,7 @@
 									<th>Supplier Code</th>
 									<th>Expected Delivery Date</th>
 									<th>Status</th>
+									<th>Created For</th>
 									<th>Created By</th>
 									<th>Created Date</th>
 									<th>Action</th>
@@ -91,39 +120,68 @@
 							<tbody id="user-table"></tbody>
 						</table>
 					</div>
-					<!-- Dropdown chọn hành động + nút Thực hiện -->
-					<!--<div class="form-inline justify-content-center mt-2">
-						<select class="form-control mr-2" id="bulkActionSelect">
-							<option value="">-- Chọn hành động --</option>
-							<option value="APPROVED">✅ Duyệt</option>
-							<option value="REJECTED">❌ Từ chối</option>
-						</select>
-						<button class="btn btn-warning" id="btnPerformBulkAction" disabled>Thực hiện</button>
-					</div>-->
 				</div>
 				<div id="userTableContainer"></div>
 				<ul class="pagination" id="pagination"></ul>
 			</div>
 		</div>
+		<!-- Modal: View  Details -->
+		<!-- Modal -->
+		<div class="modal fade" id="poDetailModal" tabindex="-1" aria-hidden="true">
+			<div class="modal-dialog modal-xl">
+				<div class="modal-content">
+					<div class="modal-header">
+						<h5 class="modal-title">Danh sách đơn hàng</h5>
+						<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Đóng"></button>
+					</div>
+					<div class="modal-body">
+						<!-- CHỈ CÓ modalBodyContent ở đây -->
+						<div id="modalBodyContent" style="overflow-x: auto;">
+							<table class="table table-bordered table-striped">
+								<thead>
+									<tr>
+										<th>Purchase Order</th>
+										<th>Purchase Request Id</th>
+										<th>Purchase Request Group</th>
+										<th>Medicine</th>
+										<th>Quantity</th>
+										<th>Unit Price</th>
+										<th>Batch No</th>
+										<th>Expiry Date</th>
+										<th>Status</th>
+										<th>Description</th>
+										<th>Created By</th>
+										<th>Created Date</th>
+									</tr>
+								</thead>
+								<tbody id="user-table-modal"></tbody>
+							</table>
+						</div>
+						<ul class="pagination" id="pagination-modal"></ul>
+					</div>
+				</div>
+			</div>
+		</div>
+
 		<!-- Modal xác nhận -->
-		<div class="modal fade" id="confirmActionModal" tabindex="-1" role="dialog" aria-labelledby="confirmLabel" aria-hidden="true">
-		  <div class="modal-dialog modal-dialog-centered" role="document">
-		    <div class="modal-content">
-		      <div class="modal-header">
-		        <h5 class="modal-title" id="confirmLabel">Xác nhận hành động</h5>
-		        <button type="button" class="close" data-dismiss="modal" aria-label="Đóng">
-		          <span aria-hidden="true">&times;</span>
-		        </button>
-		      </div>
-		      <div class="modal-body" id="confirmActionMessage">
-		        <!-- Nội dung xác nhận sẽ thay đổi -->
-		      </div>
-		      <div class="modal-footer">
-		        <button type="button" class="btn btn-secondary" data-dismiss="modal">Hủy</button>
-		        <button type="button" class="btn btn-success" id="confirmActionBtn">Xác nhận</button>
-		      </div>
-		    </div>
-		  </div>
+		<div class="modal fade" id="confirmActionModal" tabindex="-1" role="dialog" aria-labelledby="confirmLabel"
+			aria-hidden="true">
+			<div class="modal-dialog modal-dialog-centered" role="document">
+				<div class="modal-content">
+					<div class="modal-header">
+						<h5 class="modal-title" id="confirmLabel">Xác nhận hành động</h5>
+						<button type="button" class="close" data-dismiss="modal" aria-label="Đóng">
+							<span aria-hidden="true">&times;</span>
+						</button>
+					</div>
+					<div class="modal-body" id="confirmActionMessage">
+					</div>
+					<div class="modal-footer">
+						<button type="button" class="btn btn-secondary" data-dismiss="modal">Hủy</button>
+						<button type="button" class="btn btn-success" id="confirmActionBtn">Xác nhận</button>
+					</div>
+				</div>
+			</div>
 		</div>
 		<!-- Modal: Edit or Approve Medicine Order Request -->
 		<div class="modal fade" id="editUserModal" tabindex="-1" role="dialog" aria-labelledby="editRoleModalLabel">
@@ -165,7 +223,7 @@
 							<div class="form-group row">
 								<label for="status" class="col-sm-4 col-form-label">Status</label>
 								<div class="col-sm-8">
-									<input type="text" id="edit-status-input" class="form-control"readonly>
+									<input type="text" id="edit-status-input" class="form-control" readonly>
 								</div>
 							</div>
 

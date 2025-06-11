@@ -236,6 +236,49 @@ function renderPagination(totalPages, current) {
 	}
 }
 
+function renderPaginationDetails(totalPages, current) {
+	const pagination = document.getElementById("pagination");
+	pagination.innerHTML = "";
+
+	const maxVisiblePages = 5;
+	let start = Math.max(current - Math.floor(maxVisiblePages / 2), 0);
+	let end = start + maxVisiblePages;
+
+	if (end > totalPages) {
+		end = totalPages;
+		start = Math.max(end - maxVisiblePages, 0);
+	}
+
+	// First page
+	if (start > 0) {
+		pagination.innerHTML += `
+            <li class="page-item">
+                <a class="page-link" href="#" onclick="fetchUsersDetail(0)">First</a>
+            </li>
+        `;
+		pagination.innerHTML += `<li class="page-item disabled"><span class="page-link">...</span></li>`;
+	}
+
+	// Page numbers
+	for (let i = start; i < end; i++) {
+		pagination.innerHTML += `
+            <li class="page-item ${i === current ? 'active' : ''}">
+                <a class="page-link" href="#" onclick="fetchUsersDetail(${i})">${i + 1}</a>
+            </li>
+        `;
+	}
+
+	// Last page
+	if (end < totalPages) {
+		pagination.innerHTML += `<li class="page-item disabled"><span class="page-link">...</span></li>`;
+		pagination.innerHTML += `
+            <li class="page-item">
+                <a class="page-link" href="#" onclick="fetchUsersDetail(${totalPages - 1})">Last</a>
+            </li>
+        `;
+	}
+}
+
 function renderStatusBadge(status) {
 	let colorClass = '';
 	switch (status) {
@@ -320,10 +363,13 @@ function renderRole(roles) {
 		for (let order of roles) {
 			roleTableContent +=
 				'<tr>' +
-					'<td class="text-center">' + safeValue(order.poCode) + '</td>' +
+					'<td class="text-center">' +
+						'<a href="#" class="link-dialog table-col-a-num-hover" onclick="viewDetail(\'' + order.id + '\')">' + safeValue(order.poCode) + '</a>' +
+					'</td>' +
 					'<td class="text-center">' + safeValue(order.supplierCode) + '</td>' +
 					'<td class="text-center">' + formatDateStr(order.expectedDeliveryDate) + '</td>' +
 					'<td class="text-center">' + renderStatusBadge(order.status) + '</td>' +
+					'<td class="text-center">' + safeValue(order.createdFrom) + '</td>' +
 					'<td class="text-center">' + safeValue(order.createdBy) + '</td>' +
 					'<td class="text-center">' + formatDateStr(order.createdDate) + '</td>' +
 					'<td class="text-center min-wd-100">' + editRole(order.id, order.status) + '</td>' +
@@ -331,6 +377,61 @@ function renderRole(roles) {
 		}
 	}
 	$('#user-table').html(roleTableContent);
+}
+
+
+/**
+ * Rendering the Cinema Character Table
+ * @author moon
+ * @date 2025-5-20
+ * @param roles
+ */
+function renderRoleDetails(users) {
+    let roleTableContent = '';
+
+    users.forEach(order => {
+        roleTableContent +=
+            '<tr>' +
+                '<td class="text-center">' + safeValue(order.poCode) + '</td>' +
+                '<td class="text-center">' + safeValue(order.poRequestId) + '</td>' +
+				'<td class="text-center">' + safeValue(order.poRequestGroup) + '</td>' +
+				'<td class="text-center">' + safeValue(order.medicineCode) + '</td>' +
+				'<td class="text-center">' + safeValue(order.quantity) + '</td>' +
+				'<td class="text-center">' + safeValue(order.unitPrice) + '</td>' +
+				'<td class="text-center">' + safeValue(order.batchNo) + '</td>' +
+                '<td class="text-center">' + formatDateStr(order.expiryDate) + '</td>' +
+                '<td class="text-center">' + renderStatusBadge(order.status) + '</td>' +
+				'<td class="text-center">' + safeValue(order.description) + '</td>' +
+                '<td class="text-center">' + safeValue(order.createdBy) + '</td>' +
+                '<td class="text-center">' + formatDateStr(order.createdDate) + '</td>' +
+            '</tr>';
+    });
+
+    $('#user-table-modal').html(roleTableContent);
+}
+
+
+function fetchUsersDetail(page, poId) {
+    fetch(`/api/auth/purchase/order/allDetail?page=${page}&size=${size}&poId=${poId}`)
+        .then(res => res.json())
+        .then(data => {
+            if (data.success) {
+                // Render dữ liệu vào tbody trong modal
+                renderRoleDetails(data.content.users); // cần gắn đúng ID
+                renderPaginationDetails(data.content.totalPages, data.content.currentPage);
+
+                // Mở modal sau khi đã render xong
+                const modal = new bootstrap.Modal(document.getElementById('poDetailModal'));
+                modal.show();
+            } else {
+                alert("Error: " + data.message);
+            }
+        });
+}
+
+
+function viewDetail(poId) {
+	fetchUsersDetail(currentPage, poId);
 }
 
 /**

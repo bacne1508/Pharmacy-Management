@@ -1,2 +1,2 @@
-INSERT INTO PurchaseOrderRequest (user_id , medicine_id , quantity , status, created_by, created_date)
-        VALUES (/*form.userId*/, /*form.medicineId*/, /*form.quantity*/, 'PENDING', /*form.createdBy*/, /*form.createdDate*/)
+INSERT INTO PurchaseOrderRequest (user_id , medicine_id , quantity , status, created_by, created_date, request_group)
+        VALUES (/*form.userId*/, /*form.medicineId*/, /*form.quantity*/, 'PENDING', /*form.createdBy*/, /*form.createdDate*/, /*form.requestGroup*/)

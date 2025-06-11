@@ -484,13 +484,9 @@ function flowApproveAndReject() {
 				  data: JSON.stringify(payload),
 				  success: function (data) {
 				    if (data.success || data == '') {
-				      if (data.content || data.content.success || data == '') {
 				        alert("Duyệt đơn thành công!");
 				        $('#confirmActionModal').modal('hide');
 				        location.reload(); // hoặc fetch lại dữ liệu nếu không muốn reload toàn bộ
-				      } else {
-				        alert("Lỗi: " + (data.content?.message || "Không rõ nguyên nhân"));
-				      }
 				    } else {
 				      alert("Lỗi: " + (data.message || "Không rõ nguyên nhân"));
 				    }

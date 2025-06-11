@@ -2,10 +2,13 @@ package vn.com.pharmacity.repository;
 
 import java.util.List;
 
+import org.springframework.data.domain.Page;
 import org.springframework.data.repository.query.Param;
 
 import jp.xet.springframework.data.mirage.repository.query.Modifying;
+import vn.com.pharmacity.dto.PurchaseOrderDetailDto;
 import vn.com.pharmacity.entity.PurchaseOrder;
+import vn.com.pharmacity.entity.PurchaseOrderDetail;
 
 public interface PurchaseOrderRepository extends DbRepository<PurchaseOrder, Long> {
 
@@ -15,12 +18,14 @@ public interface PurchaseOrderRepository extends DbRepository<PurchaseOrder, Lon
 
     PurchaseOrder savePOFromRequest(@Param("po")  PurchaseOrder po);
 
-    List<PurchaseOrder> searchAllByCondition(@Param("poCode") String username, @Param("status") String status);
+    List<PurchaseOrder> searchAllByCondition(@Param("poCode") String poCode, @Param("status") String status);
 
     @Modifying
     void updateStatus(@Param("po")  PurchaseOrder po);
 
     @Modifying
     void updateStatusAndExpiry(@Param("po") PurchaseOrder po);
+
+    List<PurchaseOrderDetail> searchAllDetailByCondition(@Param("poCode")  String poCode, @Param("status")  String status, @Param("poId") Long poId);
 
 }

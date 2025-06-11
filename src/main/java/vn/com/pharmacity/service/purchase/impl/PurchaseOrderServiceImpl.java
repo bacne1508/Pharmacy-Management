@@ -12,6 +12,8 @@ import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.Pageable;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import org.springframework.util.MultiValueMap;
@@ -21,6 +23,7 @@ import lombok.extern.log4j.Log4j;
 import vn.com.pharmacity.annotation.AuditAction;
 import vn.com.pharmacity.annotation.CoreReadOnlyTx;
 import vn.com.pharmacity.constant.AppCoreConstant;
+import vn.com.pharmacity.dto.PurchaseOrderDetailDto;
 import vn.com.pharmacity.dto.PurchaseOrderDto;
 import vn.com.pharmacity.entity.AuditLog;
 import vn.com.pharmacity.entity.MedicineStock;
@@ -337,5 +340,28 @@ public class PurchaseOrderServiceImpl extends
         log.setRemarks("Success");
 
         auditLogRepository.saveLog(log);
+    }
+
+    @Override
+    public Page<PurchaseOrderDetailDto> searchDetail(MultiValueMap<String, String> commonSearch, Long poId, Pageable pageable) {
+        try {
+            List<PurchaseOrderDetailDto> fullList = findAllDetailByCondition(commonSearch, poId);
+            int start = (int) pageable.getOffset();
+            int end = Math.min(start + pageable.getPageSize(), fullList.size());
+            List<PurchaseOrderDetailDto> pagedList = fullList.subList(start, end);
+
+            return new PageImpl<>(pagedList, pageable, fullList.size());
+        } catch (Exception e) {
+            log.error("Error during search operation", e);
+            return Page.empty(pageable);
+        }
+    }
+
+    private List<PurchaseOrderDetailDto> findAllDetailByCondition(MultiValueMap<String, String> params, Long poId) {
+        String poCode = params.getFirst("poCode");
+        String status = params.getFirst("status");
+
+        List<PurchaseOrderDetail> entities = purchaseOrderRepository.searchAllDetailByCondition(poCode, status, poId);
+        return entities.stream().map(PurchaseOrderDetailDto::new).collect(Collectors.toList());
     }
 }

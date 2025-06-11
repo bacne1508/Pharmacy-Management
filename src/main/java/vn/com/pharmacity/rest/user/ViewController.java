@@ -90,4 +90,9 @@ public class ViewController {
     public String getPurchaseOrderManage() {
         return "Purchase/purchaseOrderManage";
     }
+
+    @GetMapping("/admin/purchase/bill/manage")
+    public String getPurchaseBillManage() {
+        return "Purchase/purchaseBillManage";
+    }
 }
