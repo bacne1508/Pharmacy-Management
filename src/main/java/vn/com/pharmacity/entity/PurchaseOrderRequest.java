@@ -1,7 +1,5 @@
 package vn.com.pharmacity.entity;
 
-import java.util.List;
-
 import org.springframework.data.annotation.Id;
 
 import com.miragesql.miragesql.annotation.Column;
@@ -43,6 +41,9 @@ public class PurchaseOrderRequest extends AbstractCreatedTracking {
     
     @Column(name = "request_group")
     private String requestGroup; // Automatically generated group for the request
+    
+    @Column(name = "Request_Flag")
+    private int requestFlag;
     
     private String username; // Username of the user who created the request
     private String medicineName; // Name of the requested medicine

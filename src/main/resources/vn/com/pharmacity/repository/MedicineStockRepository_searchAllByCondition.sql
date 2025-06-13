@@ -4,6 +4,7 @@ LEFT JOIN Medicine m
 LEFT JOIN Warehouses w 
     ON s.warehouse_id = w.ID 
 WHERE 1=1
+	AND s.expiry_date >= GETDATE()
 /*IF medicineId != NULL && medicineId != ''*/
     AND s.medicine_id  LIKE CONCAT('%', /*medicineId*/'', '%')
 /*END*/

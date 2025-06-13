@@ -82,7 +82,8 @@
 		<dependency>
 			<groupId>org.projectlombok</groupId>
 			<artifactId>lombok</artifactId>
-			<version>1.16.20</version>
+			<version>1.18.30</version><!--$NO-MVN-MAN-VER$-->
+    		<scope>provided</scope>
 		</dependency>
 
 		<!-- common -->
@@ -326,6 +327,24 @@
 			<artifactId>jasperreports</artifactId>
 			<version>6.16.0</version>
 		</dependency>
+		<dependency>
+		    <groupId>com.itextpdf</groupId>
+		    <artifactId>itextpdf</artifactId>
+		    <version>5.5.13.4</version> <!-- Đây là bản cuối open-source -->
+		</dependency>
+		<!-- BouncyCastle Crypto APIs -->
+	    <dependency>
+	        <groupId>org.bouncycastle</groupId>
+	        <artifactId>bcprov-jdk15to18</artifactId>
+	        <version>1.70</version>
+	    </dependency>
+	
+	    <!-- BouncyCastle PKIX APIs (chứa X509CertificateHolder) -->
+	    <dependency>
+	        <groupId>org.bouncycastle</groupId>
+	        <artifactId>bcpkix-jdk15to18</artifactId>
+	        <version>1.70</version>
+	    </dependency>
 	</dependencies>
 
 	<build>
@@ -378,6 +397,9 @@
 			<resource>
 				<directory>src/main/resources</directory>
 				<includes>
+					<include>**/*.p12</include>
+	                <include>**/*.crt</include>
+	                <include>**/*.key</include>
 					<include>**/*.sql</include>
 					<include>**/*.yml</include>
 					<include>**/*.xml</include>

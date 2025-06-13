@@ -1,0 +1,1 @@
+SELECT * FROM STOCK where medicine_id = /*medicineId*/ AND expiry_date >= GETDATE()

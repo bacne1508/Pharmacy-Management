@@ -203,25 +203,84 @@
 						<h4 class="modal-title" id="addRoleModalLabel">New order request</h4>
 					</div>
 					<div class="modal-body">
-						<form class="form-horizontal" role="form">
+						<form class="form-horizontal" role="form" id="walkin-invoice-form">
 							<div class="form-group">
-								<label class="col-sm-2 control-label" for="add-username-input">Username</label>
+								<label class="col-sm-2 control-label" for="customer-name">Họ và tên</label>
 								<div class="col-sm-4">
-									<select class="form-control" id="add-username-input"></select>
+									<input type="text" class="form-control" id="customer-name" placeholder="Nhập họ tên khách hàng" required>
 								</div>
-
-								<label class="col-sm-2 control-label" for="add-medicine-code-input">Medicine
-									Code</label>
+						
+								<label class="col-sm-2 control-label" for="gender">Giới tính</label>
 								<div class="col-sm-4">
-									<select class="form-control" id="add-medicine-code-input"></select>
+									<select class="form-control" id="gender" required>
+										<option value="">-- Chọn giới tính --</option>
+										<option value="MALE">Nam</option>
+										<option value="FEMALE">Nữ</option>
+										<option value="OTHER">Khác</option>
+									</select>
 								</div>
 							</div>
+						
 							<div class="form-group">
-								<label class="col-sm-2 control-label" for="add-quantity-input">Quantity</label>
+								<label class="col-sm-2 control-label" for="age">Tuổi</label>
 								<div class="col-sm-4">
-									<input type="text" class="form-control" id="add-quantity-input"
-										placeholder="Please enter the new quantity">
+									<input type="number" class="form-control" id="age" placeholder="Tuổi khách hàng" min="0" required>
 								</div>
+						
+								<label class="col-sm-2 control-label" for="phone">Số điện thoại</label>
+								<div class="col-sm-4">
+									<input type="text" class="form-control" id="phone" placeholder="VD: 0987654321">
+								</div>
+							</div>
+						
+							<div class="form-group">
+								<label class="col-sm-2 control-label" for="identity">CMND/CCCD</label>
+								<div class="col-sm-4">
+									<input type="text" class="form-control" id="identity" placeholder="Số CMND hoặc CCCD">
+								</div>
+						
+								<label class="col-sm-2 control-label" for="address">Địa chỉ</label>
+								<div class="col-sm-4">
+									<input type="text" class="form-control" id="address" placeholder="Nhập địa chỉ liên hệ">
+								</div>
+							</div>							
+							
+							<div class="form-group">
+								<label class="col-sm-2 control-label" for="diagnosis">Chẩn đoán</label>
+								<div class="col-sm-10">
+									<textarea type="text" class="form-control" id="diagnosis" placeholder="Nhập chẩn đoán"></textarea>
+								</div>
+							</div>
+						
+							<hr>
+							
+							<div class="form-group">
+							    <!-- Nút thêm thuốc -->
+							    <div class="col-sm-offset-2 col-sm-10">
+							        <button type="button" id="add-medicine" class="btn btn-primary">+ Thêm thuốc</button>
+							    </div>
+							</div>
+							
+							<div class="form-group">
+							    <div id="medicine-container">
+							        <div class="form-group medicine-row">
+							            <label class="col-sm-2 control-label">Mã thuốc</label>
+							            <div class="col-sm-4">
+							                <select class="form-control medicine-code" required>
+							                    <!-- Option thuốc được load động -->
+							                </select>
+							            </div>
+							
+							            <label class="col-sm-2 control-label">Số lượng</label>
+							            <div class="col-sm-3">
+							                <input type="number" class="form-control quantity" min="1" required>
+							            </div>
+							
+							            <div class="col-sm-1">
+							                <button type="button" class="btn btn-danger remove-row">X</button>
+							            </div>
+							        </div>
+							    </div>
 							</div>
 						</form>
 					</div>

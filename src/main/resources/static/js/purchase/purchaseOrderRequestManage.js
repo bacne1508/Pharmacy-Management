@@ -76,7 +76,7 @@ $(document).ready(function() {
         /*if (!validateEditForm(form)) {
             return;
         }*/
-        fetch('/api/auth/purchase/order/request/add', {
+        fetch('/api/auth/purchase/order/request/generate-order-pdf', {
 	        method: 'POST',
 	        headers: {
 	            'Content-Type': 'application/json'
@@ -91,6 +91,8 @@ $(document).ready(function() {
                     fetchUsers(currentPage);
                     $('#addRoleModal').modal("hide");
                     $('.modal-backdrop').remove();
+
+					window.open(data.content.pdfUrl, '_blank'); // mở file PDF đã ký
 				}else{
 					alert("Error: " + data.content.message);
 				}
@@ -100,8 +102,6 @@ $(document).ready(function() {
 	    });
     });
     
-    loadMedicineSelectOptions();
-    
     /*document.getElementById('status').addEventListener('change', function () {
 		const reasonGroup = document.getElementById('rejectionReasonGroup');
 		if (this.value === 'REJECTED') {
@@ -110,6 +110,38 @@ $(document).ready(function() {
 			reasonGroup.style.display = 'none';
 		}
 	});*/
+	loadMedicineSelectOptions();
+	
+	// Thêm hàng thuốc mới
+	document.getElementById("add-medicine").addEventListener("click", function () {
+	  const container = document.getElementById("medicine-container");
+	
+	  const newRow = document.createElement("div");
+	  newRow.classList.add("form-group", "medicine-row");
+	  newRow.innerHTML = `
+	      <label class="col-sm-2 control-label">Mã thuốc</label>
+	      <div class="col-sm-4">
+	          <select class="form-control medicine-code" required>
+	              ${cachedMedicineOptions}
+	          </select>
+	      </div>
+	      <label class="col-sm-2 control-label">Số lượng</label>
+	      <div class="col-sm-3">
+	          <input type="number" class="form-control quantity" min="1" required>
+	      </div>
+	      <div class="col-sm-1">
+	          <button type="button" class="btn btn-danger remove-row">X</button>
+	      </div>
+	  `;
+	  container.appendChild(newRow);
+	});
+	
+	// Xóa thuốc
+	document.addEventListener("click", function (e) {
+	    if (e.target.classList.contains("remove-row")) {
+	        e.target.closest(".medicine-row").remove();
+	    }
+	});
 });
 
 /**
@@ -384,16 +416,55 @@ function validateEditForm(form) {
 function getAddForm() {
     return {
         id: 0,
-        userId: $('#add-username-input').val(),
-        medicineId: $('#add-medicine-code-input').val(),
-        quantity: $('#add-quantity-input').val()
+        customerName: $('#customer-name').val(),
+        gender: $('#gender').val(),
+        age:  $('#age').val(),
+        phone: $('#phone').val(),
+        cardNumber: $('#identity').val(),
+        address: $('#address').val(),
+        diagnosis: $('#diagnosis').val(),
+        
+        medicines: collectMedicineData()
     };
 }
 
+function collectMedicineData() {
+    const medicines = [];
+    $('.medicine-row').each(function () {
+        const code = $(this).find('.medicine-code').val();
+        const quantity = parseInt($(this).find('.quantity').val());
+        if (code && quantity > 0) {
+            medicines.push({
+                medicineId: code,
+                quantity: quantity
+            });
+        }
+    });
+    return medicines;
+}
 
 async function loadMedicineSelectOptions() {
+  try {
+    const res = await fetch('/api/auth/medicine/medicine-groups');
+    const data = await res.json();
+
+    cachedMedicineOptions = `<option value="">-- Chọn thuốc --</option>`;
+    data.forEach(item => {
+      cachedMedicineOptions += `<option value="${item.id}">${item.code} - ${item.name}</option>`;
+    });
+
+    // Áp dụng cho mọi select đã có
+    document.querySelectorAll('.medicine-code').forEach(select => {
+      select.innerHTML = cachedMedicineOptions;
+    });
+  } catch (err) {
+    console.error('Lỗi khi load danh sách thuốc:', err);
+  }
+}
+
+/*async function loadMedicineSelectOptions() {
   await Promise.all([
-    loadSelectOptions('/api/auth/medicine/medicine-groups', 'add-medicine-code-input', ''),
+    loadSelectOptions('/api/auth/medicine/medicine-groups', 'medicine-code', ''),
     loadSelectOptions('/api/auth/user/user-groups', 'add-username-input', '')
   ]);
 }
@@ -420,7 +491,7 @@ async function loadSelectOptions(apiUrl, selectId, selectedValue = '') {
   } catch (err) {
     console.error(`Lỗi khi load dữ liệu từ ${apiUrl}:`, err);
   }
-}
+}*/
 
 /**
  * Render dropdown menu based on identity

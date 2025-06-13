@@ -66,7 +66,10 @@ public class AppCoreConstant {
     public static final String TABLE_PURCHASE_ORDER_REQUEST = "PurchaseOrderRequest";
     public static final String TABLE_PURCHASE_ORDER_DETAILS = "PurchaseOrderDetails";
     public static final String TABLE_PURCHASE_ORDER = "PurchaseOrders";
+    public static final String TABLE_WALK_IN_PURCHASE_INVOICE = "WalkInPurchaseInvoice";
+    public static final String TABLE_WALK_IN_PURCHASE_ITEM = "WalkInInvoiceItem";
 	public static final String TABLE_AUDIT_LOGS = "AuditLogs";
+    public static final String TABLE_REPORT_BUSINESS = "ReportBusiness";
 	//public static final String TABLE_TICKET_DETAIL_SEAT = "ticket_detail_seat";
 //	public static final String TABLE_ROW_OF_SEAT = "row_of_seat";
 //	public static final String TABLE_SEAT_DETAIL = "seat_detail";
@@ -103,4 +106,10 @@ public class AppCoreConstant {
     public static final String SENT_ORDER = "SENT_ORDER";
     public static final String CANCELLED_ORDER = "CANCELLED_ORDER";
     public static final String RECEIVED_ORDER = "RECEIVED_ORDER";
+    
+    //cert
+    public static final String KEYSTORE_PATH = "certs/keystore.p12";
+    public static final String KEYSTORE_PASSWORD = "123456";
+    public static final String ALIAS = "genpdf_medicine";
+    
 }

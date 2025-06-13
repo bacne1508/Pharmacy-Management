@@ -41,4 +41,6 @@ public interface MedicineStockRepository extends DbRepository<MedicineStock, Lon
     @Modifying
     int unlockQuantity(@Param("medicineId") Long medicineId, @Param("quantity") Integer quantity);
 
+    MedicineStock findInforByMedicineId(@Param("medicineId") Long medicineId);
+
 }
