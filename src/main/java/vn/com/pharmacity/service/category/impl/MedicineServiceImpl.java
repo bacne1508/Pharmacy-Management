@@ -6,7 +6,6 @@ import java.util.Date;
 import java.util.List;
 import java.util.stream.Collectors;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
@@ -38,8 +37,7 @@ public class MedicineServiceImpl
 extends BaseRestServiceImpl<ObjectDataRes<MedicineDto>, MedicineDto, Long>
 implements MedicineService {
 
-    @Autowired
-    private MedicineRepository medicineRepository;
+    private final MedicineRepository medicineRepository;
     
     private static final String MEDICINE_EXIST = "Medicine already exists!";
     

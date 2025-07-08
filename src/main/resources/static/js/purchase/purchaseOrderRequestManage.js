@@ -92,7 +92,7 @@ $(document).ready(function() {
                     $('#addRoleModal').modal("hide");
                     $('.modal-backdrop').remove();
 
-					window.open(data.content.pdfUrl, '_blank'); // mở file PDF đã ký
+					//window.open(data.content.pdfUrl, '_blank'); // mở file PDF đã ký
 				}else{
 					alert("Error: " + data.content.message);
 				}

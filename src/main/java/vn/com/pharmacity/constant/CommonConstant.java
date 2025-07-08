@@ -56,4 +56,26 @@ public class CommonConstant {
 	public static final char CHAR_IS_MORE_THAN = '>';
 	public static final char CHAR_AMPERSAND = '&';
 	public static final String SHARP = "#";
+	
+	//file
+	public static final String FILE_EXTENSION_PDF = ".pdf";
+	public static final String FILE_EXTENSION_CSV = ".csv";
+	public static final String FILE_EXTENSION_XLS = ".xls";
+	public static final String FILE_EXTENSION_XLSX = ".xlsx";
+	public static final String FILE_EXTENSION_XML = ".xml";
+	public static final String FILE_EXTENSION_JSON = ".json";
+	public static final String FILE_EXTENSION_TXT = ".txt";
+	public static final String FILE_EXTENSION_ZIP = ".zip";
+	public static final String FILE_EXTENSION_JPG = ".jpg";
+	public static final String FILE_EXTENSION_JPEG = ".jpeg";
+	public static final String FILE_EXTENSION_PNG = ".png";
+	public static final String FILE_EXTENSION_GIF = ".gif";
+	public static final String FILE_EXTENSION_DOC = ".doc";
+	public static final String FILE_EXTENSION_DOCX = ".docx";
+	public static final String FILE_EXTENSION_HTML = ".html";
+	
+	//folder
+	public static final String FOLDER_PRESCRIPTION = "prescription";
+	
+	
 }

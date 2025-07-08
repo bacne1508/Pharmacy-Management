@@ -83,16 +83,21 @@ public class ViewController {
 
     @GetMapping("/admin/purchase/order/request/manage")
     public String getPurchaseOrderRequestManage() {
-        return "Purchase/purchaseOrderRequestManage";
+        return "purchase/purchaseOrderRequestManage";
     }
 
     @GetMapping("/admin/purchase/order/manage")
     public String getPurchaseOrderManage() {
-        return "Purchase/purchaseOrderManage";
+        return "purchase/purchaseOrderManage";
     }
 
     @GetMapping("/admin/purchase/bill/manage")
     public String getPurchaseBillManage() {
-        return "Purchase/purchaseBillManage";
+        return "purchase/purchaseBillManage";
+    }
+
+    @GetMapping("/admin/report/report-business/list")
+    public String getReportBusinessManage() {
+        return "report/reportBusinessManage";
     }
 }

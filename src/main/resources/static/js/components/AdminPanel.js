@@ -85,9 +85,10 @@ class AdminPanel extends Component {
 		                        <span class="submenu-arrow"><i class="fa fa-chevron-down"></i></span>
 		                    </a>
 		                    <ul class="submenu nav nav-pills nav-stacked" style="display: none;">
-		                        <li role="presentation" data-menu-id="prescription-manage"><a href="/admin/inventory/report/list"><i class="fa fa-file-pdf-o sub-icon"></i> Inventory report by expiry</a></li>
-		                        <li role="presentation" data-menu-id="prescription-manage"><a href="/admin/import/report/list"><i class="fa fa-file-pdf-o sub-icon"></i> Report of import - export - inventory by day, month, year</a></li>
-		                        <li role="presentation" data-menu-id="prescription-manage"><a href="/admin/revenue/report/list"><i class="fa fa-file-pdf-o sub-icon"></i> Report revenue and profit by item</a></li>
+		                        <li role="presentation" data-menu-id="report-business-manage"><a href="/admin/report/report-business/list"><i class="fa fa-file-pdf-o sub-icon"></i> Report Business</a></li>
+		                        <li role="presentation" data-menu-id="prescription-manage"><a href="/admin/report/inventory/list"><i class="fa fa-file-pdf-o sub-icon"></i> Inventory report by expiry</a></li>
+		                        <li role="presentation" data-menu-id="prescription-manage"><a href="/admin/report/import/list"><i class="fa fa-file-pdf-o sub-icon"></i> Report of import - export - inventory by day, month, year</a></li>
+		                        <li role="presentation" data-menu-id="prescription-manage"><a href="/admin/report/revenue/list"><i class="fa fa-file-pdf-o sub-icon"></i> Report revenue and profit by item</a></li>
 		                        
 		                    </ul>
 		                </li>

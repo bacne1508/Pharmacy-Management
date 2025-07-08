@@ -42,6 +42,7 @@ public class PurchaseOrderRequestManagementController extends BaseRestController
         super(baseService);
     }
     
+    // Approve a purchase order request
     @PostMapping("/approve-multiple")
     public ResponseEntity<?> approveMultipleRequests(@RequestBody BulkActionRequest req) {
         try {
@@ -52,12 +53,14 @@ public class PurchaseOrderRequestManagementController extends BaseRestController
         }
     }
 
+    // Reject multiple purchase order requests
     @PostMapping("/reject-multiple")
     public ResponseEntity<?> rejectRequests(@RequestBody BulkActionRequest req) {
         purchaseOrderRequestService.rejectRequestsByIds(req.getIds(), req.getReason());
         return ResponseEntity.ok().build();
     }
     
+    // Generate PDF for a purchase order request
     @PostMapping("/generate-order-pdf")
     public ResponseEntity<ResponseVO> createPrescription(@RequestBody WalkInPurchaseInvoiceDto dto) {
         try {
@@ -69,7 +72,7 @@ public class PurchaseOrderRequestManagementController extends BaseRestController
             }
 
             // 2. Đường dẫn đến file .p12 và thông tin chữ ký
-            InputStream keystoreStream = new ClassPathResource(AppCoreConstant.KEYSTORE_PATH).getInputStream(); // 🔐 Cập nhật đường dẫn file .p12 của bạn
+            InputStream keystoreStream = new ClassPathResource(AppCoreConstant.KEYSTORE_PATH).getInputStream(); 
             String keystorePassword = AppCoreConstant.KEYSTORE_PASSWORD;
             String alias = AppCoreConstant.ALIAS;
 

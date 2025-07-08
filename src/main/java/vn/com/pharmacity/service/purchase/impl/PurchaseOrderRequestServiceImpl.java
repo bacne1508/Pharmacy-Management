@@ -3,6 +3,7 @@ package vn.com.pharmacity.service.purchase.impl;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
+import java.io.IOException;
 import java.io.InputStream;
 import java.math.BigDecimal;
 import java.security.KeyStore;
@@ -21,6 +22,7 @@ import java.util.stream.Collectors;
 
 import org.bouncycastle.jce.provider.BouncyCastleProvider;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Page;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
@@ -51,6 +53,7 @@ import lombok.extern.log4j.Log4j;
 import vn.com.pharmacity.annotation.AuditAction;
 import vn.com.pharmacity.annotation.CoreReadOnlyTx;
 import vn.com.pharmacity.constant.AppCoreConstant;
+import vn.com.pharmacity.constant.CommonConstant;
 import vn.com.pharmacity.dto.PurchaseOrderRequestDto;
 import vn.com.pharmacity.dto.WalkInPurchaseInvoiceDto;
 import vn.com.pharmacity.entity.Medicine;
@@ -59,6 +62,7 @@ import vn.com.pharmacity.entity.MedicineUnit;
 import vn.com.pharmacity.entity.PurchaseOrder;
 import vn.com.pharmacity.entity.PurchaseOrderDetail;
 import vn.com.pharmacity.entity.PurchaseOrderRequest;
+import vn.com.pharmacity.entity.ReportBusiness;
 import vn.com.pharmacity.entity.WalkInInvoiceItem;
 import vn.com.pharmacity.repository.MedicineRepository;
 import vn.com.pharmacity.repository.MedicineStockRepository;
@@ -66,12 +70,14 @@ import vn.com.pharmacity.repository.MedicineUnitRepository;
 import vn.com.pharmacity.repository.PurchaseOrderDetailsRepository;
 import vn.com.pharmacity.repository.PurchaseOrderRepository;
 import vn.com.pharmacity.repository.PurchaseOrderRequestRepository;
+import vn.com.pharmacity.repository.ReportBusinessRepository;
 import vn.com.pharmacity.repository.WalkInInvoiceItemRepository;
 import vn.com.pharmacity.repository.WalkInPurchaseInvoiceRepository;
 import vn.com.pharmacity.response.ObjectDataRes;
 import vn.com.pharmacity.service.impl.BaseRestServiceImpl;
 import vn.com.pharmacity.service.purchase.PurchaseOrderRequestService;
 import vn.com.pharmacity.service.purchase.PurchaseOrderService;
+import vn.com.pharmacity.utils.SignatureUtils;
 
 /**
  * Define user identity as a constant
@@ -88,33 +94,22 @@ public class PurchaseOrderRequestServiceImpl
         extends BaseRestServiceImpl<ObjectDataRes<PurchaseOrderRequestDto>, PurchaseOrderRequestDto, Long>
         implements PurchaseOrderRequestService {
 
-    @Autowired
-    private PurchaseOrderService purchaseOrderService;
-
-    // Add any necessary repository or service dependencies here
-    @Autowired
-    PurchaseOrderRequestRepository purchaseOrderRequestRepository;
-
-    @Autowired
-    MedicineRepository medicineRepository;
-
-    @Autowired
-    PurchaseOrderRepository purchaseOrderRepository;
-
-    @Autowired
-    PurchaseOrderDetailsRepository purchaseOrderDetailsRepository;
-
-    @Autowired
-    MedicineStockRepository stockRepository;
+    private final PurchaseOrderService purchaseOrderService;
+    private final PurchaseOrderRequestRepository purchaseOrderRequestRepository;
+    private final MedicineRepository medicineRepository;
+    private final PurchaseOrderRepository purchaseOrderRepository;
+    private final PurchaseOrderDetailsRepository purchaseOrderDetailsRepository;
+    private final MedicineStockRepository stockRepository;    
+    private final WalkInPurchaseInvoiceRepository walkInPurchaseInvoiceRepository;    
+    private final WalkInInvoiceItemRepository walkInInvoiceItemRepository;    
+    private final MedicineUnitRepository medicineUnitRepository;    
+    private final ReportBusinessRepository reportBusinessRepository;
     
-    @Autowired
-    WalkInPurchaseInvoiceRepository walkInPurchaseInvoiceRepository;
+//    @Autowired
+//    ReportBusinessService reportBusinessService;
     
-    @Autowired
-    WalkInInvoiceItemRepository walkInInvoiceItemRepository;
-    
-    @Autowired
-    MedicineUnitRepository medicineUnitRepository;
+    @Value("${app.storage.pdf-path}")
+    private String storagePath;
 
     private static final String MEDICINE_NOT_EXIST = "Request not exists!";
 
@@ -135,6 +130,12 @@ public class PurchaseOrderRequestServiceImpl
         return entity != null ? new PurchaseOrderRequestDto(entity) : null;
     }
 
+    /**
+     * Lưu yêu cầu đơn thuốc ngoại trú vào cơ sở dữ liệu
+     * 
+     * @param dto Đối tượng chứa thông tin đơn thuốc ngoại trú
+     * @return PurchaseOrderRequestDto đã được lưu
+     */
     @Override
     protected PurchaseOrderRequestDto saveEntity(PurchaseOrderRequestDto dto) {
 //        List<PurchaseOrderRequest> existing = purchaseOrderRequestRepository.getDataByCondition(dto.getId());
@@ -161,6 +162,11 @@ public class PurchaseOrderRequestServiceImpl
         return dto;
     }
 
+    /**
+     * Xóa yêu cầu đơn thuốc ngoại trú
+     * 
+     * @param id ID của yêu cầu cần xóa
+     */
     @Override
     protected void deleteEntity(Long id) {
 //        PurchaseOrderRequest entity = purchaseOrderRequestRepository.findOne(id);
@@ -179,6 +185,12 @@ public class PurchaseOrderRequestServiceImpl
         return response;
     }
 
+    /**
+     * Duyệt yêu cầu đơn thuốc ngoại trú
+     * 
+     * @param ids    Danh sách ID của các yêu cầu cần duyệt
+     * @param reason Lý do duyệt
+     */
     @Override
     @AuditAction(actionType = "APPROVED") // ghi log
     public void approveRequestsByIds(List<Long> ids, String reason) {
@@ -271,6 +283,12 @@ public class PurchaseOrderRequestServiceImpl
         reqDto.setLinkedPoId(po.getId());
     }
 
+    /**
+     * Xử lý từ chối yêu cầu đơn thuốc ngoại trú
+     * 
+     * @param ids    Danh sách ID của các yêu cầu cần từ chối
+     * @param reason Lý do từ chối
+     */
     @Override
     @AuditAction(actionType = "REJECTED")
     public void rejectRequestsByIds(List<Long> ids, String reason) {
@@ -288,16 +306,27 @@ public class PurchaseOrderRequestServiceImpl
         }
     }
 
+    /**
+     * Tạo và ký số PDF đơn thuốc ngoại trú
+     * 
+     * @param dto              Đối tượng chứa thông tin đơn thuốc ngoại trú
+     * @param keystorePath     InputStream của file keystore (PKCS12)
+     * @param keystorePassword Mật khẩu của keystore
+     * @param alias            Alias của private key trong keystore
+     * @return Đường dẫn đến file PDF đã ký số
+     * @throws Exception Nếu có lỗi xảy ra trong quá trình tạo hoặc ký PDF
+     */
     public String generateAndSignPrescriptionPdf(WalkInPurchaseInvoiceDto dto, InputStream keystorePath, String keystorePassword, String alias) 
             throws Exception {
         // 1. Tạo PDF đơn thuốc
-        String staticPath = new File("src/main/resources/static/files/").getAbsolutePath();
-        File folder = new File(staticPath);
-        if (!folder.exists()) {
-            folder.mkdirs();
+        File folder = new File(storagePath, CommonConstant.FOLDER_PRESCRIPTION);
+        if (!folder.exists() && !folder.mkdirs()) {
+            throw new IOException("Không thể tạo thư mục prescription: " + folder.getAbsolutePath());
         }
-        String fileName = "prescription_" + System.currentTimeMillis() + ".pdf";
-        String outputPath = staticPath + File.separator + fileName;
+        
+        String fileName = "prescription_" + System.currentTimeMillis() + CommonConstant.FILE_EXTENSION_PDF;
+        File pdfFile = new File(folder, fileName);
+        String outputPath = pdfFile.getAbsolutePath();
         
         Document document = new Document(PageSize.A4, 36, 36, 36, 36);
         FileOutputStream fos = new FileOutputStream(outputPath);
@@ -379,19 +408,55 @@ public class PurchaseOrderRequestServiceImpl
         document.add(new Paragraph("Hẹn ngày khám lại (nếu cần thiết): ..............................................................", font));
         document.add(new Paragraph("\n\n"));
         document.add(new Paragraph("                                                                                           ............., ngày ...... tháng ..... năm 20....", font));
-        document.add(new Paragraph("Người bệnh                                                                                                          Người kê đơn", boldFont));
-        document.add(new Paragraph("                                                                                                                (ký và ghi rõ họ tên)", font));
+        document.add(new Paragraph("Người bệnh                                                                                                   Người kê đơn", boldFont));
+        document.add(new Paragraph("                                                                                                        (ký và ghi rõ họ tên)", font));
 
         document.close();
 
         // 2. Ký số PDF
-        String signedOutputPath = outputPath.replace(".pdf", "_signed.pdf");
+        String signedOutputPath = outputPath.replace(CommonConstant.FILE_EXTENSION_PDF, "_signed.pdf");
         signPdf(outputPath, signedOutputPath, keystorePath, keystorePassword, alias);
+        
+        // 3. Lưu file vào database
+        File signedFile = new File(signedOutputPath);
+        this.saveFileToReportBusiness(signedFile, dto);
 
         return "/files/" + new File(signedOutputPath).getName();
     }
 
+    /**
+     * Lưu file đã ký vào bảng ReportBusiness
+     * 
+     * @param signedFile File đã ký số
+     * @param dto        Đối tượng chứa thông tin đơn thuốc ngoại trú
+     */
+    private void saveFileToReportBusiness(File signedFile, WalkInPurchaseInvoiceDto dto) {
+        ReportBusiness report = new ReportBusiness();
+        report.setFileName(signedFile.getName());
+        report.setFileType(CommonConstant.FILE_EXTENSION_PDF);
+        report.setFilePath(signedFile.getAbsolutePath());
+        report.setFileUrl("/files/" + signedFile.getName());
+        report.setFileSize(signedFile.length());
+        report.setCreatedDate(new Date());
+        report.setCreatedBy(SecurityContextHolder.getContext().getAuthentication().getName());
+        report.setRelatedInvoiceId(dto.getId());
+        report.setDescription("Đơn thuốc ngoại trú đã ký số");
+
+        reportBusinessRepository.saveReport(report);
+        
+    }
+
     //tạo chữ ký với RSA + SHA256
+    /**
+     * Ký số PDF bằng chữ ký số từ file keystore
+     * 
+     * @param src              Đường dẫn file PDF nguồn
+     * @param dest             Đường dẫn file PDF đích đã ký
+     * @param keystoreStream   InputStream của file keystore (PKCS12)
+     * @param keystorePassword Mật khẩu của keystore
+     * @param alias            Alias của private key trong keystore
+     * @throws Exception Nếu có lỗi xảy ra trong quá trình ký
+     */
     public static void signPdf(String src, String dest, InputStream keystoreStream, String keystorePassword, String alias) throws Exception {
         Security.addProvider(new BouncyCastleProvider());
         KeyStore ks = KeyStore.getInstance("PKCS12");
@@ -400,14 +465,47 @@ public class PurchaseOrderRequestServiceImpl
         PrivateKey pk = (PrivateKey) ks.getKey(alias, keystorePassword.toCharArray());
         Certificate[] chain = ks.getCertificateChain(alias);
 
+        Certificate cert = chain[0];
+        String signerName = SignatureUtils.extractCommonNameFromCertificate(cert);
+        
         PdfReader reader = new PdfReader(src);
         FileOutputStream os = new FileOutputStream(dest);
         PdfStamper stamper = PdfStamper.createSignature(reader, os, '\0');
+
         PdfSignatureAppearance appearance = stamper.getSignatureAppearance();
+        appearance.setSignatureCreator(signerName);
         appearance.setReason("Kê đơn thuốc");
         appearance.setLocation("Phòng khám");
-//        appearance.setVisibleSignature(new Rectangle(390, 110, 550, 140), 1, "sig"); // Tọa độ chữ ký
-        appearance.setVisibleSignature(new Rectangle(410, 250, 540, 200), 1, "sig");
+        Rectangle rect = SignatureUtils.calculateSignatureRectangle(reader, 1, signerName, 10f, 170f);
+        appearance.setVisibleSignature(rect, 1, "sig");
+        System.out.println("CREATOR: " + appearance.getSignatureCreator());
+        System.out.println("REASON: " + appearance.getReason());
+        System.out.println("LOCATION: " + appearance.getLocation());
+
+        // Load font từ resource
+        InputStream fontStream = Thread.currentThread()
+                .getContextClassLoader()
+                .getResourceAsStream("static/font/arial.ttf");
+
+        if (fontStream == null) {
+            throw new FileNotFoundException("Không tìm thấy font: arial.ttf");
+        }
+
+        // Đọc font dưới dạng byte[]
+        byte[] fontBytes = fontStream.readAllBytes();
+
+        BaseFont baseFont = BaseFont.createFont(
+                "arial.ttf",         // Tên file tạm (có thể là bất kỳ)
+                BaseFont.IDENTITY_H, // Cho phép Unicode (tiếng Việt, Nhật, v.v.)
+                BaseFont.EMBEDDED,
+                false,
+                fontBytes,
+                null
+        );
+        Font font = new Font(baseFont, 10, Font.NORMAL);
+        appearance.setLayer2Font(font);
+        
+        appearance.setLayer2Text(SignatureUtils.buildDefaultLayer2Text(appearance));
 
         ExternalDigest digest = new BouncyCastleDigest();
         ExternalSignature signature = new PrivateKeySignature(pk, "SHA256", "BC");
@@ -415,6 +513,12 @@ public class PurchaseOrderRequestServiceImpl
         MakeSignature.signDetached(appearance, digest, signature, chain, null, null, null, 0, MakeSignature.CryptoStandard.CMS);
     }
 
+    /**
+     * Lưu yêu cầu đơn thuốc ngoại trú vào cơ sở dữ liệu
+     * 
+     * @param dto Đối tượng chứa thông tin đơn thuốc ngoại trú
+     * @return true nếu lưu thành công, false nếu không thành công
+     */
     @Override
     public boolean savePdfRequest(WalkInPurchaseInvoiceDto dto) {
         try {
@@ -450,6 +554,15 @@ public class PurchaseOrderRequestServiceImpl
         return true;
     }
 
+    /**
+     * Tạo mã đơn thuốc ngoại trú theo định dạng: WIP_yyMM.00001
+     * 
+     * @param tableName  Tên bảng để tìm mã lớn nhất
+     * @param columnName Tên cột chứa mã đơn thuốc
+     * @param perfix     Tiền tố của mã đơn thuốc
+     * @param length     Độ dài của phần số trong mã (nếu null, mặc định là 5)
+     * @return Mã đơn thuốc mới được tạo
+     */
     public String generatePoCode(String tableName, String columnName, String perfix, Integer length) {
         String codeNO = "";
 

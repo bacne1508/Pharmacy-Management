@@ -2,7 +2,6 @@ package vn.com.pharmacity.service.address.impl;
 
 import java.util.List;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import lombok.RequiredArgsConstructor;
@@ -16,8 +15,7 @@ import vn.com.pharmacity.service.address.WardService;
 @CoreReadOnlyTx
 public class WardServiceImpl implements WardService {
     
-    @Autowired
-    private AddressCommonRepository addressCommonRepository;
+    private final AddressCommonRepository addressCommonRepository;
     
     @Override
     public List<WardDto> findByDistrictCode(String districtCode) {

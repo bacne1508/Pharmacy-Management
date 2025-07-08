@@ -1,7 +1,6 @@
 package vn.com.pharmacity.rest.purchase;
 
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,6 +16,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import vn.com.pharmacity.constant.AppApiConstant;
 import vn.com.pharmacity.dto.PurchaseOrderDetailDto;
 import vn.com.pharmacity.dto.PurchaseOrderDto;
 import vn.com.pharmacity.response.ObjectDataRes;
@@ -29,7 +29,7 @@ import vn.com.pharmacity.webapp.ResponseVO;
  * @date 2025/6/4
  */
 @RestController
-@RequestMapping("/api/auth/purchase/order")
+@RequestMapping(AppApiConstant.API + AppApiConstant.API_AUTHEN + "/purchase/order")
 public class PurchaseOrderManagementController extends BaseRestController<ObjectDataRes<PurchaseOrderDto>, PurchaseOrderDto> {
 
     @Autowired

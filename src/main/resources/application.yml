@@ -29,6 +29,13 @@ logging:
   level:
     jp.sf.amateras.mirage: DEBUG
     org.springframework.security: DEBUG
+app:
+  storage:
+    pdf-path: F:/pharmacy-files/
+server:
+  servlet:
+    session:
+      timeout: 5m
   
 #mybatis:
 #  mapper-locations: classpath:dataImpl/*/*Mapper.xml

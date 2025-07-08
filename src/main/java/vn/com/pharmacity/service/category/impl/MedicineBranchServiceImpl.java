@@ -5,7 +5,6 @@ import java.util.Date;
 import java.util.List;
 import java.util.stream.Collectors;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
@@ -37,8 +36,7 @@ public class MedicineBranchServiceImpl
 extends BaseRestServiceImpl<ObjectDataRes<MedicineBranchDto>, MedicineBranchDto, Long>
 implements MedicineBranchService {
 
-    @Autowired
-    private MedicineBranchRepository medicineBranchRepository;
+    private final MedicineBranchRepository medicineBranchRepository;
     
     private static final String BRANCH_EXIST = "Branch already exists!";
     private static final String BRANCH_CREATE_ERROR = "Branch create error!";

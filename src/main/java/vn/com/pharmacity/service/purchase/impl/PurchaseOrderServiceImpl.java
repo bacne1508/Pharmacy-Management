@@ -10,7 +10,6 @@ import java.util.Objects;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
@@ -51,17 +50,10 @@ import vn.com.pharmacity.service.purchase.PurchaseOrderService;
 public class PurchaseOrderServiceImpl extends
         BaseRestServiceImpl<ObjectDataRes<PurchaseOrderDto>, PurchaseOrderDto, Long> implements PurchaseOrderService {
 
-    @Autowired
     private final PurchaseOrderRepository purchaseOrderRepository;
-
-    @Autowired
-    private AuditLogRepository auditLogRepository;
-
-    @Autowired
-    private MedicineStockRepository stockRepository;
-
-    @Autowired
-    private PurchaseOrderDetailsRepository purchaseOrderDetailsRepository;
+    private final AuditLogRepository auditLogRepository;
+    private final MedicineStockRepository stockRepository;
+    private final PurchaseOrderDetailsRepository purchaseOrderDetailsRepository;
 
     @Override
     protected List<PurchaseOrderDto> findAllByCondition(MultiValueMap<String, String> params) {

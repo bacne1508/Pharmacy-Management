@@ -1,14 +1,13 @@
 package vn.com.pharmacity.entity;
 
-import java.math.BigDecimal;
 import java.util.Date;
 
 import org.springframework.data.annotation.Id;
 
 import com.miragesql.miragesql.annotation.Column;
 import com.miragesql.miragesql.annotation.PrimaryKey;
-import com.miragesql.miragesql.annotation.Table;
 import com.miragesql.miragesql.annotation.PrimaryKey.GenerationType;
+import com.miragesql.miragesql.annotation.Table;
 
 import lombok.Getter;
 import lombok.Setter;

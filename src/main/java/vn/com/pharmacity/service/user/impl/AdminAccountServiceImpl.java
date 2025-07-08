@@ -8,7 +8,6 @@ import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
@@ -41,14 +40,9 @@ import vn.com.pharmacity.webapp.ResponseVO;
 @RequiredArgsConstructor
 public class AdminAccountServiceImpl implements AdminAccountService {
 
-    @Autowired
-    private AdminAccountRepository adminAccountRepository;
-
-    @Autowired
-    private UsersRepository usersRepository;
-    
-    @Autowired
-    private AccountRepository accountRepository;
+    private final AdminAccountRepository adminAccountRepository;
+    private final UsersRepository usersRepository;
+    private final AccountRepository accountRepository;
     
     private final PasswordEncoder passwordEncoder;
     

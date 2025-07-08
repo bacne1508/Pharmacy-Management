@@ -4,7 +4,6 @@ import java.util.Collection;
 import java.util.List;
 import java.util.stream.Collectors;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Service;
 import org.springframework.util.MultiValueMap;
@@ -32,8 +31,7 @@ public class MedicineTypeServiceImpl
 extends BaseRestServiceImpl<ObjectDataRes<MedicineTypeDto>, MedicineTypeDto, Long>
 implements MedicineTypeService {
 
-    @Autowired
-    private MedicineTypeRepository medicineTypeRepository;
+    private final MedicineTypeRepository medicineTypeRepository;
     
     private static final String MEDICINE_GROUP_EXIST = "Medicine type already exists!";
     private static final String MEDICINE_GROUP_CREATE_ERROR = "Medicine type create error!";

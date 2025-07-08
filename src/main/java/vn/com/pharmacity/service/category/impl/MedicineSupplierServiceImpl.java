@@ -5,7 +5,6 @@ import java.util.Date;
 import java.util.List;
 import java.util.stream.Collectors;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
@@ -34,8 +33,7 @@ public class MedicineSupplierServiceImpl
 extends BaseRestServiceImpl<ObjectDataRes<SupplierDto>, SupplierDto, Long>
 implements MedicineSupplierService {
 
-    @Autowired
-    private SupplierRepository supplierRepository;
+    private final SupplierRepository supplierRepository;
     
     private static final String SUPPLIER_EXIST = "Supplier already exists!";
     private static final String SUPPLIER_GROUP_CREATE_ERROR = "Supplier unit create error!";

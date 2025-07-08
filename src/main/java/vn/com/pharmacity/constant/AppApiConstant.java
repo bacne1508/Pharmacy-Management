@@ -8,7 +8,7 @@ public class AppApiConstant {
 	public static final String API_V1 = "/api/v1";
 	// API_AUTHEN
 	/** Authen url root */
-	public static final String API_AUTHEN = "/authen";
+	public static final String API_AUTHEN = "/auth";
 	/** Authen login */
 	public static final String API_LOGIN = "/login";
 	public static final String API_LOGOUT = "/logout";
@@ -46,6 +46,15 @@ public class AppApiConstant {
 	public static final String DELETE = "/delete";
 	/** List */
 	public static final String LIST = "/list";
+	
+	/** Edit */
+	public static final String EDIT = "/edit";
+	
+	/** Detail */
+	public static final String DETAIL = "/detail";
+	
+	/** All */
+	public static final String ALL = "/all";
 
 	// API_APP
 	public static final String API_APP = "/app";

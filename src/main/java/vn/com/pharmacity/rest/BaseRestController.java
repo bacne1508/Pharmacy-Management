@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import lombok.RequiredArgsConstructor;
+import vn.com.pharmacity.constant.AppApiConstant;
 import vn.com.pharmacity.response.ObjectDataRes;
 import vn.com.pharmacity.service.BaseRestService;
 import vn.com.pharmacity.webapp.ResponseVO;
@@ -32,7 +33,7 @@ public abstract class BaseRestController<T extends ObjectDataRes<E>, E> {
 
     protected final BaseRestService<T, E> baseService;
 
-    @GetMapping("/all")
+    @GetMapping(AppApiConstant.ALL)
     public ResponseEntity<ResponseVO> getAll(
             @RequestParam MultiValueMap<String, String> params,
             @RequestParam(defaultValue = "0") int page,
@@ -55,7 +56,7 @@ public abstract class BaseRestController<T extends ObjectDataRes<E>, E> {
         }
     }
 
-    @PostMapping("/add")
+    @PostMapping(AppApiConstant.ADD)
     public ResponseEntity<ResponseVO> add(@RequestBody E dto) {
         try {
             ResponseVO result = baseService.save(dto);
@@ -65,7 +66,7 @@ public abstract class BaseRestController<T extends ObjectDataRes<E>, E> {
         }
     }
 
-    @PostMapping("/edit")
+    @PostMapping(AppApiConstant.EDIT)
     public ResponseEntity<ResponseVO> edit(@RequestBody E dto) {
         try {
             ResponseVO result = baseService.save(dto);
@@ -75,7 +76,7 @@ public abstract class BaseRestController<T extends ObjectDataRes<E>, E> {
         }
     }
 
-    @GetMapping("/delete")
+    @GetMapping(AppApiConstant.DELETE)
     public ResponseEntity<ResponseVO> delete(@RequestParam("id") Long id) {
         try {
             baseService.delete(id);
@@ -85,7 +86,7 @@ public abstract class BaseRestController<T extends ObjectDataRes<E>, E> {
         }
     }
 
-    @GetMapping("/detail")
+    @GetMapping(AppApiConstant.DETAIL)
     public ResponseEntity<ResponseVO> detail(@RequestParam("id") Long id) {
         try {
             ResponseVO result = baseService.detail(id);
