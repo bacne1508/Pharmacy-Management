@@ -3,7 +3,6 @@
 - sql server
 - JS FRAMWORK
 - Migrate data
-- jasper report
 - spring security
 - html, css
 - AOP
