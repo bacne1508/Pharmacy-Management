@@ -100,16 +100,16 @@ public class PurchaseOrderRequestServiceImpl
     private final MedicineRepository medicineRepository;
     private final PurchaseOrderRepository purchaseOrderRepository;
     private final PurchaseOrderDetailsRepository purchaseOrderDetailsRepository;
-    private final MedicineStockRepository stockRepository;    
-    private final WalkInPurchaseInvoiceRepository walkInPurchaseInvoiceRepository;    
-    private final WalkInInvoiceItemRepository walkInInvoiceItemRepository;    
-    private final MedicineUnitRepository medicineUnitRepository;    
+    private final MedicineStockRepository stockRepository;
+    private final WalkInPurchaseInvoiceRepository walkInPurchaseInvoiceRepository;
+    private final WalkInInvoiceItemRepository walkInInvoiceItemRepository;
+    private final MedicineUnitRepository medicineUnitRepository;
     private final ReportBusinessRepository reportBusinessRepository;
     private final PurchaseBillService purchaseBillService;
-    
+
 //    @Autowired
 //    ReportBusinessService reportBusinessService;
-    
+
     @Value("${app.storage.pdf-path}")
     private String storagePath;
 
@@ -212,13 +212,10 @@ public class PurchaseOrderRequestServiceImpl
         }
     }
 
-    /** 
-     * luồng tạo đơn hàng từ yêu cầu: 
-     * 1 Kiểm tra tồn kho đủ để xử lý không 
-     * 2 Khóa locked_quantity nếu đủ 
-     * 3 Tạo đơn hàng nếu chưa có 
-     * 4 Ghi PurchaseOrderDetail có thông tin batch 
-     * 5 Gắn linkedPoId vào reqDto để phản hồi
+    /**
+     * luồng tạo đơn hàng từ yêu cầu: 1 Kiểm tra tồn kho đủ để xử lý không 2 Khóa
+     * locked_quantity nếu đủ 3 Tạo đơn hàng nếu chưa có 4 Ghi PurchaseOrderDetail
+     * có thông tin batch 5 Gắn linkedPoId vào reqDto để phản hồi
      * 
      * @param reqDto
      */
@@ -318,18 +315,18 @@ public class PurchaseOrderRequestServiceImpl
      * @return Đường dẫn đến file PDF đã ký số
      * @throws Exception Nếu có lỗi xảy ra trong quá trình tạo hoặc ký PDF
      */
-    public String generateAndSignPrescriptionPdf(WalkInPurchaseInvoiceDto dto, InputStream keystorePath, String keystorePassword, String alias) 
-            throws Exception {
+    public String generateAndSignPrescriptionPdf(WalkInPurchaseInvoiceDto dto, InputStream keystorePath,
+            String keystorePassword, String alias) throws Exception {
         // 1. Tạo PDF đơn thuốc
         File folder = new File(storagePath, CommonConstant.FOLDER_PRESCRIPTION);
         if (!folder.exists() && !folder.mkdirs()) {
             throw new IOException("Không thể tạo thư mục prescription: " + folder.getAbsolutePath());
         }
-        
+
         String fileName = "prescription_" + System.currentTimeMillis() + CommonConstant.FILE_EXTENSION_PDF;
         File pdfFile = new File(folder, fileName);
         String outputPath = pdfFile.getAbsolutePath();
-        
+
         Document document = new Document(PageSize.A4, 36, 36, 36, 36);
         FileOutputStream fos = new FileOutputStream(outputPath);
         PdfWriter.getInstance(document, fos);
@@ -345,14 +342,9 @@ public class PurchaseOrderRequestServiceImpl
         byte[] fontBytes = fontStream.readAllBytes();
 
         // Tạo BaseFont từ byte[]
-        BaseFont baseFont = BaseFont.createFont(
-                "arial.ttf",         // Tên file tạm (có thể là bất kỳ)
+        BaseFont baseFont = BaseFont.createFont("arial.ttf", // Tên file tạm (có thể là bất kỳ)
                 BaseFont.IDENTITY_H, // Cho phép Unicode (tiếng Việt, Nhật, v.v.)
-                BaseFont.EMBEDDED,
-                false,
-                fontBytes,
-                null
-        );
+                BaseFont.EMBEDDED, false, fontBytes, null);
 
         // Tạo Font từ BaseFont
         Font font = new Font(baseFont, 12);
@@ -362,18 +354,22 @@ public class PurchaseOrderRequestServiceImpl
         title.setAlignment(Element.ALIGN_CENTER);
         document.add(title);
         document.add(new Paragraph("(Dành cho kê đơn dược liệu, vị thuốc cổ truyền)", font));
-        document.add(new Paragraph("\nTên cơ sở KBCB: .................................................   Mã bệnh: .....................................................", font));
-        document.add(new Paragraph("Họ tên: " + dto.getCustomerName() + "     Tuổi: " + dto.getAge() + "     Giới tính: " + dto.getGender(), font));
+        document.add(new Paragraph(
+                "\nTên cơ sở KBCB: .................................................   Mã bệnh: .....................................................",
+                font));
+        document.add(new Paragraph("Họ tên: " + dto.getCustomerName() + "     Tuổi: " + dto.getAge()
+                + "     Giới tính: " + dto.getGender(), font));
         document.add(new Paragraph("Địa chỉ: " + dto.getAddress(), font));
         document.add(new Paragraph("Đối tượng: Viện phí: ............   BHYT ............   Khác ............", font));
         document.add(new Paragraph("Chẩn đoán: " + dto.getDiagnosis(), font));
-        document.add(new Paragraph("Thuốc sử dụng từ ngày ......... đến ngày .........      Số thang: ..........", font));
+        document.add(
+                new Paragraph("Thuốc sử dụng từ ngày ......... đến ngày .........      Số thang: ..........", font));
         document.add(new Paragraph("\n"));
 
         // Table
-        PdfPTable table = new PdfPTable(new float[]{1.0f, 4.5f, 2.0f, 2.0f, 3.0f});
+        PdfPTable table = new PdfPTable(new float[] { 1.0f, 4.5f, 2.0f, 2.0f, 3.0f });
         table.setWidthPercentage(100);
-        String[] headers = {"TT", "Tên thuốc", "Số lượng", "Đơn vị tính", "Ghi chú"};
+        String[] headers = { "TT", "Tên thuốc", "Số lượng", "Đơn vị tính", "Ghi chú" };
         for (String h : headers) {
             PdfPCell cell = new PdfPCell(new Phrase(h, boldFont));
             cell.setHorizontalAlignment(Element.ALIGN_CENTER);
@@ -384,11 +380,11 @@ public class PurchaseOrderRequestServiceImpl
         for (WalkInInvoiceItem m : dto.getMedicines()) {
             table.addCell(new Phrase(String.valueOf(stt++), font));
             Medicine medicine = medicineRepository.findOne(m.getMedicineId());
-            if(Objects.isNull(medicine)) {
+            if (Objects.isNull(medicine)) {
                 throw new RuntimeException("Không tìm thấy thuốc với ID = " + m.getMedicineId());
             }
             MedicineUnit unit = medicineUnitRepository.getMedicineByCode(medicine.getMedicineUnitsCode()).get(0);
-            if(Objects.isNull(unit)) {
+            if (Objects.isNull(unit)) {
                 throw new RuntimeException("Không tìm thấy unit với code = " + medicine.getMedicineUnitsCode());
             }
             table.addCell(new Phrase(medicine.getCode() + " - " + medicine.getName(), font));
@@ -398,27 +394,42 @@ public class PurchaseOrderRequestServiceImpl
         }
 
         for (int i = dto.getMedicines().size(); i < 10; i++) {
-            for (int j = 0; j < 5; j++) table.addCell(new Phrase(" ", font));
+            for (int j = 0; j < 5; j++)
+                table.addCell(new Phrase(" ", font));
         }
 
         document.add(table);
 
         document.add(new Paragraph("\nHướng dẫn sử dụng:", boldFont));
-        document.add(new Paragraph("Cách sắc thuốc: ...........................................................................................", font));
-        document.add(new Paragraph("Cách dùng: ...............................................................................................", font));
-        document.add(new Paragraph("Những điều cần lưu ý: .................................................................................", font));
-        document.add(new Paragraph("Hẹn ngày khám lại (nếu cần thiết): ..............................................................", font));
+        document.add(new Paragraph(
+                "Cách sắc thuốc: ...........................................................................................",
+                font));
+        document.add(new Paragraph(
+                "Cách dùng: ...............................................................................................",
+                font));
+        document.add(new Paragraph(
+                "Những điều cần lưu ý: .................................................................................",
+                font));
+        document.add(new Paragraph(
+                "Hẹn ngày khám lại (nếu cần thiết): ..............................................................",
+                font));
         document.add(new Paragraph("\n\n"));
-        document.add(new Paragraph("                                                                                           ............., ngày ...... tháng ..... năm 20....", font));
-        document.add(new Paragraph("Người bệnh                                                                                                   Người kê đơn", boldFont));
-        document.add(new Paragraph("                                                                                                        (ký và ghi rõ họ tên)", font));
+        document.add(new Paragraph(
+                "                                                                                           ............., ngày ...... tháng ..... năm 20....",
+                font));
+        document.add(new Paragraph(
+                "Người bệnh                                                                                                   Người kê đơn",
+                boldFont));
+        document.add(new Paragraph(
+                "                                                                                                        (ký và ghi rõ họ tên)",
+                font));
 
         document.close();
 
         // 2. Ký số PDF
         String signedOutputPath = outputPath.replace(CommonConstant.FILE_EXTENSION_PDF, "_signed.pdf");
         signPdf(outputPath, signedOutputPath, keystorePath, keystorePassword, alias);
-        
+
         // 3. Lưu file vào database
         File signedFile = new File(signedOutputPath);
         this.saveFileToReportBusiness(signedFile, dto);
@@ -445,10 +456,10 @@ public class PurchaseOrderRequestServiceImpl
         report.setDescription("Đơn thuốc ngoại trú đã ký số");
 
         reportBusinessRepository.saveReport(report);
-        
+
     }
 
-    //tạo chữ ký với RSA + SHA256
+    // tạo chữ ký với RSA + SHA256
     /**
      * Ký số PDF bằng chữ ký số từ file keystore
      * 
@@ -459,7 +470,8 @@ public class PurchaseOrderRequestServiceImpl
      * @param alias            Alias của private key trong keystore
      * @throws Exception Nếu có lỗi xảy ra trong quá trình ký
      */
-    public static void signPdf(String src, String dest, InputStream keystoreStream, String keystorePassword, String alias) throws Exception {
+    public static void signPdf(String src, String dest, InputStream keystoreStream, String keystorePassword,
+            String alias) throws Exception {
         Security.addProvider(new BouncyCastleProvider());
         KeyStore ks = KeyStore.getInstance("PKCS12");
         ks.load(keystoreStream, keystorePassword.toCharArray());
@@ -469,7 +481,7 @@ public class PurchaseOrderRequestServiceImpl
 
         Certificate cert = chain[0];
         String signerName = SignatureUtils.extractCommonNameFromCertificate(cert);
-        
+
         PdfReader reader = new PdfReader(src);
         FileOutputStream os = new FileOutputStream(dest);
         PdfStamper stamper = PdfStamper.createSignature(reader, os, '\0');
@@ -485,8 +497,7 @@ public class PurchaseOrderRequestServiceImpl
         System.out.println("LOCATION: " + appearance.getLocation());
 
         // Load font từ resource
-        InputStream fontStream = Thread.currentThread()
-                .getContextClassLoader()
+        InputStream fontStream = Thread.currentThread().getContextClassLoader()
                 .getResourceAsStream("static/font/arial.ttf");
 
         if (fontStream == null) {
@@ -496,23 +507,19 @@ public class PurchaseOrderRequestServiceImpl
         // Đọc font dưới dạng byte[]
         byte[] fontBytes = fontStream.readAllBytes();
 
-        BaseFont baseFont = BaseFont.createFont(
-                "arial.ttf",         // Tên file tạm (có thể là bất kỳ)
+        BaseFont baseFont = BaseFont.createFont("arial.ttf", // Tên file tạm (có thể là bất kỳ)
                 BaseFont.IDENTITY_H, // Cho phép Unicode (tiếng Việt, Nhật, v.v.)
-                BaseFont.EMBEDDED,
-                false,
-                fontBytes,
-                null
-        );
+                BaseFont.EMBEDDED, false, fontBytes, null);
         Font font = new Font(baseFont, 10, Font.NORMAL);
         appearance.setLayer2Font(font);
-        
+
         appearance.setLayer2Text(SignatureUtils.buildDefaultLayer2Text(appearance));
 
         ExternalDigest digest = new BouncyCastleDigest();
         ExternalSignature signature = new PrivateKeySignature(pk, "SHA256", "BC");
 
-        MakeSignature.signDetached(appearance, digest, signature, chain, null, null, null, 0, MakeSignature.CryptoStandard.CMS);
+        MakeSignature.signDetached(appearance, digest, signature, chain, null, null, null, 0,
+                MakeSignature.CryptoStandard.CMS);
     }
 
     /**
@@ -529,24 +536,26 @@ public class PurchaseOrderRequestServiceImpl
             // Create
             dto.setCreatedBy(SecurityContextHolder.getContext().getAuthentication().getName());
             dto.setCreatedDate(new Date());
-            for(WalkInInvoiceItem itemMedicine : dto.getMedicines()) {
+            for (WalkInInvoiceItem itemMedicine : dto.getMedicines()) {
                 MedicineStock stock = stockRepository.findInforByMedicineId(itemMedicine.getMedicineId());
-                if(Objects.nonNull(stock)) {
-                    BigDecimal lineAmount = stock.getUnitPrice().multiply(BigDecimal.valueOf(itemMedicine.getQuantity()));
+                if (Objects.nonNull(stock)) {
+                    BigDecimal lineAmount = stock.getUnitPrice()
+                            .multiply(BigDecimal.valueOf(itemMedicine.getQuantity()));
                     totalAmount = totalAmount.add(lineAmount);
-                }else {
-                    throw new RuntimeException("Không tìm thấy giá thuốc cho medicineId = " + itemMedicine.getMedicineId());
+                } else {
+                    throw new RuntimeException(
+                            "Không tìm thấy giá thuốc cho medicineId = " + itemMedicine.getMedicineId());
                 }
             }
             dto.setTotalAmount(totalAmount);
             WalkInPurchaseInvoiceDto dtoSaved = walkInPurchaseInvoiceRepository.saveData(dto);
-            
-            //save item
-            for(WalkInInvoiceItem itemMedicine : dto.getMedicines()) {
+
+            // save item
+            for (WalkInInvoiceItem itemMedicine : dto.getMedicines()) {
                 MedicineStock stock = stockRepository.findInforByMedicineId(itemMedicine.getMedicineId());
-                if(Objects.nonNull(stock)) {
+                if (Objects.nonNull(stock)) {
                     itemMedicine.setUnitPrice(stock.getUnitPrice());
-                    walkInInvoiceItemRepository.saveData(dtoSaved, itemMedicine); 
+                    walkInInvoiceItemRepository.saveData(dtoSaved, itemMedicine);
                 }
             }
         } catch (Exception e) {
