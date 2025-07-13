@@ -75,6 +75,7 @@ import vn.com.pharmacity.repository.WalkInInvoiceItemRepository;
 import vn.com.pharmacity.repository.WalkInPurchaseInvoiceRepository;
 import vn.com.pharmacity.response.ObjectDataRes;
 import vn.com.pharmacity.service.impl.BaseRestServiceImpl;
+import vn.com.pharmacity.service.purchase.PurchaseBillService;
 import vn.com.pharmacity.service.purchase.PurchaseOrderRequestService;
 import vn.com.pharmacity.service.purchase.PurchaseOrderService;
 import vn.com.pharmacity.utils.SignatureUtils;
@@ -104,6 +105,7 @@ public class PurchaseOrderRequestServiceImpl
     private final WalkInInvoiceItemRepository walkInInvoiceItemRepository;
     private final MedicineUnitRepository medicineUnitRepository;
     private final ReportBusinessRepository reportBusinessRepository;
+    private final PurchaseBillService purchaseBillService;
 
 //    @Autowired
 //    ReportBusinessService reportBusinessService;
