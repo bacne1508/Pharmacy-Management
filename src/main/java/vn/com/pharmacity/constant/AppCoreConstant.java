@@ -70,6 +70,7 @@ public class AppCoreConstant {
     public static final String TABLE_WALK_IN_PURCHASE_ITEM = "WalkInInvoiceItem";
 	public static final String TABLE_AUDIT_LOGS = "AuditLogs";
     public static final String TABLE_REPORT_BUSINESS = "ReportBusiness";
+    public static final String TABLE_BILL = "Bill";
 	//public static final String TABLE_TICKET_DETAIL_SEAT = "ticket_detail_seat";
 //	public static final String TABLE_ROW_OF_SEAT = "row_of_seat";
 //	public static final String TABLE_SEAT_DETAIL = "seat_detail";
