@@ -1,0 +1,253 @@
+<!DOCTYPE html>
+<html layout:decorate="~{layouts/layout}" xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org"
+	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" lang="en">
+
+<head>
+	<meta charset="UTF-8">
+	<title>Purchase Order Management</title>
+	<!-- Introduce the CSS style file -->
+	<script th:src="@{/js/components/PharmacityItem/PharmacityItem.js}"></script>
+	<script th:src="@{/js/purchase/purchaseBillManage.js}"></script>
+	<!-- Bootstrap JS -->
+	<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.6.0/js/bootstrap.bundle.min.js"></script>
+	<style>
+		/* Kiểu base cho badge */
+		.badge {
+			display: inline-block;
+			padding: 0.4em 0.75em;
+			/* tăng padding */
+			font-size: 1rem;
+			/* tăng font size */
+			font-weight: 600;
+			line-height: 1;
+			text-align: center;
+			white-space: nowrap;
+			vertical-align: baseline;
+			border-radius: 0.25rem;
+			color: #fff;
+		}
+
+		.badge-pill {
+			border-radius: 10rem;
+		}
+
+		/* Màu badge */
+		.badge-secondary {
+			background-color: #6c757d;
+		}
+
+		/* DRAFT */
+		.badge-success {
+			background-color: #28a745;
+		}
+
+		/* APPROVED */
+		.badge-danger {
+			background-color: #dc3545;
+		}
+
+		/* REJECTED */
+		.badge-warning {
+			background-color: #ffc107;
+			color: #212529;
+		}
+
+		/* PENDING */
+		.badge-dark {
+			background-color: #343a40;
+		}
+
+		/* RECEIVED */
+		.badge-light {
+			background-color: #f8f9fa;
+			color: #212529;
+		}
+
+		/* default */
+	</style>
+</head>
+
+<body>
+	<div layout:fragment="body">
+		<div th:replace="~{adminHeader :: mainHeader}"></div>
+		<div class="main-container">
+			<div class="nav-left-container"></div>
+			<div class="content-container">
+				<div class="page-content">
+					<span class="title gray-text">Purchase Bill Management</span>
+					<!--<button type="button" class="btn btn-primary" data-backdrop="static" data-toggle="modal"
+						data-target="#addRoleModal"><i class="icon-plus-sign"></i> Add new order request</button>-->
+				</div>
+				<div class="bg-content clearfix">
+					<div data-toggle="collapse" data-target="#search-box" class="header-box">
+						<h2 class="title-box">Search area</h2>
+						<i class="fa fa-minus pull-right" aria-hidden="true"></i>
+					</div>
+					<div class="collapse show" id="search-box">
+						<div class="content-box">
+							<div class="user-search-list"></div>
+						</div>
+						<!-- button footer -->
+						<div class="col-12 center">
+							<div class="box-btn-footer">
+								<a class="u-btn-grey u-btn-effect" id="btnClear"> <i class="fa fa-eraser"
+										aria-hidden="true"></i>
+									<span> Cancel</span>
+								</a> <a class="u-btn-common u-btn-effect" id="btnSearch"> <i class="fa fa-search"
+										aria-hidden="true"></i> <span>Search</span>
+								</a> <!--<a><button id="btnApproveSelected" class="u-btn-effect btn btn-success"
+										disabled>Duyệt các yêu cầu đã chọn</button>
+								</a>-->
+							</div>
+						</div>
+					</div>
+				</div>
+				<div class="bg-content clearfix" id="role-card">
+					<div class="table-wrapper" style="overflow-x: auto;">
+						<table class="table table-bordered table-striped">
+							<thead>
+								<tr>
+									<th>Bill Code</th>
+									<th>Bill Type</th>
+									<th>Customer</th>
+									<th>Employee</th>
+									<th>Total Amount</th>
+									<th>Status</th>
+									<th>Created For</th>
+									<th>Created By</th>
+									<th>Created Date</th>
+									<th>Action</th>
+								</tr>
+							</thead>
+							<tbody id="user-table"></tbody>
+						</table>
+					</div>
+				</div>
+				<div id="userTableContainer"></div>
+				<ul class="pagination" id="pagination"></ul>
+			</div>
+		</div>
+		<!-- Modal: View  Details -->
+		<!-- Modal -->
+		<div class="modal fade" id="poDetailModal" tabindex="-1" aria-hidden="true">
+			<div class="modal-dialog modal-xl">
+				<div class="modal-content">
+					<div class="modal-header">
+						<h5 class="modal-title">Danh sách đơn hàng</h5>
+						<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Đóng"></button>
+					</div>
+					<div class="modal-body">
+						<!-- CHỈ CÓ modalBodyContent ở đây -->
+						<div id="modalBodyContent" style="overflow-x: auto;">
+							<table class="table table-bordered table-striped">
+								<thead>
+									<tr>
+										<th>Purchase Order</th>
+										<th>Purchase Request Id</th>
+										<th>Purchase Request Group</th>
+										<th>Medicine</th>
+										<th>Quantity</th>
+										<th>Unit Price</th>
+										<th>Batch No</th>
+										<th>Expiry Date</th>
+										<th>Status</th>
+										<th>Description</th>
+										<th>Created By</th>
+										<th>Created Date</th>
+									</tr>
+								</thead>
+								<tbody id="user-table-modal"></tbody>
+							</table>
+						</div>
+						<ul class="pagination" id="pagination-modal"></ul>
+					</div>
+				</div>
+			</div>
+		</div>
+
+		<!-- Modal xác nhận -->
+		<div class="modal fade" id="confirmActionModal" tabindex="-1" role="dialog" aria-labelledby="confirmLabel"
+			aria-hidden="true">
+			<div class="modal-dialog modal-dialog-centered" role="document">
+				<div class="modal-content">
+					<div class="modal-header">
+						<h5 class="modal-title" id="confirmLabel">Xác nhận hành động</h5>
+						<button type="button" class="close" data-dismiss="modal" aria-label="Đóng">
+							<span aria-hidden="true">&times;</span>
+						</button>
+					</div>
+					<div class="modal-body" id="confirmActionMessage">
+					</div>
+					<div class="modal-footer">
+						<button type="button" class="btn btn-secondary" data-dismiss="modal">Hủy</button>
+						<button type="button" class="btn btn-success" id="confirmActionBtn">Xác nhận</button>
+					</div>
+				</div>
+			</div>
+		</div>
+		<!-- Modal: Edit or Approve Medicine Order Request -->
+		<div class="modal fade" id="editUserModal" tabindex="-1" role="dialog" aria-labelledby="editRoleModalLabel">
+			<div class="modal-dialog" role="document">
+				<div class="modal-content">
+					<div class="modal-header">
+						<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
+								aria-hidden="true">&times;</span></button>
+						<h4 class="modal-title" id="editRoleModalLabel">Medicine Request</h4>
+					</div>
+					<div class="modal-body">
+						<form class="form-horizontal" role="form">
+							<!-- Người yêu cầu -->
+							<div class="form-group row">
+								<label for="requester" class="col-sm-4 col-form-label">Username</label>
+								<div class="col-sm-8">
+									<input type="text" id="edit-username-input" class="form-control" readonly>
+								</div>
+							</div>
+
+							<!-- Mã thuốc -->
+							<div class="form-group row">
+								<label for="medicineCode" class="col-sm-4 col-form-label">Medicine Code</label>
+								<div class="col-sm-8">
+									<input type="text" id="edit-medicine-code-input" class="form-control" readonly>
+								</div>
+							</div>
+
+							<!-- Số lượng -->
+							<div class="form-group row">
+								<label for="quantity" class="col-sm-4 col-form-label">Quantity</label>
+								<div class="col-sm-8">
+									<input type="number" id="edit-quantity-input" class="form-control" min="1"
+										placeholder="Nhập số lượng" readonly>
+								</div>
+							</div>
+
+							<!-- Trạng thái -->
+							<div class="form-group row">
+								<label for="status" class="col-sm-4 col-form-label">Status</label>
+								<div class="col-sm-8">
+									<input type="text" id="edit-status-input" class="form-control" readonly>
+								</div>
+							</div>
+
+							<!-- Lý do từ chối (chỉ hiện khi chọn trạng thái = REJECTED) -->
+							<!--<div class="form-group row" id="rejectionReasonGroup" style="display: none;">
+								<label for="rejectionReason" class="col-sm-4 col-form-label">Reason Rejected</label>
+								<div class="col-sm-8">
+									<textarea id="rejectionReason" class="form-control" rows="2"
+										placeholder="Please enter reason reject"></textarea>
+								</div>
+							</div>-->
+						</form>
+					</div>
+
+					<div class="modal-footer">
+						<button type="button" class="btn btn-secondary" data-dismiss="modal">Đóng</button>
+						<!--<button type="button" class="btn btn-primary" id="saveMedicineOrderBtn">Lưu</button>-->
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</body>
+
+</html>
