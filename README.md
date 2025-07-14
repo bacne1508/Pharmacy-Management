@@ -2,7 +2,7 @@
 - Java spring boot RESTFUL API
 - JS FRAMWORK
 - spring security
-- html, css
+- HTML, CSS
 - AOP
   
 🛠️ Technology Stack
