@@ -1,4 +1,4 @@
-# Pharmacity-Management
+# 🏥 Pharmacy-Management
 - Java spring boot RESTFUL API
 - JS FRAMWORK
 - spring security
